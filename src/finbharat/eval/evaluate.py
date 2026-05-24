@@ -133,6 +133,49 @@ def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> 
     }
 
 
+def run_llm_judge_pass(
+    results: list[EvalResult],
+    qa_records: list[QARecord],
+    judge_model_key: str = "llama3.1-8b",
+    cache_path: Path | None = None,
+) -> list[EvalResult]:
+    """
+    Post-processing pass: run LLM judge on numerical questions only.
+    Updates results[i].llm_num_equiv in-place. Returns the same list.
+
+    Only questions where requires_calculation=True or question_type is
+    Numerical Calculation / Table Only / Table with Text are judged.
+    Text-only questions skip the judge entirely (BERTScore handles them).
+    """
+    from finbharat.metrics.llm_judge import NumericalJudge, should_judge
+
+    # Build candidate list — skip errors, skip non-numerical, skip abstains
+    candidates: list[tuple[int, EvalResult, QARecord]] = []
+    for i, (r, qa) in enumerate(zip(results, qa_records)):
+        if r.error:
+            continue
+        if r.abstained:
+            continue
+        if not should_judge(qa.question_type, qa.requires_calculation):
+            continue
+        candidates.append((i, r, qa))
+
+    if not candidates:
+        return results
+
+    golds     = [r.gold_answer    for _, r, _  in candidates]
+    preds     = [r.predicted_answer for _, r, _ in candidates]
+    questions = [qa.question       for _, _, qa in candidates]
+
+    with NumericalJudge(model_key=judge_model_key, cache_path=cache_path) as judge:
+        judge_results = judge.evaluate_batch(golds, preds, questions)
+
+    for (i, r, _), jr in zip(candidates, judge_results):
+        results[i].llm_num_equiv = jr.score  # 1, 0, or None
+
+    return results
+
+
 def evaluate_qa_records(
     qa_records: list[QARecord],
     generations: list[GenerationResult],
@@ -377,6 +420,7 @@ def run_evaluation(
     all_companies: bool = False,
     max_per_company: int | None = None,
     api_key: str | None = None,
+    llm_judge_model: str | None = None,   # None = skip judge; e.g. "llama3.1-8b"
 ):
     dataset = FinBharatDataset(data_root)
 
@@ -414,6 +458,17 @@ def run_evaluation(
         try:
             generations = runner.generate_batch(qa_records, contexts, cache_path=cache_path)
             eval_results = evaluate_qa_records(qa_records, generations, regime=regime)
+
+            # Optional LLM judge pass (only on numerical questions)
+            if llm_judge_model:
+                judge_cache = output_dir / "judge_cache" / f"{tag}.jsonl"
+                print(f"\n  Running LLM judge ({llm_judge_model}) on numerical questions...")
+                eval_results = run_llm_judge_pass(
+                    eval_results, qa_records,
+                    judge_model_key=llm_judge_model,
+                    cache_path=judge_cache,
+                )
+
             agg = aggregate_results(eval_results)
             agg["regime"] = regime
 
@@ -442,7 +497,8 @@ def _print_aggregate(model_name: str, agg: dict):
     print(f"  ROUGE-L: {agg['rouge_l']:.4f} | METEOR: {agg['meteor']:.4f} | BERTScore P/R/F1: {agg['bertscore_p']:.4f}/{agg['bertscore_r']:.4f}/{agg['bertscore_f1']:.4f}")
     print(f"  Abstain rate: {agg['abstain_rate']:.4f} ({int(agg['abstain_rate']*agg['total'])}/{agg['total']} predictions)")
     mape_str = f"{agg['mape']:.2f}%" if agg.get("mape") is not None else "N/A"
-    print(f"  Num-Exact: {agg['num_exact']:.4f} | Num-F1: {agg['num_f1']:.4f} | MAPE: {mape_str}")
+    judge_str = f"{agg['llm_num_equiv']:.4f}" if agg.get("llm_num_equiv") is not None else "not run"
+    print(f"  Num-Exact: {agg['num_exact']:.4f} | Num-F1: {agg['num_f1']:.4f} | MAPE: {mape_str} | LLM-Num-EM: {judge_str}")
     print(f"  Tol-1: {agg['tol1_acc']:.4f} | Tol-5: {agg['tol5_acc']:.4f} | Tol-10: {agg['tol10_acc']:.4f}")
     print(f"  Entailment: {agg['entailment_ratio']:.4f} | Traceability: {agg['evidence_traceability']:.4f}")
     if "directional_accuracy" in agg:

@@ -19,7 +19,10 @@ def cli():
 @click.option("--all-companies", is_flag=True, default=False, help="Run on all 187 companies")
 @click.option("--max-per-company", type=int, default=None, help="Cap QA pairs per company")
 @click.option("--api-key", type=str, default=None, envvar="NVIDIA_API_KEY", help="Override NIM API key")
-def evaluate(data_root, output_dir, models, difficulty, regime, table_format, all_companies, max_per_company, api_key):
+@click.option("--llm-judge", "llm_judge_model", type=str, default=None,
+              help="Model key to use as LLM numerical judge (e.g. llama3.1-8b). Omit to skip.")
+def evaluate(data_root, output_dir, models, difficulty, regime, table_format,
+             all_companies, max_per_company, api_key, llm_judge_model):
     from finbharat.eval.evaluate import run_evaluation
     run_evaluation(
         data_root=data_root,
@@ -31,6 +34,7 @@ def evaluate(data_root, output_dir, models, difficulty, regime, table_format, al
         all_companies=all_companies,
         max_per_company=max_per_company,
         api_key=api_key,
+        llm_judge_model=llm_judge_model,
     )
 
 

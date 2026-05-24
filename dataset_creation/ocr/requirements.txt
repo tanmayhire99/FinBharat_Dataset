@@ -1,0 +1,7 @@
+requests
+tqdm
+opencv-python-headless
+pytesseract
+psutil
+vllm
+docext

@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Dataset (too large for git)
+dataset/
+
+# Environment / secrets
+.env
+
+# Results
+results/
+
+# pytest cache
+.pytest_cache/

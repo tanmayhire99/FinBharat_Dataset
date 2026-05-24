@@ -4,6 +4,107 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
 
+# ---------------------------------------------------------------------------
+# Table serialization helpers
+# ---------------------------------------------------------------------------
+
+def _html_table_to_markdown(html: str) -> str:
+    """Convert a single HTML table to Markdown pipe format."""
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.DOTALL | re.IGNORECASE)
+    md_rows = []
+    for i, row in enumerate(rows):
+        cells = re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", row, re.DOTALL | re.IGNORECASE)
+        cells = [re.sub(r"<[^>]+>", " ", c).strip() for c in cells]
+        cells = [re.sub(r"\s+", " ", c) for c in cells]
+        md_rows.append("| " + " | ".join(cells) + " |")
+        if i == 0:
+            md_rows.append("|" + "|".join(["---"] * len(cells)) + "|")
+    return "\n".join(md_rows)
+
+
+def _html_table_to_linearized(html: str) -> str:
+    """Convert a single HTML table to key-value linearized format."""
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.DOTALL | re.IGNORECASE)
+    if not rows:
+        return ""
+    header_cells = re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", rows[0], re.DOTALL | re.IGNORECASE)
+    headers = [re.sub(r"<[^>]+>", " ", c).strip() for c in header_cells]
+    parts = []
+    for row in rows[1:]:
+        cells = re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", row, re.DOTALL | re.IGNORECASE)
+        cells = [re.sub(r"<[^>]+>", " ", c).strip() for c in cells]
+        if not any(c for c in cells):
+            continue
+        kvs = []
+        for h, v in zip(headers, cells):
+            if h and v:
+                kvs.append(f"{h}: {v}")
+        if kvs:
+            parts.append(" | ".join(kvs))
+    return "\n".join(parts)
+
+
+def _serialize_tables(text: str, fmt: str = "markdown") -> str:
+    """Replace all HTML tables in text with the requested format."""
+    def replace_table(m: re.Match) -> str:
+        html = m.group(0)
+        if fmt == "markdown":
+            return _html_table_to_markdown(html)
+        elif fmt == "linearized":
+            return _html_table_to_linearized(html)
+        return html  # "html" passthrough
+
+    return re.sub(r"<table[^>]*>.*?</table>", replace_table,
+                  text, flags=re.DOTALL | re.IGNORECASE)
+
+
+@dataclass
+class VerificationAnchors:
+    """Structured gold evidence available on hard and multihop QA pairs."""
+    calculation_inputs: list[float]          # gold numeric operands
+    cross_section_sources: list[str]         # hop chain — list of source section names
+    alignment_status: str                    # "consistent" | "contradiction" | ""
+    hop_count: int                           # len(cross_section_sources)
+    is_red_flag: bool                        # True when alignment_status == "contradiction"
+
+
+def _parse_verification_anchors(raw: dict) -> Optional["VerificationAnchors"]:
+    va = raw.get("verification_anchors")
+    if not va or not isinstance(va, dict):
+        return None
+    sources = va.get("cross_section_sources", [])
+    if isinstance(sources, str):
+        sources = [sources] if sources else []
+    alignment = va.get("alignment_status", "")
+    inputs_raw = va.get("calculation_inputs", [])
+    inputs: list[float] = []
+    for x in (inputs_raw or []):
+        try:
+            inputs.append(float(x))
+        except (TypeError, ValueError):
+            pass
+    return VerificationAnchors(
+        calculation_inputs=inputs,
+        cross_section_sources=sources,
+        alignment_status=alignment,
+        hop_count=len(sources),
+        is_red_flag=(str(alignment).lower() == "contradiction"),
+    )
+
+
+BRSR_KEYWORDS = frozenset([
+    "brsr", "business responsibility", "sustainability report",
+    "esg", "principle 1", "principle 2", "principle 3", "principle 4",
+    "principle 5", "principle 6", "principle 7", "principle 8", "principle 9",
+    "essential indicators", "leadership indicators",
+    "responsible business conduct", "section c",
+])
+
+
+def is_brsr_section(section: str) -> bool:
+    sl = section.lower()
+    return any(kw in sl for kw in BRSR_KEYWORDS)
+
 
 @dataclass
 class QARecord:
@@ -20,6 +121,8 @@ class QARecord:
     bundle_id: str
     difficulty: str
     global_id: Optional[str] = None
+    verification_anchors: Optional[VerificationAnchors] = None
+    is_brsr: bool = False
 
 
 @dataclass
@@ -57,6 +160,7 @@ def load_jsonl(path: Path) -> list[dict]:
 
 
 def parse_qa_record(raw: dict, idx: int = 0) -> QARecord:
+    section = raw.get("section", "")
     return QARecord(
         question=raw["question"],
         answer=raw["answer"],
@@ -66,11 +170,13 @@ def parse_qa_record(raw: dict, idx: int = 0) -> QARecord:
         sector=raw.get("sector", ""),
         company=raw.get("company", ""),
         year=raw.get("year", ""),
-        section=raw.get("section", ""),
+        section=section,
         page_numbers=raw.get("page_numbers", []),
         bundle_id=raw.get("bundle_id", ""),
         difficulty=raw.get("difficulty", "easy"),
         global_id=raw.get("global_id", f"{raw.get('company','unk')}_{idx}"),
+        verification_anchors=_parse_verification_anchors(raw),
+        is_brsr=is_brsr_section(section),
     )
 
 
@@ -199,9 +305,34 @@ class FinBharatDataset:
             all_records.extend(records)
         return all_records
 
-    def build_context_for_qa(self, qa: QARecord) -> str:
+    def build_context_for_qa(self, qa: QARecord, table_format: str = "html") -> str:
+        """Build context string for a QA record.
+
+        Args:
+            qa: the QA record
+            table_format: one of "html" (default), "markdown", "linearized"
+        """
         source = "e_m" if qa.difficulty in ("easy", "medium") else "h_m"
-        return self.get_bundle_text(qa.sector, qa.company, qa.bundle_id, source)
+        text = self.get_bundle_text(qa.sector, qa.company, qa.bundle_id, source)
+        if table_format != "html" and text:
+            text = _serialize_tables(text, fmt=table_format)
+        return text
+
+    def load_brsr_subset(
+        self,
+        companies: list[dict] | None = None,
+        difficulties: list[str] | None = None,
+        max_per_company: int | None = None,
+    ) -> list[QARecord]:
+        """Return only QA pairs from BRSR/ESG sections."""
+        difficulties = difficulties or ["easy", "medium", "hard", "multihop"]
+        companies = companies or self.list_available_companies("e_m")
+        all_records: list[QARecord] = []
+        for diff in difficulties:
+            records = self.load_sample(companies=companies, difficulty=diff,
+                                       max_per_company=max_per_company)
+            all_records.extend(r for r in records if r.is_brsr)
+        return all_records
 
     def list_available_companies(self, source: str = "e_m") -> list[dict]:
         root = self.e_m_root if source == "e_m" else self.h_m_root

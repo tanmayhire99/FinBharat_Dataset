@@ -138,6 +138,65 @@ def test_chunk_cache():
     assert c1 is c2  # same list object from cache
 
 
+def test_verification_anchors_parsed():
+    """Hard/multihop records should have verification_anchors populated."""
+    dataset = FinBharatDataset(DATA_ROOT)
+    records = dataset.load_hard_qa("Private_Sector_Bank", "HDFC_Bank")
+    assert len(records) > 0
+    has_va = [r for r in records if r.verification_anchors is not None]
+    assert len(has_va) > 0, "Expected some hard QA records to have verification_anchors"
+    va = has_va[0].verification_anchors
+    assert hasattr(va, "alignment_status")
+    assert hasattr(va, "hop_count")
+    assert hasattr(va, "is_red_flag")
+    assert hasattr(va, "calculation_inputs")
+
+
+def test_brsr_flag():
+    """Records from BRSR sections should have is_brsr=True."""
+    from finbharat.data.loader import is_brsr_section
+    assert is_brsr_section("PRINCIPLE 6: Businesses should respect the environment") is True
+    assert is_brsr_section("Essential Indicators | Leadership Indicators") is True
+    assert is_brsr_section("Financial Statements") is False
+    assert is_brsr_section("Report on Corporate Governance") is False
+
+
+def test_table_serialization():
+    """Table serializer should produce non-empty Markdown and linearized output."""
+    from finbharat.data.loader import _serialize_tables
+    html_table = """<table><tr><th>Item</th><th>FY2025</th><th>FY2024</th></tr>
+    <tr><td>Revenue</td><td>45,320</td><td>38,900</td></tr>
+    <tr><td>PAT</td><td>8,240</td><td>7,100</td></tr></table>"""
+    md = _serialize_tables(html_table, fmt="markdown")
+    assert "| Item |" in md
+    assert "45,320" in md
+    lin = _serialize_tables(html_table, fmt="linearized")
+    assert "Revenue" in lin
+    assert "FY2025: 45,320" in lin
+
+
+def test_bootstrap_ci():
+    from finbharat.metrics.stats import bootstrap_ci
+    scores = [1.0, 0.8, 0.9, 0.7, 1.0, 0.6, 0.9, 0.8, 0.7, 0.8]
+    ci = bootstrap_ci(scores, n_bootstrap=200, seed=0)
+    assert 0.6 <= ci.lower <= ci.mean <= ci.upper <= 1.0
+    assert ci.n == len(scores)
+
+
+def test_paired_bootstrap():
+    from finbharat.metrics.stats import paired_bootstrap_test
+    # System A clearly better
+    a = [1.0] * 20
+    b = [0.0] * 20
+    result = paired_bootstrap_test(a, b, n_bootstrap=200, seed=0)
+    assert result.significant
+    assert result.delta == 1.0
+    # Systems equal
+    c = [0.5] * 20
+    result2 = paired_bootstrap_test(c, c, n_bootstrap=200, seed=0)
+    assert not result2.significant
+
+
 def test_split_creation():
     from finbharat.data.split import create_splits
     splits = create_splits(DATA_ROOT, seed=42)

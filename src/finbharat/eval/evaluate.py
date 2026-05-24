@@ -5,7 +5,8 @@ from typing import Optional
 
 from tqdm import tqdm
 
-from finbharat.data.loader import QARecord, FinBharatDataset, SAMPLE_COMPANIES
+from finbharat.data.loader import QARecord, FinBharatDataset, SAMPLE_COMPANIES, VerificationAnchors
+from finbharat.metrics.stats import add_ci_to_aggregate
 from finbharat.metrics.numeric import compute_numeric_metrics, compute_tolerance_accuracy, compute_mape
 from finbharat.metrics.text import (
     compute_exact_match, compute_token_f1, compute_relaxed_em,
@@ -40,6 +41,9 @@ class EvalResult:
     evidence_traceability: float
     latency_ms: float
     regime: str = "zero_shot"
+    is_brsr: bool = False
+    is_red_flag: bool = False      # hard QA: alignment_status == "contradiction"
+    hop_count: int = 0             # multihop QA: number of cross-section sources
     error: Optional[str] = None
 
 
@@ -106,10 +110,14 @@ def evaluate_qa_records(
                 evidence_traceability=0.0,
                 latency_ms=gen.latency_ms,
                 regime=regime,
+                is_brsr=qa.is_brsr,
+                is_red_flag=qa.verification_anchors.is_red_flag if qa.verification_anchors else False,
+                hop_count=qa.verification_anchors.hop_count if qa.verification_anchors else 0,
                 error=gen.error,
             ))
             continue
         metrics = evaluate_single(qa.answer, gen.predicted_answer, qa.evidence, qa.evidence)
+        va = qa.verification_anchors
         results.append(EvalResult(
             question_id=gen.question_id,
             model_name=gen.model_name,
@@ -121,6 +129,9 @@ def evaluate_qa_records(
             predicted_answer=gen.predicted_answer,
             latency_ms=gen.latency_ms,
             regime=regime,
+            is_brsr=qa.is_brsr,
+            is_red_flag=va.is_red_flag if va else False,
+            hop_count=va.hop_count if va else 0,
             **metrics,
         ))
 
@@ -217,6 +228,60 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         _avg_bucket(d)
     agg["by_company"] = by_company
 
+    # Sector-wise breakdown
+    by_sector: dict[str, dict] = {}
+    for r in results:
+        s = r.sector
+        if s not in by_sector:
+            by_sector[s] = _init_bucket()
+        _acc_bucket(by_sector[s], r)
+    for d in by_sector.values():
+        _avg_bucket(d)
+    agg["by_sector"] = by_sector
+
+    # BRSR/ESG subset
+    brsr = [r for r in results if r.is_brsr]
+    if brsr:
+        nb = len(brsr)
+        agg["brsr_subset"] = {
+            "total": nb,
+            "exact_match": round(sum(r.exact_match for r in brsr) / nb, 4),
+            "token_f1":    round(sum(r.token_f1 for r in brsr) / nb, 4),
+            "rouge_l":     round(sum(r.rouge_l for r in brsr) / nb, 4),
+            "num_exact":   round(sum(r.num_exact for r in brsr) / nb, 4),
+            "entailment_ratio": round(sum(r.entailment_ratio for r in brsr) / nb, 4),
+        }
+
+    # Red-flag detection (hard QA: alignment_status == contradiction)
+    red_flag_qs = [r for r in results if r.is_red_flag]
+    if red_flag_qs:
+        # Model "detects" red flag if entailment_ratio < 0.5 (i.e. answer contradicts or is neutral)
+        # This is a heuristic — proper detection needs human labels
+        detected = sum(1 for r in red_flag_qs if r.entailment_ratio < 0.5)
+        agg["red_flag_detection"] = {
+            "total_red_flag_questions": len(red_flag_qs),
+            "heuristic_detection_rate": round(detected / len(red_flag_qs), 4),
+        }
+
+    # Hop-count breakdown (multihop)
+    hop_buckets: dict[str, dict] = {}
+    for r in results:
+        if r.hop_count == 0:
+            continue
+        key = f"{r.hop_count}-hop" if r.hop_count <= 4 else "5+-hop"
+        if key not in hop_buckets:
+            hop_buckets[key] = _init_bucket()
+        _acc_bucket(hop_buckets[key], r)
+    for d in hop_buckets.values():
+        _avg_bucket(d)
+    if hop_buckets:
+        agg["by_hop_count"] = hop_buckets
+
+    # Bootstrap confidence intervals
+    valid_results = [r for r in results if not r.error]
+    if valid_results:
+        add_ci_to_aggregate(agg, valid_results)
+
     return agg
 
 
@@ -239,6 +304,7 @@ def run_evaluation(
     model_keys: list[str] = ("llama3.1-8b",),
     difficulty: str = "easy",
     regime: str = "zero_shot",
+    table_format: str = "html",
     companies: list[dict] | None = None,
     all_companies: bool = False,
     max_per_company: int | None = None,
@@ -257,8 +323,8 @@ def run_evaluation(
     _print_qa_stats(qa_records)
 
     contexts = []
-    for qa in tqdm(qa_records, desc="Building contexts", unit="q"):
-        ctx = dataset.build_context_for_qa(qa)
+    for qa in tqdm(qa_records, desc=f"Building contexts ({table_format})", unit="q"):
+        ctx = dataset.build_context_for_qa(qa, table_format=table_format)
         if not ctx:
             ctx = qa.evidence
         contexts.append(ctx)
@@ -269,8 +335,9 @@ def run_evaluation(
             print(f"Unknown model key: {model_key}. Available: {list(PREDEFINED_MODELS.keys())}")
             continue
 
-        print(f"\nRunning model: {config.name} | regime: {regime}")
-        tag = f"{model_key}_{difficulty}_{regime}"
+        fmt_tag = f"_{table_format}" if table_format != "html" else ""
+        print(f"\nRunning model: {config.name} | regime: {regime} | table: {table_format}")
+        tag = f"{model_key}_{difficulty}_{regime}{fmt_tag}"
         cache_path = output_dir / "generations" / f"{tag}.jsonl"
         eval_path = output_dir / "eval_results" / f"{tag}.jsonl"
         agg_path = output_dir / "aggregates" / f"{tag}.json"

@@ -52,6 +52,55 @@ def sample(data_root, difficulty):
 
 
 @cli.command()
+@click.option("--results-dir", type=Path, default=Path("results"))
+@click.option("--detailed", is_flag=True)
+@click.option("--compare", is_flag=True)
+@click.option("--errors", is_flag=True)
+@click.option("--failures", is_flag=True)
+@click.option("--all", "show_all", is_flag=True)
+def analyze(results_dir, detailed, compare, errors, failures, show_all):
+    """Analyze and print results summary tables."""
+    from finbharat.analysis.results_analyzer import (
+        load_aggregates, print_summary_table, print_by_difficulty,
+        print_by_question_type, print_regime_comparison,
+        print_error_summary, print_top_failures,
+    )
+    records = load_aggregates(results_dir)
+    if not records:
+        click.echo(f"No results found in {results_dir}/aggregates")
+        return
+    click.echo(f"\n{'='*100}")
+    click.echo(f"  FinBharat Results  |  {len(records)} run(s)  |  {results_dir}")
+    click.echo(f"{'='*100}\n")
+    print_summary_table(records)
+    if len({r["_difficulty"] for r in records}) > 1 or show_all:
+        click.echo(f"\n{'='*100}")
+        click.echo("  By Difficulty Tier")
+        click.echo(f"{'='*100}")
+        print_by_difficulty(records)
+    if detailed or show_all:
+        click.echo(f"\n{'='*100}")
+        click.echo("  By Question Type")
+        click.echo(f"{'='*100}")
+        print_by_question_type(records)
+    if compare or show_all:
+        click.echo(f"\n{'='*100}")
+        click.echo("  Regime Comparison")
+        click.echo(f"{'='*100}")
+        print_regime_comparison(records)
+    if errors or show_all:
+        click.echo(f"\n{'='*100}")
+        click.echo("  API Error Summary")
+        click.echo(f"{'='*100}")
+        print_error_summary(results_dir)
+    if failures or show_all:
+        click.echo(f"\n{'='*100}")
+        click.echo("  Near-Miss Failures")
+        click.echo(f"{'='*100}")
+        print_top_failures(results_dir)
+
+
+@cli.command()
 def models():
     from finbharat.models.runner import PREDEFINED_MODELS
     for key, config in PREDEFINED_MODELS.items():

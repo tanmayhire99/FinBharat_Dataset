@@ -2,20 +2,27 @@ import re
 from dataclasses import dataclass
 from typing import Optional
 
-_nli_pipeline = None
+_nli_pipeline = None  # reset on import — forces correct pipeline type to load
 _NLI_MODEL = "cross-encoder/nli-deberta-v3-small"  # ~180MB; upgrade to large for final paper
+
+# Label order emitted by cross-encoder/nli-deberta-v3-small: contradiction, entailment, neutral
+_LABEL_MAP = {"contradiction": "CONTRADICTION", "entailment": "ENTAILMENT", "neutral": "NEUTRAL"}
 
 
 def _get_nli_pipeline():
-    """Lazy-load DeBERTa NLI pipeline on first call."""
+    """Lazy-load DeBERTa NLI text-classification pipeline on first call."""
     global _nli_pipeline
     if _nli_pipeline is None:
         try:
             from transformers import pipeline
+            # Use text-classification, NOT zero-shot-classification.
+            # cross-encoder NLI models expect (premise, hypothesis) text pairs.
             _nli_pipeline = pipeline(
-                "zero-shot-classification",
+                "text-classification",
                 model=_NLI_MODEL,
-                device=-1,  # CPU; set to 0 for GPU
+                device=-1,  # CPU; use 0 for GPU
+                function_to_apply="softmax",
+                top_k=None,  # return all label scores
             )
         except ImportError:
             pass  # transformers not installed — fall back to heuristic
@@ -52,22 +59,21 @@ def compute_nli_entailment(evidence: str, answer: str, use_model: bool = True) -
 
 
 def _deberta_nli(evidence: str, sentences: list[str], pipe) -> NLIResult:
-    """Use DeBERTa zero-shot-classification as NLI: evidence as context, sentence as candidate."""
-    candidate_labels = ["entailment", "contradiction", "neutral"]
+    """
+    Use cross-encoder NLI: premise = evidence, hypothesis = answer sentence.
+    text-classification pipeline returns all label scores; pick argmax.
+    """
     labels = []
-    # Truncate evidence to avoid token limit
-    ev_trunc = evidence[:1500]
+    # Truncate evidence to stay within token budget (~512 tokens ≈ 1800 chars)
+    ev_trunc = evidence[:1800]
     for sent in sentences:
         try:
-            result = pipe(
-                sequences=sent,
-                candidate_labels=candidate_labels,
-                hypothesis_template="{}",
-                multi_label=False,
-            )
-            # Top predicted label
-            top = result["labels"][0].upper()
-            labels.append(top)
+            # Input is (premise, hypothesis) text pair
+            outputs = pipe({"text": ev_trunc, "text_pair": sent})
+            # outputs is a list of {"label": ..., "score": ...}
+            best = max(outputs, key=lambda x: x["score"])
+            label = _LABEL_MAP.get(best["label"].lower(), "NEUTRAL")
+            labels.append(label)
         except Exception:
             labels.append("NEUTRAL")
 

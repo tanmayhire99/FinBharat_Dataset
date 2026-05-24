@@ -28,7 +28,7 @@ class ModelConfig:
 
 
 PREDEFINED_MODELS: dict[str, ModelConfig] = {
-    # --- Small (≤8B) — verified on NIM catalog ---
+    # ── Small / Efficient (≤8B) ── verified ✅ ──────────────────────────────
     "llama3.1-8b": ModelConfig(
         name="Llama-3.1-8B-Instruct",
         model_id="meta/llama-3.1-8b-instruct",
@@ -37,48 +37,93 @@ PREDEFINED_MODELS: dict[str, ModelConfig] = {
         name="Llama-3.2-3B-Instruct",
         model_id="meta/llama-3.2-3b-instruct",
     ),
-    "gemma3-4b": ModelConfig(
-        name="Gemma-3-4B-Instruct",
-        model_id="google/gemma-3-4b-it",
-    ),
     "nemotron-nano-8b": ModelConfig(
-        name="Llama-3.1-Nemotron-Nano-8B",
+        name="Nemotron-Nano-8B",
         model_id="nvidia/llama-3.1-nemotron-nano-8b-v1",
     ),
     "phi4-mini": ModelConfig(
         name="Phi-4-Mini-Instruct",
         model_id="microsoft/phi-4-mini-instruct",
     ),
-    # --- Medium (12–49B) ---
-    "gemma3-12b": ModelConfig(
-        name="Gemma-3-12B-Instruct",
-        model_id="google/gemma-3-12b-it",
+    "gpt-oss-20b": ModelConfig(
+        name="GPT-OSS-20B",
+        model_id="openai/gpt-oss-20b",
+    ),
+
+    # ── Medium (17–49B) ── verified ✅ ────────────────────────────────────
+    "llama4-maverick": ModelConfig(
+        name="Llama-4-Maverick-17B-128E",
+        model_id="meta/llama-4-maverick-17b-128e-instruct",
+        max_tokens=1024,
     ),
     "nemotron-super-49b": ModelConfig(
-        name="Llama-3.3-Nemotron-Super-49B",
+        name="Nemotron-Super-49B",
         model_id="nvidia/llama-3.3-nemotron-super-49b-v1",
     ),
-    # --- Large (70B+) ---
+    "gemma4-31b": ModelConfig(
+        name="Gemma-4-31B-Instruct",
+        model_id="google/gemma-4-31b-it",
+    ),
+    "mistral-nemotron": ModelConfig(
+        name="Mistral-Nemotron",
+        model_id="mistralai/mistral-nemotron",
+    ),
+
+    # ── Large (70B–120B) ── verified ✅ ──────────────────────────────────
     "llama3.3-70b": ModelConfig(
         name="Llama-3.3-70B-Instruct",
         model_id="meta/llama-3.3-70b-instruct",
     ),
-    "nemotron-70b": ModelConfig(
-        name="Llama-3.1-Nemotron-70B",
-        model_id="nvidia/llama-3.1-nemotron-70b-instruct",
+    "nemotron-120b": ModelConfig(
+        name="Nemotron-3-Super-120B",
+        model_id="nvidia/nemotron-3-super-120b-a12b",
     ),
+    "gpt-oss-120b": ModelConfig(
+        name="GPT-OSS-120B",
+        model_id="openai/gpt-oss-120b",
+    ),
+    "mistral-small-119b": ModelConfig(
+        name="Mistral-Small-4-119B",
+        model_id="mistralai/mistral-small-4-119b-2603",
+    ),
+
+    # ── Very Large (120B+) / MoE ── verified ✅ ──────────────────────────
+    "qwen3.5-122b": ModelConfig(
+        name="Qwen3.5-122B-A10B",
+        model_id="qwen/qwen3.5-122b-a10b",
+        max_tokens=1024,
+    ),
+    "qwen3.5-397b": ModelConfig(
+        name="Qwen3.5-397B-A17B",
+        model_id="qwen/qwen3.5-397b-a17b",
+        max_tokens=1024,
+    ),
+    "mistral-large-675b": ModelConfig(
+        name="Mistral-Large-3-675B",
+        model_id="mistralai/mistral-large-3-675b-instruct-2512",
+        max_tokens=1024,
+    ),
+
+    # ── DeepSeek ── verified ✅ ────────────────────────────────────────────
     "deepseek-v4-flash": ModelConfig(
         name="DeepSeek-V4-Flash",
         model_id="deepseek-ai/deepseek-v4-flash",
         max_tokens=1024,
     ),
-    # --- Financial domain ---
+    "deepseek-v4-pro": ModelConfig(
+        name="DeepSeek-V4-Pro",
+        model_id="deepseek-ai/deepseek-v4-pro",
+        max_tokens=1024,
+    ),
+
+    # ── Financial domain ── (account-specific, may 404) ───────────────────
     "palmyra-fin-70b": ModelConfig(
         name="Palmyra-Fin-70B-32K",
         model_id="writer/palmyra-fin-70b-32k",
         max_tokens=1024,
     ),
-    # --- Closed (OpenAI) ---
+
+    # ── OpenAI (requires OPENAI_API_KEY) ─────────────────────────────────
     "gpt-4o": ModelConfig(
         name="GPT-4o",
         model_id="gpt-4o",

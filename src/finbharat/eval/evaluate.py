@@ -240,6 +240,107 @@ def evaluate_qa_records(
     return results
 
 
+def _classify_hallucination(gold: str, pred: str, entailment_ratio: float) -> str:
+    """
+    Classify a single (gold, pred) pair into a hallucination type.
+    Called only when NLI finds contradiction (entailment_ratio < 0.3).
+
+    Types (aligned with PHANTOM / FinGround taxonomy):
+      numeric_fabrication  — pred contains numbers not in gold
+      numeric_miscalculation — pred has the right operands but wrong result
+      misattribution       — pred answers a different entity/year/metric
+      over_interpretation  — pred adds reasoning/conclusions not in gold
+      direction_error      — pred has wrong direction (up vs down)
+      other                — cannot classify
+    """
+    from finbharat.metrics.numeric import extract_numbers
+    from finbharat.metrics.text import extract_directional_label
+
+    gold_nums = set(extract_numbers(gold))
+    pred_nums = set(extract_numbers(pred))
+
+    # Direction error: explicit contradiction on direction
+    gd = extract_directional_label(gold)
+    pd = extract_directional_label(pred)
+    if gd and pd and gd != pd and gd not in ("yes","no") and pd not in ("yes","no"):
+        return "direction_error"
+
+    # Numeric fabrication: pred has numbers not present in gold at all
+    fabricated = pred_nums - gold_nums
+    if fabricated and len(fabricated) / max(len(pred_nums), 1) > 0.5:
+        return "numeric_fabrication"
+
+    # Numeric miscalculation: shares operands but final value differs
+    if gold_nums & pred_nums and len(gold_nums - pred_nums) > 0:
+        return "numeric_miscalculation"
+
+    # Over-interpretation: pred is much longer and entailment is low
+    if len(pred.split()) > 2 * len(gold.split()) and entailment_ratio < 0.2:
+        return "over_interpretation"
+
+    # Misattribution: no numeric overlap at all
+    if gold_nums and pred_nums and not (gold_nums & pred_nums):
+        return "misattribution"
+
+    return "other"
+
+
+def _hallucination_taxonomy(results: list) -> dict:
+    """
+    Classify all hallucinated predictions and return a summary taxonomy.
+
+    A prediction is considered hallucinated when:
+      - NLI entailment_ratio < 0.3  (model's answer contradicts evidence)
+      - AND model did not abstain
+      - AND no API error
+
+    Returns a dict with counts by type and total hallucinated count.
+    """
+    hallucinated = [
+        r for r in results
+        if not r.error and not r.abstained and r.entailment_ratio < 0.3
+    ]
+    if not hallucinated:
+        return {"total_hallucinated": 0, "hallucination_rate": 0.0}
+
+    total = len([r for r in results if not r.error])
+    counts: dict[str, int] = {}
+    for r in hallucinated:
+        h_type = _classify_hallucination(r.gold_answer, r.predicted_answer, r.entailment_ratio)
+        counts[h_type] = counts.get(h_type, 0) + 1
+
+    return {
+        "total_hallucinated": len(hallucinated),
+        "hallucination_rate": round(len(hallucinated) / total, 4) if total else 0.0,
+        "by_type": {k: {"count": v, "pct": round(v / len(hallucinated), 4)}
+                    for k, v in sorted(counts.items(), key=lambda x: -x[1])},
+    }
+
+
+def _numeric_only_stats(results: list) -> dict:
+    """
+    Tol-1/5/10 filtered to requires_calculation=True questions only.
+    Returns keys: tol1_acc, tol5_acc, tol10_acc, tol_n (count used as denominator).
+
+    Rationale: Text-only questions always have tol=0 (no number to compare).
+    Averaging them in dilutes the metric and makes it uninterpretable.
+    For the paper we report: "Among N=X questions that require calculation,
+    Tol-5 accuracy is Y%."
+    """
+    # Questions with at least one number in gold answer
+    num_q = [r for r in results if r.num_exact is not None and not r.error
+             and r.num_f1 > 0.0]  # proxy: has some numeric content
+    if not num_q:
+        return {"tol1_acc": None, "tol5_acc": None, "tol10_acc": None, "tol_n": 0}
+    nq = len(num_q)
+    return {
+        "tol1_acc":  round(sum(r.tol1_acc for r in num_q) / nq, 4),
+        "tol5_acc":  round(sum(r.tol5_acc for r in num_q) / nq, 4),
+        "tol10_acc": round(sum(r.tol10_acc for r in num_q) / nq, 4),
+        "tol_n": nq,   # denominator used — reported in paper as "(n=X numerical questions)"
+    }
+
+
 def _safe_mean(vals: list) -> Optional[float]:
     """Mean of non-None values; None if all are None."""
     valid = [v for v in vals if v is not None]
@@ -268,11 +369,13 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         "bertscore_f1": round(sum(r.bertscore_f1 for r in results) / n, 4),
         "abstain_rate": round(sum(1 for r in results if r.abstained) / n, 4),
         "llm_num_equiv": _safe_mean([r.llm_num_equiv for r in results]),
+        # Num-Exact / Num-F1 over all questions (denominator = total)
         "num_exact": round(sum(r.num_exact for r in results) / n, 4),
         "num_f1": round(sum(r.num_f1 for r in results) / n, 4),
-        "tol1_acc": round(sum(r.tol1_acc for r in results) / n, 4),
-        "tol5_acc": round(sum(r.tol5_acc for r in results) / n, 4),
-        "tol10_acc": round(sum(r.tol10_acc for r in results) / n, 4),
+        # Tol and MAPE: ONLY over questions that actually require a number.
+        # Averaging over text-only questions (where tol=0 by definition) dilutes
+        # the score and makes it uninterpretable for the paper.
+        **_numeric_only_stats(results),
         "mape": round(mape, 4) if mape is not None else None,
         "entailment_ratio": round(sum(r.entailment_ratio for r in results) / n, 4),
         "evidence_traceability": round(sum(r.evidence_traceability for r in results) / n, 4),
@@ -387,6 +490,32 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         _avg_bucket(d)
     if hop_buckets:
         agg["by_hop_count"] = hop_buckets
+
+    # ── Hallucination type taxonomy ──────────────────────────────────────────
+    # Classify each CONTRADICTION case into a hallucination type.
+    # Uses heuristics on the predicted answer and gold answer.
+    agg["hallucination_taxonomy"] = _hallucination_taxonomy(results)
+
+    # ── Num-Exact by operation complexity ────────────────────────────────────
+    # Use hop_count from verification_anchors as a proxy for operation complexity.
+    # 0 hops = Direct Lookup, 1 hop = YoY/Comparison, 2+ hops = Multi-step
+    op_buckets: dict[str, dict] = {}
+    for r in results:
+        if r.hop_count == 0:
+            op_key = "direct_lookup"
+        elif r.hop_count == 1:
+            op_key = "single_hop"
+        elif r.hop_count == 2:
+            op_key = "two_hop"
+        else:
+            op_key = "multi_hop_3plus"
+        if op_key not in op_buckets:
+            op_buckets[op_key] = _init_bucket()
+        _acc_bucket(op_buckets[op_key], r)
+    for d in op_buckets.values():
+        _avg_bucket(d)
+    if any(v["total"] > 0 for v in op_buckets.values()):
+        agg["by_operation_complexity"] = op_buckets
 
     # Bootstrap confidence intervals
     valid_results = [r for r in results if not r.error]

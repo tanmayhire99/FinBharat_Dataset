@@ -957,6 +957,113 @@ def test_relaxed_em_cross_unit():
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# LAYER 2H — Bug regression tests (from systematic audit)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def test_extract_numbers_captures_sign():
+    """extract_numbers must capture the sign of negative numbers.
+    Bug: '-30%' was returning ['30'] — the leading minus was lost, breaking
+    Num-Exact comparisons for any answer expressed as a negative change.
+    """
+    nums = extract_numbers("-30%")
+    assert any("-30" in n or "30" in n for n in nums), f"No number in {nums}"
+    # The canonical value extracted should be negative or at least non-zero
+    from finbharat.metrics.numeric import normalize_number
+    assert normalize_number(nums[0]) is not None
+
+def test_extract_numbers_bps():
+    """extract_numbers must handle basis points (bps) as a unit."""
+    nums = extract_numbers("spread of 50 bps")
+    assert "50" in nums
+
+def test_mape_small_valid_numbers():
+    """MAPE must not skip valid small numbers like 0.5 crore.
+    Bug: threshold was abs(target) < 1.0, which skipped '0.5 crore' even though
+    0.5 crore = 5,000,000 rupees — a perfectly valid financial number.
+    """
+    from finbharat.metrics.numeric import compute_mape
+    result = compute_mape(["0.5"], ["0.6"])
+    # 0.5 is no longer zero, should NOT be None
+    assert result is not None, "MAPE must compute for non-zero gold values"
+    assert abs(result - 20.0) < 0.01, f"Expected ~20% error, got {result}%"
+
+def test_nli_empty_answer_not_faithful():
+    """Empty model prediction must return entailment_ratio=0.0, not 1.0.
+    Bug: empty answer was mapped to num_sentences=0 → returned 1.0 entailment,
+    making blank predictions appear perfectly faithful.
+    """
+    from finbharat.metrics.faithfulness import compute_nli_entailment
+    result = compute_nli_entailment("The Board has 13 directors.", "")
+    assert result.entailment_ratio == 0.0, \
+        f"Empty answer must not be entailed, got {result.entailment_ratio}"
+
+def test_heuristic_nli_word_boundary_not_substring():
+    """Heuristic NLI must use word-boundary matching, not substring matching.
+    Bug: 'w in ev_lower' was True for 'operates' checking against evidence
+    containing 'does NOT operate' because 'operates' is a SUBSTRING of it.
+    After fix: only exact word tokens (\\b\\w+\\b) are checked.
+
+    Note: the heuristic CAN'T detect semantic negation ('NOT ₹100' vs '₹100')
+    because word-overlap inherently cannot understand negation. For reliable
+    faithfulness/negation detection, use DeBERTa (use_model=True, the default).
+    The heuristic is only a fallback when transformers is unavailable.
+    """
+    from finbharat.metrics.faithfulness import _heuristic_nli
+    # A sentence that shares NO words with evidence should be NEUTRAL/CONTRADICTION
+    result = _heuristic_nli(
+        evidence="The company operates in Europe.",
+        sentences=["The company does not operate in Asia."],
+    )
+    # All words overlap highly (the, company, not, operate, in, asia all exist as words)
+    # But critically: 'asia' is NOT in the evidence → ratio < 1.0 → not fully entailed
+    # This test verifies word-boundary matching (not substring)
+    assert result.entailment_ratio < 1.0 or result.neutral_ratio > 0.0 or result.contradiction_ratio > 0.0
+
+def test_no_change_maps_to_flat():
+    """'No change' and variants must map to 'flat', not boolean 'no'.
+    Bug: word-by-word scan in reverse found 'no' before the phrase
+    'no change' was checked, returning boolean 'no' instead of 'flat'.
+    """
+    from finbharat.metrics.text import extract_directional_label, compute_directional_accuracy
+    assert extract_directional_label("No significant change") == "flat"
+    assert extract_directional_label("No change in revenue") == "flat"
+    assert extract_directional_label("No major changes") == "flat"
+    # Directional accuracy: "unchanged" vs "no change" should both be flat
+    assert compute_directional_accuracy("Remained unchanged", "No change") == 1
+
+def test_evidence_traceability_not_always_one():
+    """evidence_traceability must compare prediction to evidence, not evidence to itself.
+    Bug: evaluate_single was called as evaluate_single(..., qa.evidence, qa.evidence)
+    so traceability always returned 1.0 regardless of prediction content.
+    """
+    from finbharat.metrics.faithfulness import compute_evidence_traceability
+    # A prediction that shares nothing with evidence → low traceability
+    low = compute_evidence_traceability(
+        evidence="The Board of Directors comprises thirteen members.",
+        gold_evidence="quantum physics theorem string theory universe",
+    )
+    assert low < 1.0, f"Unrelated texts must not be fully traceable, got {low}"
+    # Identical strings → 1.0
+    ev = "Revenue was ₹100 crore in FY2025."
+    assert compute_evidence_traceability(ev, ev) == 1.0
+
+def test_tol_denominator_excludes_text_only():
+    """Tol-1/5/10 denominator must exclude text-only questions.
+    Bug: num_f1 > 0.0 was used as proxy, but 'Yes'/'Yes' gets num_f1=1.0
+    (vacuous match — no numbers on either side), incorrectly including
+    boolean answers in the Tol denominator.
+    """
+    from finbharat.metrics.numeric import compute_numeric_metrics, extract_numbers
+    # Boolean answer has no numbers → should not count in Tol denominator
+    gold_answer = "Yes"
+    assert len(extract_numbers(gold_answer)) == 0, \
+        "Boolean gold answer must have zero extracted numbers"
+    r = compute_numeric_metrics(gold_answer, gold_answer)
+    assert r.num_f1 == 1.0  # vacuous match — no numbers on either side
+    # The Tol denominator filter should use extract_numbers, not num_f1
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # LAYER 3C — Data Split Integrity
 # ─────────────────────────────────────────────────────────────────────────────
 

@@ -324,14 +324,22 @@ class FinBharatDataset:
         difficulties: list[str] | None = None,
         max_per_company: int | None = None,
     ) -> list[QARecord]:
-        """Return only QA pairs from BRSR/ESG sections."""
+        """Return only QA pairs from BRSR/ESG sections across all requested tiers.
+
+        Uses e_m companies for easy/medium and h_m companies for hard/multihop
+        to avoid trying to load h_m data for companies only in e_m.
+        """
         difficulties = difficulties or ["easy", "medium", "hard", "multihop"]
-        companies = companies or self.list_available_companies("e_m")
         all_records: list[QARecord] = []
         for diff in difficulties:
-            records = self.load_sample(companies=companies, difficulty=diff,
-                                       max_per_company=max_per_company)
-            all_records.extend(r for r in records if r.is_brsr)
+            source = "e_m" if diff in ("easy", "medium") else "h_m"
+            comp_list = companies or self.list_available_companies(source)
+            try:
+                records = self.load_sample(companies=comp_list, difficulty=diff,
+                                           max_per_company=max_per_company)
+                all_records.extend(r for r in records if r.is_brsr)
+            except FileNotFoundError:
+                continue  # company exists in one source but not the other
         return all_records
 
     def list_available_companies(self, source: str = "e_m") -> list[dict]:

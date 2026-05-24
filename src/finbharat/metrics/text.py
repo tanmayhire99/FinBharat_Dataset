@@ -166,6 +166,13 @@ def compute_relaxed_em(gold: str, pred: str) -> int:
         return 0
 
 
+_FLAT_PHRASES = frozenset([
+    "no change", "no significant change", "no major change", "no material change",
+    "no meaningful change", "remained unchanged", "remained stable",
+    "no notable change", "no considerable change",
+])
+
+
 def extract_directional_label(text: str) -> str | None:
     """
     Extract a directional label from text.
@@ -175,6 +182,9 @@ def extract_directional_label(text: str) -> str | None:
       "-30%"   → "down"   (negative sign = decrease)
       "+5.2%"  → "up"     (explicit positive sign = increase)
       "(15%)"  → "down"   (parentheses = negative in accounting notation)
+
+    Multi-word flat phrases like "no change" are checked BEFORE single words
+    to prevent "no change" from returning "no" (boolean) instead of "flat".
     """
     stripped = text.strip()
 
@@ -188,6 +198,12 @@ def extract_directional_label(text: str) -> str | None:
         return "down"
 
     lower = normalize_text(text)
+
+    # Check multi-word flat phrases FIRST — prevents "no change" → "no"
+    for phrase in _FLAT_PHRASES:
+        if phrase in lower:
+            return "flat"
+
     words = lower.split()
     for word in reversed(words):
         if word in _DIRECTION_MAP:

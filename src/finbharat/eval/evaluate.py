@@ -100,7 +100,17 @@ def compute_bertscore_batch(
         return zeros, zeros, zeros
 
 
-def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> dict:
+def evaluate_single(gold: str, pred: str, evidence: str, pred_answer: str) -> dict:
+    """
+    Compute all per-question metrics.
+
+    Args:
+        gold:        Gold answer string
+        pred:        Model's predicted answer string
+        evidence:    The document context shown to the model
+        pred_answer: Same as pred — used for evidence traceability
+                     (what fraction of the prediction is traceable to the evidence)
+    """
     text_res = compute_token_f1(gold, pred)
     rouge = compute_rouge_l(gold, pred)
     meteor = compute_meteor(gold, pred)
@@ -111,7 +121,7 @@ def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> 
     dir_acc = compute_directional_accuracy(gold, pred)
     rlx_em = compute_relaxed_em(gold, pred)
     nli_res = compute_nli_entailment(evidence, pred)
-    trace = compute_evidence_traceability(evidence, gold_evidence)
+    trace = compute_evidence_traceability(evidence, pred_answer)
     return {
         "exact_match": text_res.exact_match,
         "relaxed_em": rlx_em,
@@ -206,7 +216,11 @@ def evaluate_qa_records(
                 error=gen.error,
             ))
             continue
-        metrics = evaluate_single(qa.answer, gen.predicted_answer, qa.evidence, qa.evidence)
+        # evidence = the actual document context; pred_answer = model's answer
+        # compute_evidence_traceability measures how much of the predicted answer
+        # is traceable to the source evidence (word overlap).
+        # Previously both args were qa.evidence → always returned 1.0 (bug).
+        metrics = evaluate_single(qa.answer, gen.predicted_answer, qa.evidence, gen.predicted_answer)
         va = qa.verification_anchors
         results.append(EvalResult(
             question_id=gen.question_id,
@@ -327,9 +341,13 @@ def _numeric_only_stats(results: list) -> dict:
     For the paper we report: "Among N=X questions that require calculation,
     Tol-5 accuracy is Y%."
     """
-    # Questions with at least one number in gold answer
+    # Questions where the gold answer contains at least one extractable number.
+    # Previously used num_f1 > 0.0 as proxy, but text-only Q/A like "Yes"/"Yes"
+    # gets num_f1=1.0 (both have no numbers, perfect vacuous match) and was
+    # incorrectly included, inflating the denominator.
+    from finbharat.metrics.numeric import extract_numbers
     num_q = [r for r in results if r.num_exact is not None and not r.error
-             and r.num_f1 > 0.0]  # proxy: has some numeric content
+             and len(extract_numbers(r.gold_answer)) > 0]
     if not num_q:
         return {"tol1_acc": None, "tol5_acc": None, "tol10_acc": None, "tol_n": 0}
     nq = len(num_q)
@@ -628,7 +646,11 @@ def _print_aggregate(model_name: str, agg: dict):
     mape_str = f"{agg['mape']:.2f}%" if agg.get("mape") is not None else "N/A"
     judge_str = f"{agg['llm_num_equiv']:.4f}" if agg.get("llm_num_equiv") is not None else "not run"
     print(f"  Num-Exact: {agg['num_exact']:.4f} | Num-F1: {agg['num_f1']:.4f} | MAPE: {mape_str} | LLM-Num-EM: {judge_str}")
-    print(f"  Tol-1: {agg['tol1_acc']:.4f} | Tol-5: {agg['tol5_acc']:.4f} | Tol-10: {agg['tol10_acc']:.4f}")
+    tol_n = agg.get("tol_n", 0)
+    if tol_n > 0:
+        print(f"  Tol-1: {agg['tol1_acc']:.4f} | Tol-5: {agg['tol5_acc']:.4f} | Tol-10: {agg['tol10_acc']:.4f}  (n={tol_n} numeric questions)")
+    else:
+        print(f"  Tol-1: N/A | Tol-5: N/A | Tol-10: N/A  (no numeric gold answers)")
     print(f"  Entailment: {agg['entailment_ratio']:.4f} | Traceability: {agg['evidence_traceability']:.4f}")
     if "directional_accuracy" in agg:
         print(f"  Directional Acc: {agg['directional_accuracy']:.4f} (n={agg['directional_applicable']})")

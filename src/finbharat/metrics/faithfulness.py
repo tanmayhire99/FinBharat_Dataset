@@ -47,8 +47,10 @@ def split_sentences(text: str) -> list[str]:
 def compute_nli_entailment(evidence: str, answer: str, use_model: bool = True) -> NLIResult:
     sentences = split_sentences(answer)
     if not sentences:
+        # Empty or whitespace-only answer — not entailed, not contradicted.
+        # Returning 1.0 would falsely mark blank predictions as perfectly faithful.
         return NLIResult(
-            entailment_ratio=1.0, contradiction_ratio=0.0, neutral_ratio=0.0,
+            entailment_ratio=0.0, contradiction_ratio=0.0, neutral_ratio=1.0,
             num_sentences=0, sentence_labels=[], model="heuristic",
         )
 
@@ -91,7 +93,11 @@ def _deberta_nli(evidence: str, sentences: list[str], pipe) -> NLIResult:
 
 
 def _heuristic_nli(evidence: str, sentences: list[str]) -> NLIResult:
+    # Build word-level vocabulary of evidence using word boundaries.
+    # Using `w in ev_lower` (substring) was a bug: "NOT ₹100" would match
+    # "₹100" because the substring "100" appears in both.
     ev_lower = evidence.lower()
+    ev_words = set(re.findall(r'\b\w+\b', ev_lower))
     labels = []
     for sent in sentences:
         sent_lower = sent.lower().strip()
@@ -101,9 +107,13 @@ def _heuristic_nli(evidence: str, sentences: list[str]) -> NLIResult:
         if sent_lower in ev_lower:
             labels.append("ENTAILMENT")
             continue
-        words = sent_lower.split()
-        overlap = sum(1 for w in words if w in ev_lower)
-        ratio = overlap / len(words) if words else 0
+        # Word-boundary match (not substring) prevents false positives
+        words = re.findall(r'\b\w+\b', sent_lower)
+        if not words:
+            labels.append("NEUTRAL")
+            continue
+        overlap = sum(1 for w in words if w in ev_words)
+        ratio = overlap / len(words)
         if ratio >= 0.75:
             labels.append("ENTAILMENT")
         elif ratio < 0.3:

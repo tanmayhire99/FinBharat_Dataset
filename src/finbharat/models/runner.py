@@ -151,17 +151,20 @@ Now answer the following:
 """
 
 FEW_SHOT_EXAMPLES = [
+    # Text Only — short factual answer (most common in easy tier)
     {
-        "question": "How many members does the Board of Directors have?",
-        "answer": "12 directors",
+        "question": "How many directors are on the Board as of March 31, 2025?",
+        "answer": "Thirteen (13) Directors",
     },
+    # Table Only — bare number with unit (most common in easy/medium tier)
     {
-        "question": "What was the total revenue for FY2025?",
-        "answer": "₹ 45,320 crores",
+        "question": "What was the Profit After Tax for FY2025?",
+        "answer": "₹ 8,240 crore",
     },
+    # Numerical Calculation — directional with magnitude (hard/multihop tier)
     {
-        "question": "Did the company's net profit increase or decrease compared to the previous year?",
-        "answer": "Increased by 14.3% to ₹ 8,240 crores",
+        "question": "How did net revenue change year-over-year in FY2025?",
+        "answer": "Net revenue increased by 14.3% to ₹ 2,479 crore from ₹ 2,168 crore in FY2024.",
     },
 ]
 

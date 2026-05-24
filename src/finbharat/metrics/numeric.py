@@ -47,10 +47,11 @@ _NUMBER_WITH_UNIT_REGEX = re.compile(
 _PURE_NUMBER_REGEX = re.compile(r"[\d,]+(?:\.\d+)?")
 
 # Legacy simple regex for backward-compatible extract_numbers()
+# Now includes optional leading sign: -30%, +5.2, (300) accounting notation
 _NUMBER_REGEX = re.compile(
     r"[₹$€£]?\s*(?:Rs\.?\s*|INR\s*|USD\s*)?"
-    r"[\d,]+(?:\.\d+)?"
-    r"\s*(?:%|per\s*cent|percent|crore|cr|lakh|lac|lk|million|mn|billion|bn|thousand|k)?",
+    r"[-+]?[\d,]+(?:\.\d+)?"
+    r"\s*(?:%|per\s*cent|percent|crore|cr|lakh|lac|lk|million|mn|billion|bn|thousand|k|bps)?",
     re.IGNORECASE,
 )
 
@@ -226,11 +227,14 @@ def compute_mape(golds: list[str], preds: list[str]) -> float | None:
         if gold_nums and pred_nums:
             target = gold_nums[-1]
             predicted = pred_nums[-1]
-            # Skip very small denominators (percentages expressed as decimals, near-zero values)
-            if abs(target) < 1.0:
+            # Skip true zeros — dividing by zero is undefined.
+            # Previously used abs(target) < 1.0 which wrongly skipped valid small
+            # numbers like "0.5 crore" (= 5,000,000 rupees). Fix: use canonical
+            # absolute value where possible, fall back to skipping only exact zero.
+            if abs(target) < 1e-10:
                 continue
             pct_error = abs(predicted - target) / abs(target)
-            errors.append(min(pct_error, 10.0))  # cap at 1000% (10.0 × 100)
+            errors.append(min(pct_error, 10.0))  # cap at 1000% to prevent outlier dominance
     if not errors:
         return None
     return round(sum(errors) / len(errors) * 100, 4)

@@ -28,7 +28,7 @@ class ModelConfig:
 
 
 PREDEFINED_MODELS: dict[str, ModelConfig] = {
-    # --- Small (≤8B) ---
+    # --- Small (≤8B) — verified on NIM catalog ---
     "llama3.1-8b": ModelConfig(
         name="Llama-3.1-8B-Instruct",
         model_id="meta/llama-3.1-8b-instruct",
@@ -37,41 +37,46 @@ PREDEFINED_MODELS: dict[str, ModelConfig] = {
         name="Llama-3.2-3B-Instruct",
         model_id="meta/llama-3.2-3b-instruct",
     ),
-    "qwen3-8b": ModelConfig(
-        name="Qwen3-8B-Instruct",
-        model_id="qwen/qwen3-8b",
-    ),
     "gemma3-4b": ModelConfig(
         name="Gemma-3-4B-Instruct",
         model_id="google/gemma-3-4b-it",
     ),
-    # --- Medium (14–24B) ---
-    "qwen3-14b": ModelConfig(
-        name="Qwen3-14B-Instruct",
-        model_id="qwen/qwen3-14b",
+    "nemotron-nano-8b": ModelConfig(
+        name="Llama-3.1-Nemotron-Nano-8B",
+        model_id="nvidia/llama-3.1-nemotron-nano-8b-v1",
     ),
-    "mistral-small": ModelConfig(
-        name="Mistral-Small-3.2-24B",
-        model_id="mistralai/mistral-small-3.2-24b-instruct",
+    "phi4-mini": ModelConfig(
+        name="Phi-4-Mini-Instruct",
+        model_id="microsoft/phi-4-mini-instruct",
+    ),
+    # --- Medium (12–49B) ---
+    "gemma3-12b": ModelConfig(
+        name="Gemma-3-12B-Instruct",
+        model_id="google/gemma-3-12b-it",
+    ),
+    "nemotron-super-49b": ModelConfig(
+        name="Llama-3.3-Nemotron-Super-49B",
+        model_id="nvidia/llama-3.3-nemotron-super-49b-v1",
     ),
     # --- Large (70B+) ---
     "llama3.3-70b": ModelConfig(
         name="Llama-3.3-70B-Instruct",
         model_id="meta/llama-3.3-70b-instruct",
     ),
-    "qwen3-72b": ModelConfig(
-        name="Qwen3-72B-Instruct",
-        model_id="qwen/qwen3-72b",
+    "nemotron-70b": ModelConfig(
+        name="Llama-3.1-Nemotron-70B",
+        model_id="nvidia/llama-3.1-nemotron-70b-instruct",
     ),
-    "deepseek-r1-70b": ModelConfig(
-        name="DeepSeek-R1-Distill-70B",
-        model_id="deepseek-ai/deepseek-r1",
+    "deepseek-v4-flash": ModelConfig(
+        name="DeepSeek-V4-Flash",
+        model_id="deepseek-ai/deepseek-v4-flash",
         max_tokens=1024,
     ),
-    # --- Reasoning / MoE ---
-    "qwen3-235b": ModelConfig(
-        name="Qwen3-235B-A22B",
-        model_id="qwen/qwen3-235b-a22b",
+    # --- Financial domain ---
+    "palmyra-fin-70b": ModelConfig(
+        name="Palmyra-Fin-70B-32K",
+        model_id="writer/palmyra-fin-70b-32k",
+        max_tokens=1024,
     ),
     # --- Closed (OpenAI) ---
     "gpt-4o": ModelConfig(

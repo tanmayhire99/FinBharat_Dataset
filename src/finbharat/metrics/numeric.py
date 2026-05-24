@@ -133,6 +133,15 @@ def compute_tolerance_accuracy(gold: str, pred: str, tolerance_pct: float = 5.0)
 
 
 def compute_mape(golds: list[str], preds: list[str]) -> float | None:
+    """
+    Mean Absolute Percentage Error.
+
+    Guards:
+    - Skip pairs where gold value is very small (< 1.0) — percentages like 0.74%
+      cause MAPE to explode when predictions are in absolute terms.
+    - Cap individual errors at 1000% before averaging to prevent single outliers
+      dominating the mean (sMAPE alternative).
+    """
     errors = []
     for g, p in zip(golds, preds):
         gold_nums = [n for n in (normalize_number(x) for x in extract_numbers(g)) if n is not None]
@@ -140,8 +149,11 @@ def compute_mape(golds: list[str], preds: list[str]) -> float | None:
         if gold_nums and pred_nums:
             target = gold_nums[-1]
             predicted = pred_nums[-1]
-            if abs(target) > 1e-10:
-                errors.append(abs(predicted - target) / abs(target))
+            # Skip very small denominators (percentages expressed as decimals, near-zero values)
+            if abs(target) < 1.0:
+                continue
+            pct_error = abs(predicted - target) / abs(target)
+            errors.append(min(pct_error, 10.0))  # cap at 1000% (10.0 × 100)
     if not errors:
         return None
-    return sum(errors) / len(errors) * 100
+    return round(sum(errors) / len(errors) * 100, 4)

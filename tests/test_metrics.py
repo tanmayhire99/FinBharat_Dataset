@@ -21,6 +21,7 @@ results are untrustworthy. The tests are written in three layers:
 """
 
 import json
+import pytest
 from pathlib import Path
 from finbharat.data.loader import FinBharatDataset, SAMPLE_COMPANIES, parse_qa_record
 from finbharat.metrics.numeric import (
@@ -884,6 +885,75 @@ def test_paired_bootstrap():
     c = [0.5] * 20
     result2 = paired_bootstrap_test(c, c, n_bootstrap=200, seed=0)
     assert not result2.significant
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LAYER 2G — Cross-Unit Numeric Equivalence & LLM Judge
+# ─────────────────────────────────────────────────────────────────────────────
+
+def test_canonical_value_extraction():
+    """
+    Purpose: Verify extract_canonical_value converts numbers with Indian financial
+    units to their correct absolute values, enabling cross-unit comparison.
+
+    Procedure:
+        "₹ 500 crore"   → 5,000,000,000  (500 × 10M)
+        "₹ 5 billion"   → 5,000,000,000  (5 × 1B) — same as above
+        "₹ 45,000 cr"   → 450,000,000,000
+        "₹ 450 billion" → 450,000,000,000 — same as above
+        "1,23,456"      → 123,456         (Indian comma format)
+
+    Thought process: This is the fix for the hardcoded unit map limitation.
+    Instead of maintaining exhaustive lists, we convert everything to an
+    absolute canonical value first, then compare. 500 crore = 5 billion
+    because both equal 5×10^9 in absolute terms.
+    """
+    from finbharat.metrics.numeric import extract_canonical_value, are_numerically_equivalent
+    assert extract_canonical_value("₹ 500 crore") == pytest.approx(5_000_000_000)
+    assert extract_canonical_value("₹ 5 billion") == pytest.approx(5_000_000_000)
+    assert extract_canonical_value("₹ 45,000 cr") == pytest.approx(450_000_000_000)
+    assert extract_canonical_value("₹ 450 billion") == pytest.approx(450_000_000_000)
+    assert extract_canonical_value("1,23,456") == pytest.approx(123_456)
+
+
+def test_cross_unit_equivalence():
+    """
+    Purpose: Verify are_numerically_equivalent correctly identifies
+    cross-unit values as equivalent.
+
+    Procedure:
+        "₹ 500 crore" ≡ "₹ 5 billion"     → True
+        "₹ 45,000 crores" ≡ "₹ 450 billion" → True
+        "1,23,456" ≡ "123456"               → True
+        "₹ 500 crore" ≢ "₹ 6 billion"       → False (different value)
+
+    Thought process: The most common error class in our pilot runs was
+    unit-notation differences. The Indian financial system uses crore/lakh
+    while some models respond in billion/million. are_numerically_equivalent
+    is the principled fix — no hardcoding, just canonical conversion.
+    """
+    from finbharat.metrics.numeric import are_numerically_equivalent
+    assert are_numerically_equivalent("₹ 500 crore", "₹ 5 billion") is True
+    assert are_numerically_equivalent("₹ 45,000 crores", "₹ 450 billion") is True
+    assert are_numerically_equivalent("1,23,456", "123456") is True
+    assert are_numerically_equivalent("₹ 500 crore", "₹ 6 billion") is False
+
+
+def test_relaxed_em_cross_unit():
+    """
+    Purpose: Verify Relaxed EM returns 1 for cross-unit equivalent answers.
+
+    Procedure:
+        "revenue was ₹500 crore" vs "revenue was ₹5 billion"  → 1
+        "₹ 45,000 crores" vs "₹ 450 billion"                  → 1
+
+    Thought process: Relaxed EM must capture all legitimate formatting
+    differences including unit conversions. Without this, models that
+    answer in billion when the gold is in crore get zero credit even
+    when the answer is mathematically correct.
+    """
+    assert compute_relaxed_em("revenue was ₹500 crore", "revenue was ₹5 billion") == 1
+    assert compute_relaxed_em("₹ 45,000 crores", "₹ 450 billion") == 1
 
 
 # ─────────────────────────────────────────────────────────────────────────────

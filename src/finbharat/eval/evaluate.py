@@ -46,8 +46,9 @@ class EvalResult:
     latency_ms: float
     regime: str = "zero_shot"
     is_brsr: bool = False
-    is_red_flag: bool = False      # hard QA: alignment_status == "contradiction"
-    hop_count: int = 0             # multihop QA: number of cross-section sources
+    is_red_flag: bool = False           # hard QA: alignment_status == "contradiction"
+    hop_count: int = 0                  # multihop QA: number of cross-section sources
+    llm_num_equiv: Optional[int] = None # LLM judge: 1=equivalent, 0=not, None=not run
     error: Optional[str] = None
 
 
@@ -196,6 +197,12 @@ def evaluate_qa_records(
     return results
 
 
+def _safe_mean(vals: list) -> Optional[float]:
+    """Mean of non-None values; None if all are None."""
+    valid = [v for v in vals if v is not None]
+    return round(sum(valid) / len(valid), 4) if valid else None
+
+
 def aggregate_results(results: list[EvalResult]) -> dict:
     if not results:
         return {}
@@ -217,6 +224,7 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         "bertscore_r": round(sum(r.bertscore_r for r in results) / n, 4),
         "bertscore_f1": round(sum(r.bertscore_f1 for r in results) / n, 4),
         "abstain_rate": round(sum(1 for r in results if r.abstained) / n, 4),
+        "llm_num_equiv": _safe_mean([r.llm_num_equiv for r in results]),
         "num_exact": round(sum(r.num_exact for r in results) / n, 4),
         "num_f1": round(sum(r.num_f1 for r in results) / n, 4),
         "tol1_acc": round(sum(r.tol1_acc for r in results) / n, 4),

@@ -132,6 +132,18 @@ def compute_relaxed_em(gold: str, pred: str) -> int:
                 # No numbers — direction match alone is enough
                 return 1
 
+    # Cross-unit canonical comparison: "₹500 crore" ≡ "₹5 billion"
+    # Guard: skip if directions are explicitly contradictory (decrease vs +30%)
+    from finbharat.metrics.numeric import are_numerically_equivalent
+    _g_dir = extract_directional_label(gold)
+    _p_dir = extract_directional_label(pred)
+    _dirs_ok = (
+        _g_dir is None or _p_dir is None          # at least one has no direction
+        or _g_dir == _p_dir                        # both have same direction
+    )
+    if _dirs_ok and are_numerically_equivalent(gold, pred):
+        return 1
+
     def _strip_units(t: str) -> str:
         t = t.lower().strip()
         for unit in ("crores", "crore", "cr", "lakhs", "lakh", "lac", "lk",

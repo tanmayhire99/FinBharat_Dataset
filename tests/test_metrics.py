@@ -66,6 +66,21 @@ def test_relaxed_em():
     assert compute_relaxed_em("Rs 41,173 million", "41173") == 1
 
 
+def test_relaxed_em_gte_exact_match():
+    """Relaxed EM must always be >= EM — it's a strictly looser metric."""
+    pairs = [
+        ("Thirteen (13) Directors", "Thirteen (13) Directors"),
+        ("Yes.", "Yes."),
+        ("Revenue increased by 18%", "Revenue increased by 18%"),
+        ("₹ 139.27 crores", "139.27"),
+        ("Not available in context", "Not available in context"),
+    ]
+    for gold, pred in pairs:
+        em = compute_exact_match(gold, pred)
+        rem = compute_relaxed_em(gold, pred)
+        assert rem >= em, f"relaxed_em={rem} < exact_match={em} for {gold!r} vs {pred!r}"
+
+
 def test_token_f1():
     result = compute_token_f1("Thirteen Directors on the Board", "Thirteen Directors")
     assert result.f1 > 0.5

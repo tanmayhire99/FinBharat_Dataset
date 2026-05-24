@@ -63,14 +63,18 @@ def compute_token_f1(gold: str, pred: str) -> TextResult:
 
 
 def compute_relaxed_em(gold: str, pred: str) -> int:
+    # Relaxed EM is a superset of EM — pass EM first as a fast-path
+    if compute_exact_match(gold, pred):
+        return 1
+
     def _strip_units(t: str) -> str:
         t = t.lower().strip()
         for unit in ("crores", "crore", "cr", "lakhs", "lakh", "lac", "lk",
                       "millions", "million", "mn", "billions", "billion", "bn",
                       "thousands", "thousand", "rs", "inr", "₹", "$"):
             t = t.replace(unit, "")
-        t = re.sub(r"[,()%]", "", t)
-        t = re.sub(r"\s+", " ", t).strip()
+        # Strip all punctuation and whitespace for numeric comparison
+        t = re.sub(r"[,()%\s]", "", t)
         return t
 
     g = _strip_units(gold)

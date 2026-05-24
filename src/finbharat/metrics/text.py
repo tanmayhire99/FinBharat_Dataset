@@ -29,12 +29,31 @@ class TextResult:
 
 
 _DIRECTION_MAP = {
-    "increase": "up", "increased": "up", "growth": "up", "grew": "up",
-    "rose": "up", "higher": "up", "up": "up", "gain": "up", "gained": "up",
-    "decrease": "down", "decreased": "down", "decline": "down", "declined": "down",
-    "fell": "down", "drop": "down", "dropped": "down", "lower": "down", "down": "down",
-    "reduction": "down", "reduced": "down", "shrink": "down", "shrunk": "down",
+    # Positive / upward
+    "increase": "up", "increased": "up", "increases": "up",
+    "growth": "up", "grew": "up", "grow": "up",
+    "rose": "up", "rise": "up", "risen": "up",
+    "higher": "up", "up": "up",
+    "gain": "up", "gained": "up", "gains": "up",
+    "improved": "up", "improvement": "up",
+    "profit": "up", "profits": "up",
+    "strengthened": "up", "expansion": "up", "expanded": "up",
+    "surge": "up", "surged": "up", "jumped": "up",
+    # Negative / downward
+    "decrease": "down", "decreased": "down", "decreases": "down",
+    "decline": "down", "declined": "down", "declining": "down",
+    "fell": "down", "fall": "down", "fallen": "down",
+    "drop": "down", "dropped": "down", "drops": "down",
+    "lower": "down", "down": "down",
+    "reduction": "down", "reduced": "down", "reduce": "down",
+    "shrink": "down", "shrunk": "down", "shrank": "down",
+    "loss": "down", "losses": "down",
+    "deteriorated": "down", "weakened": "down", "contraction": "down", "contracted": "down",
+    "negative": "down", "deficit": "down",
+    # Flat
     "no change": "flat", "unchanged": "flat", "stable": "flat", "flat": "flat",
+    "marginal": "flat",
+    # Boolean
     "yes": "yes", "no": "no",
 }
 
@@ -77,9 +96,41 @@ def compute_token_f1(gold: str, pred: str) -> TextResult:
 
 
 def compute_relaxed_em(gold: str, pred: str) -> int:
-    # Relaxed EM is a superset of EM — pass EM first as a fast-path
+    """
+    Relaxed Exact Match — a strictly looser metric than EM.
+
+    Handles:
+    1. Indian unit stripping: "₹ 139.27 crores" == "139.27"
+    2. Sign-direction equivalence: "decrease by 30%" == "-30%"
+       i.e. if gold has a direction word and pred has a signed number
+       (or vice versa), they match when the number and sign agree.
+    3. Numeric near-match: ±1.5% tolerance after unit stripping.
+    """
+    # Fast-path: EM already passes
     if compute_exact_match(gold, pred):
         return 1
+
+    # Sign-direction equivalence check
+    # e.g. "decrease by 30%" ↔ "-30%",  "increase by 5%" ↔ "+5%"
+    gold_dir = extract_directional_label(gold)
+    pred_dir = extract_directional_label(pred)
+    if gold_dir is not None and pred_dir is not None:
+        if gold_dir == pred_dir:
+            # Directions match — check if the magnitude matches too
+            from finbharat.metrics.numeric import extract_numbers, normalize_number
+            gn = [normalize_number(x) for x in extract_numbers(gold)]
+            pn = [normalize_number(x) for x in extract_numbers(pred)]
+            gn = [v for v in gn if v is not None]
+            pn = [v for v in pn if v is not None]
+            if gn and pn:
+                gv, pv = abs(gn[-1]), abs(pn[-1])
+                if abs(gv) < 1e-10 and abs(pv) < 1e-10:
+                    return 1
+                if abs(gv) > 1e-10 and abs(gv - pv) / abs(gv) < 0.015:
+                    return 1
+            else:
+                # No numbers — direction match alone is enough
+                return 1
 
     def _strip_units(t: str) -> str:
         t = t.lower().strip()
@@ -104,6 +155,26 @@ def compute_relaxed_em(gold: str, pred: str) -> int:
 
 
 def extract_directional_label(text: str) -> str | None:
+    """
+    Extract a directional label from text.
+
+    Handles both word-based directions ("increased", "declined") and
+    signed numeric formats common in financial reports:
+      "-30%"   → "down"   (negative sign = decrease)
+      "+5.2%"  → "up"     (explicit positive sign = increase)
+      "(15%)"  → "down"   (parentheses = negative in accounting notation)
+    """
+    stripped = text.strip()
+
+    # Signed numeric formats: -30%, -0.5, +12.3%, +2 crore
+    if re.match(r'^-[\d]', stripped):
+        return "down"
+    if re.match(r'^\+[\d]', stripped):
+        return "up"
+    # Accounting parentheses notation: (30%) or (₹ 1,200)
+    if re.match(r'^\([\d₹$]', stripped):
+        return "down"
+
     lower = normalize_text(text)
     words = lower.split()
     for word in reversed(words):

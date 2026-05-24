@@ -401,6 +401,71 @@ def test_directional_accuracy():
     assert compute_directional_accuracy("Revenue increased by 18%", "Revenue declined") == 0
 
 
+def test_directional_signed_numbers():
+    """
+    Purpose:
+        Verify directional accuracy handles signed numeric formats, not just direction words.
+
+    Procedure:
+        '-30%'   → "down"  → matches "decrease by 30%"
+        '+5%'    → "up"    → matches "increased by 5%"
+        '(15%)' → "down"  → matches "loss of 15%" (accounting parentheses notation)
+        '+30%'  → "up"    → does NOT match "decreased by 30%"
+
+    Thought process:
+        This was a real discovered bug. Gold = "decrease by 30%", Pred = "-30%"
+        was returning directional_acc = 0 because the detector only checked for
+        direction words ("increase", "decrease", etc.) and ignored the minus sign.
+        Models trained on financial data frequently output signed percentages
+        ("-30%") instead of narrative descriptions ("decreased by 30%"). Both are
+        correct answers. The fix adds regex checks for leading sign characters
+        and accounting parentheses notation before the word-based lookup.
+    """
+    # Minus sign = down
+    assert compute_directional_accuracy("decrease by 30%", "-30%") == 1
+    assert compute_directional_accuracy("declined 12%", "-12%") == 1
+    # Plus sign = up
+    assert compute_directional_accuracy("increased by 5%", "+5%") == 1
+    assert compute_directional_accuracy("grew 8%", "+8%") == 1
+    # Accounting parentheses = down
+    assert compute_directional_accuracy("loss of 15%", "(15%)") == 1
+    # Sign mismatch = wrong
+    assert compute_directional_accuracy("decreased by 30%", "+30%") == 0
+    assert compute_directional_accuracy("increased by 30%", "-30%") == 0
+
+
+def test_relaxed_em_signed_direction():
+    """
+    Purpose:
+        Verify Relaxed EM treats "decrease by 30%" and "-30%" as equivalent
+        when direction and magnitude both agree.
+
+    Procedure:
+        "decrease by 30%" ↔ "-30%"  → 1  (same direction, same number)
+        "-30%" ↔ "decrease by 30%"  → 1  (symmetric)
+        "increase by 5%" ↔ "+5%"   → 1
+        "fell by 12%" ↔ "-12%"     → 1
+        "decrease by 30%" ↔ "+30%" → 0  (wrong direction)
+        "increase by 5%" ↔ "-5%"   → 0  (wrong direction)
+
+    Thought process:
+        Relaxed EM is designed to absorb legitimate formatting differences.
+        Signed numbers ("-30%") and direction narratives ("decrease by 30%")
+        represent the same fact. Without this fix, a model that outputs a
+        concise "-30%" instead of the verbose gold format would get zero credit
+        on Relaxed EM even though the answer is correct. This is particularly
+        common in models fine-tuned on structured financial data.
+    """
+    assert compute_relaxed_em("decrease by 30%", "-30%") == 1
+    assert compute_relaxed_em("-30%", "decrease by 30%") == 1   # symmetric
+    assert compute_relaxed_em("increase by 5%", "+5%") == 1
+    assert compute_relaxed_em("fell by 12%", "-12%") == 1
+    assert compute_relaxed_em("loss of 15%", "(15%)") == 1
+    # Wrong direction = should NOT match
+    assert compute_relaxed_em("decrease by 30%", "+30%") == 0
+    assert compute_relaxed_em("increase by 5%", "-5%") == 0
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # LAYER 2C — Semantic Overlap Metrics (ROUGE-L, METEOR)
 # ─────────────────────────────────────────────────────────────────────────────

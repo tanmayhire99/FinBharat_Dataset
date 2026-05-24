@@ -12,7 +12,7 @@ from finbharat.metrics.text import (
     compute_directional_accuracy, compute_rouge_l,
 )
 from finbharat.metrics.faithfulness import compute_nli_entailment, compute_evidence_traceability
-from finbharat.models.runner import ModelRunner, GenerationResult, PREDEFINED_MODELS
+from finbharat.models.runner import ModelRunner, GenerationResult, PREDEFINED_MODELS, VALID_REGIMES
 
 
 @dataclass
@@ -29,6 +29,7 @@ class EvalResult:
     relaxed_em: int
     token_f1: float
     rouge_l: float
+    bertscore_f1: float
     num_exact: int
     num_f1: float
     tol1_acc: int
@@ -38,7 +39,20 @@ class EvalResult:
     entailment_ratio: float
     evidence_traceability: float
     latency_ms: float
+    regime: str = "zero_shot"
     error: Optional[str] = None
+
+
+def compute_bertscore_batch(golds: list[str], preds: list[str]) -> list[float]:
+    """Return per-pair BERTScore F1. Falls back to 0.0 if bert_score not installed."""
+    try:
+        from bert_score import score as bs_score
+        _, _, F = bs_score(preds, golds, lang="en", verbose=False, device="cpu")
+        return [round(float(f), 4) for f in F]
+    except ImportError:
+        return [0.0] * len(golds)
+    except Exception:
+        return [0.0] * len(golds)
 
 
 def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> dict:
@@ -57,6 +71,7 @@ def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> 
         "relaxed_em": rlx_em,
         "token_f1": text_res.f1,
         "rouge_l": rouge,
+        "bertscore_f1": 0.0,  # filled in batch after generation
         "num_exact": num_res.num_exact,
         "num_f1": num_res.num_f1,
         "tol1_acc": tol1,
@@ -71,6 +86,7 @@ def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> 
 def evaluate_qa_records(
     qa_records: list[QARecord],
     generations: list[GenerationResult],
+    regime: str = "zero_shot",
 ) -> list[EvalResult]:
     results = []
     for qa, gen in zip(qa_records, generations):
@@ -84,11 +100,12 @@ def evaluate_qa_records(
                 company=qa.company,
                 gold_answer=qa.answer,
                 predicted_answer="",
-                exact_match=0, relaxed_em=0, token_f1=0.0, rouge_l=0.0,
+                exact_match=0, relaxed_em=0, token_f1=0.0, rouge_l=0.0, bertscore_f1=0.0,
                 num_exact=0, num_f1=0.0, tol1_acc=0, tol5_acc=0, tol10_acc=0,
                 directional_acc=None, entailment_ratio=0.0,
                 evidence_traceability=0.0,
                 latency_ms=gen.latency_ms,
+                regime=regime,
                 error=gen.error,
             ))
             continue
@@ -103,8 +120,20 @@ def evaluate_qa_records(
             gold_answer=qa.answer,
             predicted_answer=gen.predicted_answer,
             latency_ms=gen.latency_ms,
+            regime=regime,
             **metrics,
         ))
+
+    # Batch BERTScore — much faster than per-call
+    valid = [r for r in results if not r.error]
+    if valid:
+        bs_scores = compute_bertscore_batch(
+            [r.gold_answer for r in valid],
+            [r.predicted_answer for r in valid],
+        )
+        for r, bs in zip(valid, bs_scores):
+            r.bertscore_f1 = bs
+
     return results
 
 
@@ -124,6 +153,7 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         "relaxed_em": round(sum(r.relaxed_em for r in results) / n, 4),
         "token_f1": round(sum(r.token_f1 for r in results) / n, 4),
         "rouge_l": round(sum(r.rouge_l for r in results) / n, 4),
+        "bertscore_f1": round(sum(r.bertscore_f1 for r in results) / n, 4),
         "num_exact": round(sum(r.num_exact for r in results) / n, 4),
         "num_f1": round(sum(r.num_f1 for r in results) / n, 4),
         "tol1_acc": round(sum(r.tol1_acc for r in results) / n, 4),
@@ -140,7 +170,7 @@ def aggregate_results(results: list[EvalResult]) -> dict:
 
     def _init_bucket() -> dict:
         return {"total": 0, "exact_match": 0, "relaxed_em": 0, "token_f1": 0.0,
-                "rouge_l": 0.0, "num_exact": 0, "num_f1": 0.0}
+                "rouge_l": 0.0, "bertscore_f1": 0.0, "num_exact": 0, "num_f1": 0.0}
 
     def _acc_bucket(b: dict, r: "EvalResult"):
         b["total"] += 1
@@ -148,12 +178,13 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         b["relaxed_em"] += r.relaxed_em
         b["token_f1"] += r.token_f1
         b["rouge_l"] += r.rouge_l
+        b["bertscore_f1"] += r.bertscore_f1
         b["num_exact"] += r.num_exact
         b["num_f1"] += r.num_f1
 
     def _avg_bucket(b: dict):
         t = b["total"]
-        for k in ("exact_match", "relaxed_em", "token_f1", "rouge_l", "num_exact", "num_f1"):
+        for k in ("exact_match", "relaxed_em", "token_f1", "rouge_l", "bertscore_f1", "num_exact", "num_f1"):
             b[k] = round(b[k] / t, 4)
 
     by_qtype: dict[str, dict] = {}
@@ -205,8 +236,9 @@ def save_aggregate(agg: dict, path: Path):
 def run_evaluation(
     data_root: Path,
     output_dir: Path,
-    model_keys: list[str] = ("qwen3-8b", "llama3.1-8b"),
+    model_keys: list[str] = ("llama3.1-8b",),
     difficulty: str = "easy",
+    regime: str = "zero_shot",
     companies: list[dict] | None = None,
     all_companies: bool = False,
     max_per_company: int | None = None,
@@ -237,16 +269,18 @@ def run_evaluation(
             print(f"Unknown model key: {model_key}. Available: {list(PREDEFINED_MODELS.keys())}")
             continue
 
-        print(f"\nRunning model: {config.name}")
-        cache_path = output_dir / "generations" / f"{model_key}_{difficulty}.jsonl"
-        eval_path = output_dir / "eval_results" / f"{model_key}_{difficulty}.jsonl"
-        agg_path = output_dir / "aggregates" / f"{model_key}_{difficulty}.json"
+        print(f"\nRunning model: {config.name} | regime: {regime}")
+        tag = f"{model_key}_{difficulty}_{regime}"
+        cache_path = output_dir / "generations" / f"{tag}.jsonl"
+        eval_path = output_dir / "eval_results" / f"{tag}.jsonl"
+        agg_path = output_dir / "aggregates" / f"{tag}.json"
 
-        runner = ModelRunner(config, api_key=api_key)
+        runner = ModelRunner(config, api_key=api_key, regime=regime)
         try:
             generations = runner.generate_batch(qa_records, contexts, cache_path=cache_path)
-            eval_results = evaluate_qa_records(qa_records, generations)
+            eval_results = evaluate_qa_records(qa_records, generations, regime=regime)
             agg = aggregate_results(eval_results)
+            agg["regime"] = regime
 
             save_results(eval_results, eval_path)
             save_aggregate(agg, agg_path)
@@ -269,7 +303,7 @@ def _print_qa_stats(records: list[QARecord]):
 def _print_aggregate(model_name: str, agg: dict):
     print(f"\n  === {model_name} Results ===")
     print(f"  Total: {agg['total']} | Errors: {agg.get('num_errors', 0)}")
-    print(f"  EM: {agg['exact_match']:.4f} | Relaxed EM: {agg['relaxed_em']:.4f} | Token F1: {agg['token_f1']:.4f} | ROUGE-L: {agg['rouge_l']:.4f}")
+    print(f"  EM: {agg['exact_match']:.4f} | Relaxed EM: {agg['relaxed_em']:.4f} | Token F1: {agg['token_f1']:.4f} | ROUGE-L: {agg['rouge_l']:.4f} | BERTScore: {agg['bertscore_f1']:.4f}")
     mape_str = f"{agg['mape']:.2f}%" if agg.get("mape") is not None else "N/A"
     print(f"  Num-Exact: {agg['num_exact']:.4f} | Num-F1: {agg['num_f1']:.4f} | MAPE: {mape_str}")
     print(f"  Tol-1: {agg['tol1_acc']:.4f} | Tol-5: {agg['tol5_acc']:.4f} | Tol-10: {agg['tol10_acc']:.4f}")

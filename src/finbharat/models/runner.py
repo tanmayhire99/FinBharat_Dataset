@@ -106,6 +106,13 @@ QA_SYSTEM_PROMPT = (
     "If the context does not contain enough information, say \"Not available in context\"."
 )
 
+QA_SYSTEM_PROMPT_CLOSED = (
+    "You are a financial analyst with expertise in Indian companies and annual reports. "
+    "Answer the following question about an Indian company's annual report using your knowledge. "
+    "Be precise and concise. For numeric questions, provide the exact number with its unit. "
+    "For yes/no questions, answer yes or no first."
+)
+
 QA_USER_TEMPLATE = """Context from the annual report:
 ---
 {context}
@@ -114,6 +121,42 @@ QA_USER_TEMPLATE = """Context from the annual report:
 Question: {question}
 
 Answer:"""
+
+QA_USER_TEMPLATE_CLOSED = """Question about an Indian company's annual report:
+
+{question}
+
+Answer:"""
+
+QA_FEW_SHOT_PREFIX = """Here are some examples of questions and answers about Indian company annual reports:
+
+{examples}
+
+Now answer the following:
+"""
+
+FEW_SHOT_EXAMPLES = [
+    {
+        "question": "How many members does the Board of Directors have?",
+        "answer": "12 directors",
+    },
+    {
+        "question": "What was the total revenue for FY2025?",
+        "answer": "₹ 45,320 crores",
+    },
+    {
+        "question": "Did the company's net profit increase or decrease compared to the previous year?",
+        "answer": "Increased by 14.3% to ₹ 8,240 crores",
+    },
+]
+
+
+def _build_few_shot_prefix(examples: list[dict] | None = None) -> str:
+    exs = examples or FEW_SHOT_EXAMPLES
+    lines = []
+    for ex in exs:
+        lines.append(f"Q: {ex['question']}\nA: {ex['answer']}")
+    return QA_FEW_SHOT_PREFIX.format(examples="\n\n".join(lines))
 
 
 def _get_api_keys(env_name: str) -> list[str]:
@@ -129,9 +172,22 @@ def _get_api_keys(env_name: str) -> list[str]:
     return keys
 
 
+VALID_REGIMES = ("zero_shot", "few_shot", "closed_book", "few_shot_closed")
+
+
 class ModelRunner:
-    def __init__(self, config: ModelConfig, api_key: str | None = None, max_retries: int = 5):
+    def __init__(
+        self,
+        config: ModelConfig,
+        api_key: str | None = None,
+        max_retries: int = 5,
+        regime: str = "zero_shot",
+        few_shot_examples: list[dict] | None = None,
+    ):
+        assert regime in VALID_REGIMES, f"regime must be one of {VALID_REGIMES}"
         self.config = config
+        self.regime = regime
+        self.few_shot_examples = few_shot_examples
         self._explicit_key = api_key
         self.max_retries = max_retries
         self._keys: list[str] = []
@@ -173,15 +229,32 @@ class ModelRunner:
             self._client.close()
         self._client = None
 
+    def _build_messages(self, question: str, context: str) -> list[dict]:
+        closed = "closed" in self.regime
+        few_shot = "few_shot" in self.regime
+
+        system = QA_SYSTEM_PROMPT_CLOSED if closed else QA_SYSTEM_PROMPT
+
+        if closed:
+            user = QA_USER_TEMPLATE_CLOSED.format(question=question)
+        else:
+            user = QA_USER_TEMPLATE.format(context=context, question=question)
+
+        if few_shot:
+            prefix = _build_few_shot_prefix(self.few_shot_examples)
+            user = prefix + user
+
+        return [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ]
+
     def generate(self, question: str, context: str) -> GenerationResult:
         start = time.time()
-        user_prompt = QA_USER_TEMPLATE.format(context=context, question=question)
+        messages = self._build_messages(question, context)
         payload = {
             "model": self.config.model_id,
-            "messages": [
-                {"role": "system", "content": QA_SYSTEM_PROMPT},
-                {"role": "user", "content": user_prompt},
-            ],
+            "messages": messages,
             "max_tokens": self.config.max_tokens,
             "temperature": self.config.temperature,
             "top_p": self.config.top_p,

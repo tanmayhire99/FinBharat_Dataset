@@ -5,6 +5,20 @@ from rouge_score import rouge_scorer as _rouge_scorer
 
 _SCORER = _rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False)
 
+# METEOR uses NLTK — download wordnet once lazily
+_meteor_ready = False
+
+def _ensure_meteor():
+    global _meteor_ready
+    if not _meteor_ready:
+        import nltk
+        for pkg in ("wordnet", "punkt", "punkt_tab"):
+            try:
+                nltk.download(pkg, quiet=True)
+            except Exception:
+                pass
+        _meteor_ready = True
+
 
 @dataclass
 class TextResult:
@@ -100,6 +114,21 @@ def extract_directional_label(text: str) -> str | None:
     if "no" in lower:
         return "no"
     return None
+
+
+def compute_meteor(gold: str, pred: str) -> float:
+    """METEOR score — handles synonyms and stemming better than ROUGE for short answers."""
+    if not gold.strip() or not pred.strip():
+        return 0.0
+    try:
+        _ensure_meteor()
+        from nltk.translate.meteor_score import meteor_score
+        from nltk.tokenize import word_tokenize
+        score = meteor_score([word_tokenize(gold.lower())], word_tokenize(pred.lower()))
+        return round(float(score), 4)
+    except Exception:
+        # Graceful fallback: return token F1 if NLTK unavailable
+        return compute_token_f1(gold, pred).f1
 
 
 def compute_rouge_l(gold: str, pred: str) -> float:

@@ -10,7 +10,7 @@ from finbharat.metrics.stats import add_ci_to_aggregate
 from finbharat.metrics.numeric import compute_numeric_metrics, compute_tolerance_accuracy, compute_mape
 from finbharat.metrics.text import (
     compute_exact_match, compute_token_f1, compute_relaxed_em,
-    compute_directional_accuracy, compute_rouge_l,
+    compute_directional_accuracy, compute_rouge_l, compute_meteor,
 )
 from finbharat.metrics.faithfulness import compute_nli_entailment, compute_evidence_traceability
 from finbharat.models.runner import ModelRunner, GenerationResult, PREDEFINED_MODELS, VALID_REGIMES
@@ -30,7 +30,11 @@ class EvalResult:
     relaxed_em: int
     token_f1: float
     rouge_l: float
+    meteor: float
+    bertscore_p: float
+    bertscore_r: float
     bertscore_f1: float
+    abstained: bool        # model said "not available in context" or equivalent
     num_exact: int
     num_f1: float
     tol1_acc: int
@@ -47,21 +51,58 @@ class EvalResult:
     error: Optional[str] = None
 
 
-def compute_bertscore_batch(golds: list[str], preds: list[str]) -> list[float]:
-    """Return per-pair BERTScore F1. Falls back to 0.0 if bert_score not installed."""
+_ABSTAIN_PHRASES = frozenset([
+    "not available in context",
+    "cannot be determined",
+    "not mentioned",
+    "not provided",
+    "no information",
+    "information not available",
+    "not stated",
+    "not specified",
+    "not found in context",
+    "insufficient information",
+])
+
+
+def _is_abstain(text: str) -> bool:
+    t = text.lower().strip()
+    return any(phrase in t for phrase in _ABSTAIN_PHRASES)
+
+
+_BS_MAX_CHARS = 1024  # roberta-large context limit ≈ 512 tokens ≈ 1024 chars
+
+
+def compute_bertscore_batch(
+    golds: list[str], preds: list[str]
+) -> tuple[list[float], list[float], list[float]]:
+    """Return (P, R, F1) per pair.
+    Truncates to 1024 chars — RoBERTa has a 512-token window.
+    Falls back to 0.0 lists if bert_score is unavailable or fails.
+    """
+    n = len(golds)
+    zeros = [0.0] * n
     try:
         from bert_score import score as bs_score
-        _, _, F = bs_score(preds, golds, lang="en", verbose=False, device="cpu")
-        return [round(float(f), 4) for f in F]
+        # Truncate and ensure non-empty strings to avoid tokenizer edge cases
+        g_trunc = [g[:_BS_MAX_CHARS] if g.strip() else "n/a" for g in golds]
+        p_trunc = [p[:_BS_MAX_CHARS] if p.strip() else "n/a" for p in preds]
+        P, R, F = bs_score(p_trunc, g_trunc, lang="en", verbose=False, device="cpu")
+        return (
+            [round(float(p), 4) for p in P],
+            [round(float(r), 4) for r in R],
+            [round(float(f), 4) for f in F],
+        )
     except ImportError:
-        return [0.0] * len(golds)
+        return zeros, zeros, zeros
     except Exception:
-        return [0.0] * len(golds)
+        return zeros, zeros, zeros
 
 
 def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> dict:
     text_res = compute_token_f1(gold, pred)
     rouge = compute_rouge_l(gold, pred)
+    meteor = compute_meteor(gold, pred)
     num_res = compute_numeric_metrics(gold, pred)
     tol1 = compute_tolerance_accuracy(gold, pred, tolerance_pct=1.0)
     tol5 = compute_tolerance_accuracy(gold, pred, tolerance_pct=5.0)
@@ -75,7 +116,11 @@ def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> 
         "relaxed_em": rlx_em,
         "token_f1": text_res.f1,
         "rouge_l": rouge,
-        "bertscore_f1": 0.0,  # filled in batch after generation
+        "meteor": meteor,
+        "bertscore_p": 0.0,   # filled in batch after generation
+        "bertscore_r": 0.0,
+        "bertscore_f1": 0.0,
+        "abstained": _is_abstain(pred),
         "num_exact": num_res.num_exact,
         "num_f1": num_res.num_f1,
         "tol1_acc": tol1,
@@ -104,7 +149,8 @@ def evaluate_qa_records(
                 company=qa.company,
                 gold_answer=qa.answer,
                 predicted_answer="",
-                exact_match=0, relaxed_em=0, token_f1=0.0, rouge_l=0.0, bertscore_f1=0.0,
+                exact_match=0, relaxed_em=0, token_f1=0.0, rouge_l=0.0, meteor=0.0,
+                bertscore_p=0.0, bertscore_r=0.0, bertscore_f1=0.0, abstained=False,
                 num_exact=0, num_f1=0.0, tol1_acc=0, tol5_acc=0, tol10_acc=0,
                 directional_acc=None, entailment_ratio=0.0,
                 evidence_traceability=0.0,
@@ -135,15 +181,17 @@ def evaluate_qa_records(
             **metrics,
         ))
 
-    # Batch BERTScore — much faster than per-call
+    # Batch BERTScore — much faster than per-call, returns P, R, F1
     valid = [r for r in results if not r.error]
     if valid:
-        bs_scores = compute_bertscore_batch(
+        bs_p, bs_r, bs_f = compute_bertscore_batch(
             [r.gold_answer for r in valid],
             [r.predicted_answer for r in valid],
         )
-        for r, bs in zip(valid, bs_scores):
-            r.bertscore_f1 = bs
+        for r, p, rv, f in zip(valid, bs_p, bs_r, bs_f):
+            r.bertscore_p = p
+            r.bertscore_r = rv
+            r.bertscore_f1 = f
 
     return results
 
@@ -164,7 +212,11 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         "relaxed_em": round(sum(r.relaxed_em for r in results) / n, 4),
         "token_f1": round(sum(r.token_f1 for r in results) / n, 4),
         "rouge_l": round(sum(r.rouge_l for r in results) / n, 4),
+        "meteor": round(sum(r.meteor for r in results) / n, 4),
+        "bertscore_p": round(sum(r.bertscore_p for r in results) / n, 4),
+        "bertscore_r": round(sum(r.bertscore_r for r in results) / n, 4),
         "bertscore_f1": round(sum(r.bertscore_f1 for r in results) / n, 4),
+        "abstain_rate": round(sum(1 for r in results if r.abstained) / n, 4),
         "num_exact": round(sum(r.num_exact for r in results) / n, 4),
         "num_f1": round(sum(r.num_f1 for r in results) / n, 4),
         "tol1_acc": round(sum(r.tol1_acc for r in results) / n, 4),
@@ -181,7 +233,9 @@ def aggregate_results(results: list[EvalResult]) -> dict:
 
     def _init_bucket() -> dict:
         return {"total": 0, "exact_match": 0, "relaxed_em": 0, "token_f1": 0.0,
-                "rouge_l": 0.0, "bertscore_f1": 0.0, "num_exact": 0, "num_f1": 0.0}
+                "rouge_l": 0.0, "meteor": 0.0, "bertscore_p": 0.0,
+                "bertscore_r": 0.0, "bertscore_f1": 0.0, "abstain_count": 0,
+                "num_exact": 0, "num_f1": 0.0}
 
     def _acc_bucket(b: dict, r: "EvalResult"):
         b["total"] += 1
@@ -189,13 +243,19 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         b["relaxed_em"] += r.relaxed_em
         b["token_f1"] += r.token_f1
         b["rouge_l"] += r.rouge_l
+        b["meteor"] += r.meteor
+        b["bertscore_p"] += r.bertscore_p
+        b["bertscore_r"] += r.bertscore_r
         b["bertscore_f1"] += r.bertscore_f1
+        b["abstain_count"] += int(r.abstained)
         b["num_exact"] += r.num_exact
         b["num_f1"] += r.num_f1
 
     def _avg_bucket(b: dict):
         t = b["total"]
-        for k in ("exact_match", "relaxed_em", "token_f1", "rouge_l", "bertscore_f1", "num_exact", "num_f1"):
+        b["abstain_rate"] = round(b.pop("abstain_count") / t, 4)
+        for k in ("exact_match", "relaxed_em", "token_f1", "rouge_l", "meteor",
+                  "bertscore_p", "bertscore_r", "bertscore_f1", "num_exact", "num_f1"):
             b[k] = round(b[k] / t, 4)
 
     by_qtype: dict[str, dict] = {}
@@ -370,7 +430,9 @@ def _print_qa_stats(records: list[QARecord]):
 def _print_aggregate(model_name: str, agg: dict):
     print(f"\n  === {model_name} Results ===")
     print(f"  Total: {agg['total']} | Errors: {agg.get('num_errors', 0)}")
-    print(f"  EM: {agg['exact_match']:.4f} | Relaxed EM: {agg['relaxed_em']:.4f} | Token F1: {agg['token_f1']:.4f} | ROUGE-L: {agg['rouge_l']:.4f} | BERTScore: {agg['bertscore_f1']:.4f}")
+    print(f"  EM: {agg['exact_match']:.4f} | Relaxed EM: {agg['relaxed_em']:.4f} | Token F1: {agg['token_f1']:.4f}")
+    print(f"  ROUGE-L: {agg['rouge_l']:.4f} | METEOR: {agg['meteor']:.4f} | BERTScore P/R/F1: {agg['bertscore_p']:.4f}/{agg['bertscore_r']:.4f}/{agg['bertscore_f1']:.4f}")
+    print(f"  Abstain rate: {agg['abstain_rate']:.4f} ({int(agg['abstain_rate']*agg['total'])}/{agg['total']} predictions)")
     mape_str = f"{agg['mape']:.2f}%" if agg.get("mape") is not None else "N/A"
     print(f"  Num-Exact: {agg['num_exact']:.4f} | Num-F1: {agg['num_f1']:.4f} | MAPE: {mape_str}")
     print(f"  Tol-1: {agg['tol1_acc']:.4f} | Tol-5: {agg['tol5_acc']:.4f} | Tol-10: {agg['tol10_acc']:.4f}")

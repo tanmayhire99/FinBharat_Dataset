@@ -1,881 +1,554 @@
 {
-  "llama3.1-8b__easy__closed_book": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.0195,
-    "rouge_l": 0.016,
-    "bertscore_f1": 0.832,
-    "num_exact": 0.2222,
-    "num_f1": 0.2222,
-    "tol1_acc": 0.0,
-    "tol5_acc": 0.0,
-    "tol10_acc": 0.0,
-    "mape": 548.6982,
-    "entailment_ratio": 0.0,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 893.2,
-    "directional_accuracy": 0.0,
-    "directional_applicable": 1,
-    "by_question_type": {
-      "Text Only": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0195,
-        "rouge_l": 0.016,
-        "bertscore_f1": 0.832,
-        "num_exact": 0.2222,
-        "num_f1": 0.2222
-      }
-    },
-    "by_difficulty": {
-      "easy": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0195,
-        "rouge_l": 0.016,
-        "bertscore_f1": 0.832,
-        "num_exact": 0.2222,
-        "num_f1": 0.2222
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0126,
-        "rouge_l": 0.007,
-        "bertscore_f1": 0.8087,
-        "num_exact": 0.0,
-        "num_f1": 0.0
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0459,
-        "rouge_l": 0.0411,
-        "bertscore_f1": 0.8313,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0,
-        "rouge_l": 0.0,
-        "bertscore_f1": 0.8559,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      }
-    },
-    "brsr_subset": {
-      "total": 2,
-      "exact_match": 0.0,
-      "token_f1": 0.0476,
-      "rouge_l": 0.0416,
-      "num_exact": 1.0,
-      "entailment_ratio": 0.0
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.0195,
-      "lower": 0.0,
-      "upper": 0.0407,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.016,
-      "lower": 0.0,
-      "upper": 0.0346,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.832,
-      "lower": 0.8104,
-      "upper": 0.8602,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.2222,
-      "lower": 0.0,
-      "upper": 0.4444,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.2222,
-      "lower": 0.0,
-      "upper": 0.4444,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "regime": "closed_book"
-  },
   "llama3.1-8b__easy__zero_shot": {
-    "total": 9,
+    "total": 15,
     "num_errors": 0,
-    "exact_match": 0.5556,
-    "relaxed_em": 0.5556,
-    "token_f1": 0.8747,
-    "rouge_l": 0.8841,
-    "bertscore_f1": 0.9605,
-    "num_exact": 1.0,
-    "num_f1": 1.0,
-    "tol1_acc": 0.7778,
-    "tol5_acc": 0.7778,
-    "tol10_acc": 0.7778,
-    "mape": 0.0,
-    "entailment_ratio": 0.7778,
+    "exact_match": 0.6667,
+    "relaxed_em": 0.6667,
+    "token_f1": 0.8878,
+    "rouge_l": 0.8934,
+    "meteor": 0.7262,
+    "bertscore_p": 0.9702,
+    "bertscore_r": 0.9654,
+    "bertscore_f1": 0.9675,
+    "abstain_rate": 0.0,
+    "num_exact": 0.9333,
+    "num_f1": 0.9778,
+    "tol1_acc": 0.7333,
+    "tol5_acc": 0.7333,
+    "tol10_acc": 0.7333,
+    "mape": 7.2917,
+    "entailment_ratio": 0.8,
     "evidence_traceability": 1.0,
-    "avg_latency_ms": 419.6,
+    "avg_latency_ms": 438.0,
     "directional_accuracy": 1.0,
     "directional_applicable": 1,
     "by_question_type": {
       "Text Only": {
-        "total": 9,
-        "exact_match": 0.5556,
-        "relaxed_em": 0.5556,
-        "token_f1": 0.8747,
-        "rouge_l": 0.8841,
-        "bertscore_f1": 0.9605,
+        "total": 13,
+        "exact_match": 0.6154,
+        "relaxed_em": 0.6154,
+        "token_f1": 0.8705,
+        "rouge_l": 0.877,
+        "meteor": 0.6904,
+        "bertscore_p": 0.9666,
+        "bertscore_r": 0.9612,
+        "bertscore_f1": 0.9635,
+        "num_exact": 0.9231,
+        "num_f1": 0.9744,
+        "abstain_rate": 0.0
+      },
+      "Table Only": {
+        "total": 1,
+        "exact_match": 1.0,
+        "relaxed_em": 1.0,
+        "token_f1": 1.0,
+        "rouge_l": 1.0,
+        "meteor": 0.9498,
+        "bertscore_p": 0.9966,
+        "bertscore_r": 0.996,
+        "bertscore_f1": 0.9963,
         "num_exact": 1.0,
-        "num_f1": 1.0
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      },
+      "Table with Text": {
+        "total": 1,
+        "exact_match": 1.0,
+        "relaxed_em": 1.0,
+        "token_f1": 1.0,
+        "rouge_l": 1.0,
+        "meteor": 0.968,
+        "bertscore_p": 0.9915,
+        "bertscore_r": 0.9894,
+        "bertscore_f1": 0.9905,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
       }
     },
     "by_difficulty": {
       "easy": {
-        "total": 9,
-        "exact_match": 0.5556,
-        "relaxed_em": 0.5556,
-        "token_f1": 0.8747,
-        "rouge_l": 0.8841,
-        "bertscore_f1": 0.9605,
-        "num_exact": 1.0,
-        "num_f1": 1.0
+        "total": 15,
+        "exact_match": 0.6667,
+        "relaxed_em": 0.6667,
+        "token_f1": 0.8878,
+        "rouge_l": 0.8934,
+        "meteor": 0.7262,
+        "bertscore_p": 0.9702,
+        "bertscore_r": 0.9654,
+        "bertscore_f1": 0.9675,
+        "num_exact": 0.9333,
+        "num_f1": 0.9778,
+        "abstain_rate": 0.0
       }
     },
     "by_sector": {
       "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.6667,
-        "relaxed_em": 0.6667,
-        "token_f1": 0.9333,
-        "rouge_l": 0.9333,
-        "bertscore_f1": 0.9605,
+        "total": 5,
+        "exact_match": 0.8,
+        "relaxed_em": 0.8,
+        "token_f1": 0.96,
+        "rouge_l": 0.96,
+        "meteor": 0.8051,
+        "bertscore_p": 0.985,
+        "bertscore_r": 0.9644,
+        "bertscore_f1": 0.9742,
         "num_exact": 1.0,
-        "num_f1": 1.0
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
       },
       "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.3333,
-        "relaxed_em": 0.3333,
-        "token_f1": 0.7574,
-        "rouge_l": 0.7667,
-        "bertscore_f1": 0.9501,
-        "num_exact": 1.0,
-        "num_f1": 1.0
+        "total": 5,
+        "exact_match": 0.4,
+        "relaxed_em": 0.4,
+        "token_f1": 0.7433,
+        "rouge_l": 0.7489,
+        "meteor": 0.7052,
+        "bertscore_p": 0.9431,
+        "bertscore_r": 0.953,
+        "bertscore_f1": 0.9476,
+        "num_exact": 0.8,
+        "num_f1": 0.9333,
+        "abstain_rate": 0.0
       },
       "Airline": {
-        "total": 3,
-        "exact_match": 0.6667,
-        "relaxed_em": 0.6667,
-        "token_f1": 0.9333,
-        "rouge_l": 0.9524,
-        "bertscore_f1": 0.971,
+        "total": 5,
+        "exact_match": 0.8,
+        "relaxed_em": 0.8,
+        "token_f1": 0.96,
+        "rouge_l": 0.9714,
+        "meteor": 0.6682,
+        "bertscore_p": 0.9826,
+        "bertscore_r": 0.9788,
+        "bertscore_f1": 0.9807,
         "num_exact": 1.0,
-        "num_f1": 1.0
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
       }
     },
     "brsr_subset": {
-      "total": 2,
-      "exact_match": 0.5,
-      "token_f1": 0.6579,
-      "rouge_l": 0.65,
+      "total": 3,
+      "exact_match": 0.6667,
+      "token_f1": 0.7719,
+      "rouge_l": 0.7667,
       "num_exact": 1.0,
-      "entailment_ratio": 0.5
+      "entailment_ratio": 0.6667
     },
     "exact_match_ci": {
-      "mean": 0.5556,
-      "lower": 0.2222,
-      "upper": 0.8889,
-      "n": 9
+      "mean": 0.6667,
+      "lower": 0.4667,
+      "upper": 0.8667,
+      "n": 15
     },
     "relaxed_em_ci": {
-      "mean": 0.5556,
-      "lower": 0.2222,
-      "upper": 0.8889,
-      "n": 9
+      "mean": 0.6667,
+      "lower": 0.4667,
+      "upper": 0.8667,
+      "n": 15
     },
     "token_f1_ci": {
-      "mean": 0.8747,
-      "lower": 0.7275,
-      "upper": 0.9855,
-      "n": 9
+      "mean": 0.8878,
+      "lower": 0.771,
+      "upper": 0.978,
+      "n": 15
     },
     "rouge_l_ci": {
-      "mean": 0.8841,
-      "lower": 0.7286,
-      "upper": 1.0,
-      "n": 9
+      "mean": 0.8934,
+      "lower": 0.7727,
+      "upper": 0.9867,
+      "n": 15
     },
     "bertscore_f1_ci": {
-      "mean": 0.9605,
-      "lower": 0.9336,
-      "upper": 0.9842,
-      "n": 9
+      "mean": 0.9675,
+      "lower": 0.9462,
+      "upper": 0.9858,
+      "n": 15
     },
     "num_exact_ci": {
-      "mean": 1.0,
-      "lower": 1.0,
+      "mean": 0.9333,
+      "lower": 0.8,
       "upper": 1.0,
-      "n": 9
+      "n": 15
     },
     "num_f1_ci": {
-      "mean": 1.0,
-      "lower": 1.0,
+      "mean": 0.9778,
+      "lower": 0.9333,
       "upper": 1.0,
-      "n": 9
+      "n": 15
     },
     "entailment_ratio_ci": {
-      "mean": 0.7778,
-      "lower": 0.4444,
+      "mean": 0.8,
+      "lower": 0.6,
       "upper": 1.0,
-      "n": 9
+      "n": 15
     },
     "regime": "zero_shot"
-  },
-  "llama3.1-8b__hard__closed_book": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.3158,
-    "rouge_l": 0.1855,
-    "bertscore_f1": 0.8598,
-    "num_exact": 0.1111,
-    "num_f1": 0.3444,
-    "tol1_acc": 0.1111,
-    "tol5_acc": 0.2222,
-    "tol10_acc": 0.2222,
-    "mape": 114.5939,
-    "entailment_ratio": 0.0062,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2915.3,
-    "directional_accuracy": 0.6667,
-    "directional_applicable": 9,
-    "by_question_type": {
-      "Table with Text": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2785,
-        "rouge_l": 0.1556,
-        "bertscore_f1": 0.8496,
-        "num_exact": 0.0,
-        "num_f1": 0.4
-      },
-      "Text Only": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2982,
-        "rouge_l": 0.1953,
-        "bertscore_f1": 0.874,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Numerical Calculation": {
-        "total": 1,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4397,
-        "rouge_l": 0.2795,
-        "bertscore_f1": 0.8567,
-        "num_exact": 0.0,
-        "num_f1": 0.5
-      },
-      "Table Only": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.317,
-        "rouge_l": 0.1641,
-        "bertscore_f1": 0.8535,
-        "num_exact": 0.0,
-        "num_f1": 0.2667
-      }
-    },
-    "by_difficulty": {
-      "hard": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3158,
-        "rouge_l": 0.1855,
-        "bertscore_f1": 0.8598,
-        "num_exact": 0.1111,
-        "num_f1": 0.3444
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3953,
-        "rouge_l": 0.2382,
-        "bertscore_f1": 0.8742,
-        "num_exact": 0.3333,
-        "num_f1": 0.7667
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2916,
-        "rouge_l": 0.1778,
-        "bertscore_f1": 0.8696,
-        "num_exact": 0.0,
-        "num_f1": 0.0
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2606,
-        "rouge_l": 0.1404,
-        "bertscore_f1": 0.8357,
-        "num_exact": 0.0,
-        "num_f1": 0.2667
-      }
-    },
-    "brsr_subset": {
-      "total": 1,
-      "exact_match": 0.0,
-      "token_f1": 0.2236,
-      "rouge_l": 0.1305,
-      "num_exact": 0.0,
-      "entailment_ratio": 0.0556
-    },
-    "red_flag_detection": {
-      "total_red_flag_questions": 1,
-      "heuristic_detection_rate": 1.0
-    },
-    "by_hop_count": {
-      "2-hop": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3953,
-        "rouge_l": 0.2382,
-        "bertscore_f1": 0.8742,
-        "num_exact": 0.3333,
-        "num_f1": 0.7667
-      },
-      "1-hop": {
-        "total": 6,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2761,
-        "rouge_l": 0.1591,
-        "bertscore_f1": 0.8527,
-        "num_exact": 0.0,
-        "num_f1": 0.1333
-      }
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.3158,
-      "lower": 0.2634,
-      "upper": 0.3693,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.1855,
-      "lower": 0.1527,
-      "upper": 0.2213,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8598,
-      "lower": 0.8428,
-      "upper": 0.8774,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.1111,
-      "lower": 0.0,
-      "upper": 0.3333,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.3444,
-      "lower": 0.1333,
-      "upper": 0.5889,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0062,
-      "lower": 0.0,
-      "upper": 0.0185,
-      "n": 9
-    },
-    "regime": "closed_book"
   },
   "llama3.1-8b__hard__zero_shot": {
-    "total": 9,
+    "total": 15,
     "num_errors": 0,
     "exact_match": 0.0,
     "relaxed_em": 0.0,
-    "token_f1": 0.4112,
-    "rouge_l": 0.2813,
-    "bertscore_f1": 0.8863,
-    "num_exact": 0.4444,
-    "num_f1": 0.6599,
-    "tol1_acc": 0.4444,
-    "tol5_acc": 0.4444,
-    "tol10_acc": 0.4444,
-    "mape": 182.8456,
-    "entailment_ratio": 0.0,
+    "token_f1": 0.4254,
+    "rouge_l": 0.2898,
+    "meteor": 0.3741,
+    "bertscore_p": 0.8818,
+    "bertscore_r": 0.8833,
+    "bertscore_f1": 0.8821,
+    "abstain_rate": 0.0667,
+    "num_exact": 0.4667,
+    "num_f1": 0.6795,
+    "tol1_acc": 0.4,
+    "tol5_acc": 0.4,
+    "tol10_acc": 0.4,
+    "mape": 208.4492,
+    "entailment_ratio": 0.051,
     "evidence_traceability": 1.0,
-    "avg_latency_ms": 1608.7,
-    "directional_accuracy": 0.6667,
-    "directional_applicable": 9,
+    "avg_latency_ms": 2194.6,
+    "directional_accuracy": 0.6154,
+    "directional_applicable": 13,
     "by_question_type": {
       "Table with Text": {
         "total": 2,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4744,
-        "rouge_l": 0.3351,
-        "bertscore_f1": 0.879,
+        "token_f1": 0.4607,
+        "rouge_l": 0.3332,
+        "meteor": 0.3022,
+        "bertscore_p": 0.8734,
+        "bertscore_r": 0.8842,
+        "bertscore_f1": 0.8787,
         "num_exact": 0.5,
-        "num_f1": 0.775
+        "num_f1": 0.775,
+        "abstain_rate": 0.0
       },
       "Text Only": {
-        "total": 3,
+        "total": 6,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3289,
-        "rouge_l": 0.2192,
-        "bertscore_f1": 0.8913,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
+        "token_f1": 0.4054,
+        "rouge_l": 0.2701,
+        "meteor": 0.3886,
+        "bertscore_p": 0.8927,
+        "bertscore_r": 0.889,
+        "bertscore_f1": 0.89,
+        "num_exact": 0.5,
+        "num_f1": 0.5589,
+        "abstain_rate": 0.1667
       },
       "Numerical Calculation": {
-        "total": 1,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4628,
-        "rouge_l": 0.2871,
-        "bertscore_f1": 0.8638,
-        "num_exact": 0.0,
-        "num_f1": 0.5
-      },
-      "Table Only": {
         "total": 3,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4342,
-        "rouge_l": 0.3058,
-        "bertscore_f1": 0.8937,
-        "num_exact": 0.6667,
-        "num_f1": 0.963
+        "token_f1": 0.4489,
+        "rouge_l": 0.3166,
+        "meteor": 0.4115,
+        "bertscore_p": 0.8654,
+        "bertscore_r": 0.8673,
+        "bertscore_f1": 0.8661,
+        "num_exact": 0.3333,
+        "num_f1": 0.6667,
+        "abstain_rate": 0.0
+      },
+      "Table Only": {
+        "total": 4,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.4202,
+        "rouge_l": 0.2777,
+        "meteor": 0.3603,
+        "bertscore_p": 0.8821,
+        "bertscore_r": 0.8864,
+        "bertscore_f1": 0.8839,
+        "num_exact": 0.5,
+        "num_f1": 0.8222,
+        "abstain_rate": 0.0
       }
     },
     "by_difficulty": {
       "hard": {
-        "total": 9,
+        "total": 15,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4112,
-        "rouge_l": 0.2813,
-        "bertscore_f1": 0.8863,
-        "num_exact": 0.4444,
-        "num_f1": 0.6599
+        "token_f1": 0.4254,
+        "rouge_l": 0.2898,
+        "meteor": 0.3741,
+        "bertscore_p": 0.8818,
+        "bertscore_r": 0.8833,
+        "bertscore_f1": 0.8821,
+        "num_exact": 0.4667,
+        "num_f1": 0.6795,
+        "abstain_rate": 0.0667
       }
     },
     "by_sector": {
       "Private_Sector_Bank": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2723,
-        "rouge_l": 0.1646,
-        "bertscore_f1": 0.8621,
-        "num_exact": 0.3333,
-        "num_f1": 0.4333
+        "token_f1": 0.3814,
+        "rouge_l": 0.2536,
+        "meteor": 0.3277,
+        "bertscore_p": 0.8829,
+        "bertscore_r": 0.86,
+        "bertscore_f1": 0.8706,
+        "num_exact": 0.4,
+        "num_f1": 0.4489,
+        "abstain_rate": 0.0
       },
       "Auto_Components_&_Equipments": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4878,
-        "rouge_l": 0.3301,
-        "bertscore_f1": 0.9015,
-        "num_exact": 0.6667,
-        "num_f1": 0.9167
+        "token_f1": 0.4602,
+        "rouge_l": 0.315,
+        "meteor": 0.407,
+        "bertscore_p": 0.8825,
+        "bertscore_r": 0.9045,
+        "bertscore_f1": 0.893,
+        "num_exact": 0.8,
+        "num_f1": 0.9318,
+        "abstain_rate": 0.2
       },
       "Airline": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4735,
-        "rouge_l": 0.3493,
-        "bertscore_f1": 0.8953,
-        "num_exact": 0.3333,
-        "num_f1": 0.6296
+        "token_f1": 0.4346,
+        "rouge_l": 0.3009,
+        "meteor": 0.3876,
+        "bertscore_p": 0.8801,
+        "bertscore_r": 0.8855,
+        "bertscore_f1": 0.8826,
+        "num_exact": 0.2,
+        "num_f1": 0.6578,
+        "abstain_rate": 0.0
       }
     },
     "brsr_subset": {
-      "total": 1,
+      "total": 3,
       "exact_match": 0.0,
-      "token_f1": 0.4941,
-      "rouge_l": 0.4602,
+      "token_f1": 0.4131,
+      "rouge_l": 0.329,
       "num_exact": 1.0,
-      "entailment_ratio": 0.0
+      "entailment_ratio": 0.1111
     },
     "red_flag_detection": {
-      "total_red_flag_questions": 1,
+      "total_red_flag_questions": 2,
       "heuristic_detection_rate": 1.0
     },
     "by_hop_count": {
       "2-hop": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2723,
-        "rouge_l": 0.1646,
-        "bertscore_f1": 0.8621,
-        "num_exact": 0.3333,
-        "num_f1": 0.4333
-      },
-      "1-hop": {
         "total": 6,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4807,
-        "rouge_l": 0.3397,
-        "bertscore_f1": 0.8984,
+        "token_f1": 0.3822,
+        "rouge_l": 0.2548,
+        "meteor": 0.3232,
+        "bertscore_p": 0.8852,
+        "bertscore_r": 0.8691,
+        "bertscore_f1": 0.8764,
         "num_exact": 0.5,
-        "num_f1": 0.7731
+        "num_f1": 0.6089,
+        "abstain_rate": 0.0
+      },
+      "1-hop": {
+        "total": 8,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.4739,
+        "rouge_l": 0.3378,
+        "meteor": 0.4284,
+        "bertscore_p": 0.8849,
+        "bertscore_r": 0.8975,
+        "bertscore_f1": 0.8908,
+        "num_exact": 0.5,
+        "num_f1": 0.7674,
+        "abstain_rate": 0.125
+      },
+      "3-hop": {
+        "total": 1,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.2963,
+        "rouge_l": 0.1159,
+        "meteor": 0.245,
+        "bertscore_p": 0.8369,
+        "bertscore_r": 0.8555,
+        "bertscore_f1": 0.8461,
+        "num_exact": 0.0,
+        "num_f1": 0.4,
+        "abstain_rate": 0.0
       }
     },
     "exact_match_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "relaxed_em_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "token_f1_ci": {
-      "mean": 0.4112,
-      "lower": 0.2986,
-      "upper": 0.503,
-      "n": 9
+      "mean": 0.4254,
+      "lower": 0.3434,
+      "upper": 0.5023,
+      "n": 15
     },
     "rouge_l_ci": {
-      "mean": 0.2813,
-      "lower": 0.1972,
-      "upper": 0.3665,
-      "n": 9
+      "mean": 0.2898,
+      "lower": 0.225,
+      "upper": 0.3546,
+      "n": 15
     },
     "bertscore_f1_ci": {
-      "mean": 0.8863,
-      "lower": 0.8737,
-      "upper": 0.8988,
-      "n": 9
+      "mean": 0.8821,
+      "lower": 0.8714,
+      "upper": 0.8937,
+      "n": 15
     },
     "num_exact_ci": {
-      "mean": 0.4444,
-      "lower": 0.1111,
-      "upper": 0.7778,
-      "n": 9
+      "mean": 0.4667,
+      "lower": 0.2667,
+      "upper": 0.7333,
+      "n": 15
     },
     "num_f1_ci": {
-      "mean": 0.6599,
-      "lower": 0.3944,
-      "upper": 0.8765,
-      "n": 9
+      "mean": 0.6795,
+      "lower": 0.4963,
+      "upper": 0.8408,
+      "n": 15
     },
     "entailment_ratio_ci": {
-      "mean": 0.0,
+      "mean": 0.051,
       "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
+      "upper": 0.104,
+      "n": 15
     },
     "regime": "zero_shot"
   },
-  "llama3.1-8b__medium__closed_book": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.1834,
-    "rouge_l": 0.1165,
-    "bertscore_f1": 0.8394,
-    "num_exact": 0.1111,
-    "num_f1": 0.2444,
-    "tol1_acc": 0.0,
-    "tol5_acc": 0.0,
-    "tol10_acc": 0.1111,
-    "mape": 296.4453,
-    "entailment_ratio": 0.0575,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2728.4,
-    "directional_accuracy": 0.5,
-    "directional_applicable": 2,
-    "by_question_type": {
-      "Text Only": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.1782,
-        "rouge_l": 0.1193,
-        "bertscore_f1": 0.8438,
-        "num_exact": 0.1429,
-        "num_f1": 0.2571
-      },
-      "Table Only": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2017,
-        "rouge_l": 0.107,
-        "bertscore_f1": 0.8239,
-        "num_exact": 0.0,
-        "num_f1": 0.2
-      }
-    },
-    "by_difficulty": {
-      "medium": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.1834,
-        "rouge_l": 0.1165,
-        "bertscore_f1": 0.8394,
-        "num_exact": 0.1111,
-        "num_f1": 0.2444
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2574,
-        "rouge_l": 0.1838,
-        "bertscore_f1": 0.8633,
-        "num_exact": 0.0,
-        "num_f1": 0.2667
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.089,
-        "rouge_l": 0.0549,
-        "bertscore_f1": 0.8208,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2038,
-        "rouge_l": 0.111,
-        "bertscore_f1": 0.8341,
-        "num_exact": 0.0,
-        "num_f1": 0.1333
-      }
-    },
-    "brsr_subset": {
-      "total": 2,
-      "exact_match": 0.0,
-      "token_f1": 0.2682,
-      "rouge_l": 0.1463,
-      "num_exact": 0.0,
-      "entailment_ratio": 0.0625
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.1834,
-      "lower": 0.1115,
-      "upper": 0.2676,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.1165,
-      "lower": 0.0669,
-      "upper": 0.1746,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8394,
-      "lower": 0.8237,
-      "upper": 0.8573,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.1111,
-      "lower": 0.0,
-      "upper": 0.3333,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.2444,
-      "lower": 0.0444,
-      "upper": 0.5111,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0575,
-      "lower": 0.0139,
-      "upper": 0.1151,
-      "n": 9
-    },
-    "regime": "closed_book"
-  },
   "llama3.1-8b__medium__zero_shot": {
-    "total": 9,
+    "total": 15,
     "num_errors": 0,
     "exact_match": 0.0,
     "relaxed_em": 0.0,
-    "token_f1": 0.482,
-    "rouge_l": 0.3816,
-    "bertscore_f1": 0.9096,
-    "num_exact": 0.7778,
-    "num_f1": 0.7778,
-    "tol1_acc": 0.4444,
-    "tol5_acc": 0.4444,
-    "tol10_acc": 0.4444,
-    "mape": 200.0,
-    "entailment_ratio": 0.4028,
+    "token_f1": 0.532,
+    "rouge_l": 0.4254,
+    "meteor": 0.5,
+    "bertscore_p": 0.9101,
+    "bertscore_r": 0.9207,
+    "bertscore_f1": 0.9152,
+    "abstain_rate": 0.0,
+    "num_exact": 0.6667,
+    "num_f1": 0.7748,
+    "tol1_acc": 0.4667,
+    "tol5_acc": 0.4667,
+    "tol10_acc": 0.4667,
+    "mape": 219.0963,
+    "entailment_ratio": 0.3417,
     "evidence_traceability": 1.0,
-    "avg_latency_ms": 1619.9,
-    "directional_accuracy": 1.0,
-    "directional_applicable": 2,
+    "avg_latency_ms": 1188.8,
+    "directional_accuracy": 0.8333,
+    "directional_applicable": 6,
     "by_question_type": {
       "Text Only": {
-        "total": 7,
+        "total": 12,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4948,
-        "rouge_l": 0.3978,
-        "bertscore_f1": 0.9171,
-        "num_exact": 0.8571,
-        "num_f1": 0.8571
+        "token_f1": 0.5274,
+        "rouge_l": 0.4176,
+        "meteor": 0.4863,
+        "bertscore_p": 0.9087,
+        "bertscore_r": 0.9206,
+        "bertscore_f1": 0.9144,
+        "num_exact": 0.6667,
+        "num_f1": 0.8185,
+        "abstain_rate": 0.0
       },
       "Table Only": {
-        "total": 2,
+        "total": 3,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.437,
-        "rouge_l": 0.3251,
-        "bertscore_f1": 0.8835,
-        "num_exact": 0.5,
-        "num_f1": 0.5
+        "token_f1": 0.5505,
+        "rouge_l": 0.4569,
+        "meteor": 0.5547,
+        "bertscore_p": 0.9154,
+        "bertscore_r": 0.9212,
+        "bertscore_f1": 0.9182,
+        "num_exact": 0.6667,
+        "num_f1": 0.6,
+        "abstain_rate": 0.0
       }
     },
     "by_difficulty": {
       "medium": {
-        "total": 9,
+        "total": 15,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.482,
-        "rouge_l": 0.3816,
-        "bertscore_f1": 0.9096,
-        "num_exact": 0.7778,
-        "num_f1": 0.7778
+        "token_f1": 0.532,
+        "rouge_l": 0.4254,
+        "meteor": 0.5,
+        "bertscore_p": 0.9101,
+        "bertscore_r": 0.9207,
+        "bertscore_f1": 0.9152,
+        "num_exact": 0.6667,
+        "num_f1": 0.7748,
+        "abstain_rate": 0.0
       }
     },
     "by_sector": {
       "Private_Sector_Bank": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.6406,
-        "rouge_l": 0.5453,
-        "bertscore_f1": 0.9436,
-        "num_exact": 1.0,
-        "num_f1": 1.0
+        "token_f1": 0.5682,
+        "rouge_l": 0.482,
+        "meteor": 0.5727,
+        "bertscore_p": 0.9217,
+        "bertscore_r": 0.9324,
+        "bertscore_f1": 0.9269,
+        "num_exact": 0.8,
+        "num_f1": 0.8476,
+        "abstain_rate": 0.0
       },
       "Auto_Components_&_Equipments": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3871,
-        "rouge_l": 0.2978,
-        "bertscore_f1": 0.8936,
-        "num_exact": 0.6667,
-        "num_f1": 0.6667
+        "token_f1": 0.4801,
+        "rouge_l": 0.3618,
+        "meteor": 0.4035,
+        "bertscore_p": 0.9008,
+        "bertscore_r": 0.9123,
+        "bertscore_f1": 0.9061,
+        "num_exact": 0.6,
+        "num_f1": 0.7055,
+        "abstain_rate": 0.0
       },
       "Airline": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4183,
-        "rouge_l": 0.3017,
-        "bertscore_f1": 0.8917,
-        "num_exact": 0.6667,
-        "num_f1": 0.6667
+        "token_f1": 0.5478,
+        "rouge_l": 0.4324,
+        "meteor": 0.5238,
+        "bertscore_p": 0.9077,
+        "bertscore_r": 0.9174,
+        "bertscore_f1": 0.9125,
+        "num_exact": 0.6,
+        "num_f1": 0.7714,
+        "abstain_rate": 0.0
       }
     },
     "brsr_subset": {
       "total": 2,
       "exact_match": 0.0,
-      "token_f1": 0.4352,
-      "rouge_l": 0.3478,
+      "token_f1": 0.458,
+      "rouge_l": 0.375,
       "num_exact": 1.0,
       "entailment_ratio": 0.5
     },
@@ -883,1599 +556,1054 @@
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "relaxed_em_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "token_f1_ci": {
-      "mean": 0.482,
-      "lower": 0.3821,
-      "upper": 0.5828,
-      "n": 9
+      "mean": 0.532,
+      "lower": 0.4482,
+      "upper": 0.6145,
+      "n": 15
     },
     "rouge_l_ci": {
-      "mean": 0.3816,
-      "lower": 0.2871,
-      "upper": 0.4807,
-      "n": 9
+      "mean": 0.4254,
+      "lower": 0.3436,
+      "upper": 0.5035,
+      "n": 15
     },
     "bertscore_f1_ci": {
-      "mean": 0.9096,
-      "lower": 0.8884,
-      "upper": 0.9317,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.7778,
-      "lower": 0.5556,
-      "upper": 1.0,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.7778,
-      "lower": 0.5556,
-      "upper": 1.0,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.4028,
-      "lower": 0.1667,
-      "upper": 0.6667,
-      "n": 9
-    },
-    "regime": "zero_shot"
-  },
-  "llama3.1-8b__multihop__closed_book": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.328,
-    "rouge_l": 0.22,
-    "bertscore_f1": 0.8522,
-    "num_exact": 0.2222,
-    "num_f1": 0.3104,
-    "tol1_acc": 0.2222,
-    "tol5_acc": 0.2222,
-    "tol10_acc": 0.2222,
-    "mape": 274.535,
-    "entailment_ratio": 0.0641,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2663.3,
-    "directional_accuracy": 0.6667,
-    "directional_applicable": 3,
-    "by_question_type": {
-      "Numerical Calculation": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3143,
-        "rouge_l": 0.2148,
-        "bertscore_f1": 0.8539,
-        "num_exact": 0.0,
-        "num_f1": 0.0
-      },
-      "Table with Text": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3319,
-        "rouge_l": 0.2214,
-        "bertscore_f1": 0.8517,
-        "num_exact": 0.2857,
-        "num_f1": 0.3991
-      }
-    },
-    "by_difficulty": {
-      "multihop": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.328,
-        "rouge_l": 0.22,
-        "bertscore_f1": 0.8522,
-        "num_exact": 0.2222,
-        "num_f1": 0.3104
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3645,
-        "rouge_l": 0.2625,
-        "bertscore_f1": 0.8495,
-        "num_exact": 0.0,
-        "num_f1": 0.0
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2788,
-        "rouge_l": 0.1887,
-        "bertscore_f1": 0.8531,
-        "num_exact": 0.3333,
-        "num_f1": 0.4074
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3407,
-        "rouge_l": 0.2086,
-        "bertscore_f1": 0.854,
-        "num_exact": 0.3333,
-        "num_f1": 0.5238
-      }
-    },
-    "brsr_subset": {
-      "total": 4,
-      "exact_match": 0.0,
-      "token_f1": 0.3664,
-      "rouge_l": 0.2528,
-      "num_exact": 0.5,
-      "entailment_ratio": 0.125
-    },
-    "by_hop_count": {
-      "2-hop": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.328,
-        "rouge_l": 0.22,
-        "bertscore_f1": 0.8522,
-        "num_exact": 0.2222,
-        "num_f1": 0.3104
-      }
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.328,
-      "lower": 0.2303,
-      "upper": 0.4293,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.22,
-      "lower": 0.1314,
-      "upper": 0.3115,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8522,
-      "lower": 0.8327,
-      "upper": 0.8723,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.2222,
-      "lower": 0.0,
-      "upper": 0.4444,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.3104,
-      "lower": 0.0635,
-      "upper": 0.5802,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0641,
-      "lower": 0.0,
-      "upper": 0.1752,
-      "n": 9
-    },
-    "regime": "closed_book"
-  },
-  "llama3.1-8b__multihop__zero_shot": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.6224,
-    "rouge_l": 0.5129,
-    "bertscore_f1": 0.9007,
-    "num_exact": 0.6667,
-    "num_f1": 0.6366,
-    "tol1_acc": 0.4444,
-    "tol5_acc": 0.4444,
-    "tol10_acc": 0.4444,
-    "mape": 200.0,
-    "entailment_ratio": 0.295,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 1554.1,
-    "directional_accuracy": 1.0,
-    "directional_applicable": 3,
-    "by_question_type": {
-      "Numerical Calculation": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3701,
-        "rouge_l": 0.2109,
-        "bertscore_f1": 0.8473,
-        "num_exact": 0.0,
-        "num_f1": 0.0769
-      },
-      "Table with Text": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.6945,
-        "rouge_l": 0.5992,
-        "bertscore_f1": 0.916,
-        "num_exact": 0.8571,
-        "num_f1": 0.7965
-      }
-    },
-    "by_difficulty": {
-      "multihop": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.6224,
-        "rouge_l": 0.5129,
-        "bertscore_f1": 0.9007,
-        "num_exact": 0.6667,
-        "num_f1": 0.6366
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.7066,
-        "rouge_l": 0.5791,
-        "bertscore_f1": 0.9059,
-        "num_exact": 0.6667,
-        "num_f1": 0.7179
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4276,
-        "rouge_l": 0.3687,
-        "bertscore_f1": 0.8785,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.7329,
-        "rouge_l": 0.5908,
-        "bertscore_f1": 0.9177,
-        "num_exact": 1.0,
-        "num_f1": 0.8586
-      }
-    },
-    "brsr_subset": {
-      "total": 4,
-      "exact_match": 0.0,
-      "token_f1": 0.6952,
-      "rouge_l": 0.585,
-      "num_exact": 0.75,
-      "entailment_ratio": 0.4375
-    },
-    "by_hop_count": {
-      "2-hop": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.6224,
-        "rouge_l": 0.5129,
-        "bertscore_f1": 0.9007,
-        "num_exact": 0.6667,
-        "num_f1": 0.6366
-      }
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.6224,
-      "lower": 0.4304,
-      "upper": 0.7949,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.5129,
-      "lower": 0.3459,
-      "upper": 0.6919,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.9007,
-      "lower": 0.8761,
-      "upper": 0.9271,
-      "n": 9
+      "mean": 0.9152,
+      "lower": 0.8994,
+      "upper": 0.9309,
+      "n": 15
     },
     "num_exact_ci": {
       "mean": 0.6667,
-      "lower": 0.4444,
-      "upper": 0.8889,
-      "n": 9
+      "lower": 0.4,
+      "upper": 0.8667,
+      "n": 15
     },
     "num_f1_ci": {
-      "mean": 0.6366,
-      "lower": 0.3973,
-      "upper": 0.8889,
-      "n": 9
+      "mean": 0.7748,
+      "lower": 0.5863,
+      "upper": 0.927,
+      "n": 15
     },
     "entailment_ratio_ci": {
-      "mean": 0.295,
-      "lower": 0.1389,
-      "upper": 0.4418,
-      "n": 9
+      "mean": 0.3417,
+      "lower": 0.175,
+      "upper": 0.5333,
+      "n": 15
     },
     "regime": "zero_shot"
   },
-  "nemotron-nano-8b__easy__closed_book": {
-    "total": 9,
+  "llama3.1-8b__multihop__zero_shot": {
+    "total": 15,
     "num_errors": 0,
     "exact_match": 0.0,
     "relaxed_em": 0.0,
-    "token_f1": 0.042,
-    "rouge_l": 0.037,
-    "bertscore_f1": 0.8203,
-    "num_exact": 0.2222,
-    "num_f1": 0.2222,
-    "tol1_acc": 0.0,
-    "tol5_acc": 0.0,
-    "tol10_acc": 0.0,
-    "mape": 96.4638,
-    "entailment_ratio": 0.0833,
+    "token_f1": 0.5429,
+    "rouge_l": 0.4373,
+    "meteor": 0.5434,
+    "bertscore_p": 0.8839,
+    "bertscore_r": 0.9024,
+    "bertscore_f1": 0.8923,
+    "abstain_rate": 0.2,
+    "num_exact": 0.4667,
+    "num_f1": 0.5602,
+    "tol1_acc": 0.2667,
+    "tol5_acc": 0.2667,
+    "tol10_acc": 0.2667,
+    "mape": 162.2197,
+    "entailment_ratio": 0.2722,
     "evidence_traceability": 1.0,
-    "avg_latency_ms": 1314.8,
-    "directional_accuracy": 1.0,
-    "directional_applicable": 1,
+    "avg_latency_ms": 1373.3,
+    "directional_accuracy": 0.8333,
+    "directional_applicable": 6,
     "by_question_type": {
-      "Text Only": {
-        "total": 9,
+      "Numerical Calculation": {
+        "total": 4,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.042,
-        "rouge_l": 0.037,
-        "bertscore_f1": 0.8203,
-        "num_exact": 0.2222,
-        "num_f1": 0.2222
-      }
-    },
-    "by_difficulty": {
-      "easy": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.042,
-        "rouge_l": 0.037,
-        "bertscore_f1": 0.8203,
-        "num_exact": 0.2222,
-        "num_f1": 0.2222
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.027,
-        "rouge_l": 0.0193,
-        "bertscore_f1": 0.8113,
+        "token_f1": 0.5042,
+        "rouge_l": 0.3197,
+        "meteor": 0.4712,
+        "bertscore_p": 0.8429,
+        "bertscore_r": 0.8957,
+        "bertscore_f1": 0.8674,
         "num_exact": 0.0,
-        "num_f1": 0.0
+        "num_f1": 0.3111,
+        "abstain_rate": 0.0
       },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0512,
-        "rouge_l": 0.044,
-        "bertscore_f1": 0.8306,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.0476,
-        "rouge_l": 0.0476,
-        "bertscore_f1": 0.8192,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      }
-    },
-    "brsr_subset": {
-      "total": 2,
-      "exact_match": 0.0,
-      "token_f1": 0.1169,
-      "rouge_l": 0.1114,
-      "num_exact": 1.0,
-      "entailment_ratio": 0.25
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.042,
-      "lower": 0.0164,
-      "upper": 0.0708,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.037,
-      "lower": 0.0129,
-      "upper": 0.066,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8203,
-      "lower": 0.8084,
-      "upper": 0.8338,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.2222,
-      "lower": 0.0,
-      "upper": 0.4444,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.2222,
-      "lower": 0.0,
-      "upper": 0.4444,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0833,
-      "lower": 0.0,
-      "upper": 0.1944,
-      "n": 9
-    },
-    "regime": "closed_book"
-  },
-  "nemotron-nano-8b__easy__zero_shot": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.28,
-    "rouge_l": 0.2592,
-    "bertscore_f1": 0.8693,
-    "num_exact": 0.5556,
-    "num_f1": 0.6,
-    "tol1_acc": 0.4444,
-    "tol5_acc": 0.4444,
-    "tol10_acc": 0.4444,
-    "mape": 170.813,
-    "entailment_ratio": 0.2037,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 1120.0,
-    "directional_accuracy": 1.0,
-    "directional_applicable": 1,
-    "by_question_type": {
-      "Text Only": {
+      "Table with Text": {
         "total": 9,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.28,
-        "rouge_l": 0.2592,
-        "bertscore_f1": 0.8693,
+        "token_f1": 0.5545,
+        "rouge_l": 0.4699,
+        "meteor": 0.5614,
+        "bertscore_p": 0.8943,
+        "bertscore_r": 0.8994,
+        "bertscore_f1": 0.8963,
         "num_exact": 0.5556,
-        "num_f1": 0.6
+        "num_f1": 0.5732,
+        "abstain_rate": 0.3333
+      },
+      "Text Only": {
+        "total": 2,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.5678,
+        "rouge_l": 0.5259,
+        "meteor": 0.6069,
+        "bertscore_p": 0.9189,
+        "bertscore_r": 0.9294,
+        "bertscore_f1": 0.9241,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
       }
     },
     "by_difficulty": {
-      "easy": {
-        "total": 9,
+      "multihop": {
+        "total": 15,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.28,
-        "rouge_l": 0.2592,
-        "bertscore_f1": 0.8693,
-        "num_exact": 0.5556,
-        "num_f1": 0.6
+        "token_f1": 0.5429,
+        "rouge_l": 0.4373,
+        "meteor": 0.5434,
+        "bertscore_p": 0.8839,
+        "bertscore_r": 0.9024,
+        "bertscore_f1": 0.8923,
+        "num_exact": 0.4667,
+        "num_f1": 0.5602,
+        "abstain_rate": 0.2
       }
     },
     "by_sector": {
       "Private_Sector_Bank": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3013,
-        "rouge_l": 0.2729,
-        "bertscore_f1": 0.8586,
-        "num_exact": 0.6667,
-        "num_f1": 0.6111
+        "token_f1": 0.5604,
+        "rouge_l": 0.4833,
+        "meteor": 0.5937,
+        "bertscore_p": 0.8906,
+        "bertscore_r": 0.9067,
+        "bertscore_f1": 0.8969,
+        "num_exact": 0.6,
+        "num_f1": 0.6,
+        "abstain_rate": 0.2
       },
       "Auto_Components_&_Equipments": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3829,
-        "rouge_l": 0.3522,
-        "bertscore_f1": 0.8839,
-        "num_exact": 0.3333,
-        "num_f1": 0.4667
+        "token_f1": 0.4729,
+        "rouge_l": 0.3443,
+        "meteor": 0.4278,
+        "bertscore_p": 0.8673,
+        "bertscore_r": 0.8886,
+        "bertscore_f1": 0.8776,
+        "num_exact": 0.0,
+        "num_f1": 0.2489,
+        "abstain_rate": 0.2
       },
       "Airline": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.1558,
-        "rouge_l": 0.1527,
-        "bertscore_f1": 0.8654,
-        "num_exact": 0.6667,
-        "num_f1": 0.7222
+        "token_f1": 0.5954,
+        "rouge_l": 0.4843,
+        "meteor": 0.6087,
+        "bertscore_p": 0.8937,
+        "bertscore_r": 0.9118,
+        "bertscore_f1": 0.9023,
+        "num_exact": 0.8,
+        "num_f1": 0.8318,
+        "abstain_rate": 0.2
       }
     },
     "brsr_subset": {
-      "total": 2,
+      "total": 4,
       "exact_match": 0.0,
-      "token_f1": 0.1659,
-      "rouge_l": 0.1299,
-      "num_exact": 0.5,
-      "entailment_ratio": 0.3333
+      "token_f1": 0.5746,
+      "rouge_l": 0.4617,
+      "num_exact": 0.25,
+      "entailment_ratio": 0.4792
+    },
+    "by_hop_count": {
+      "2-hop": {
+        "total": 15,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.5429,
+        "rouge_l": 0.4373,
+        "meteor": 0.5434,
+        "bertscore_p": 0.8839,
+        "bertscore_r": 0.9024,
+        "bertscore_f1": 0.8923,
+        "num_exact": 0.4667,
+        "num_f1": 0.5602,
+        "abstain_rate": 0.2
+      }
     },
     "exact_match_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "relaxed_em_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "token_f1_ci": {
-      "mean": 0.28,
-      "lower": 0.1777,
-      "upper": 0.4013,
-      "n": 9
+      "mean": 0.5429,
+      "lower": 0.4012,
+      "upper": 0.6793,
+      "n": 15
     },
     "rouge_l_ci": {
-      "mean": 0.2592,
-      "lower": 0.1501,
-      "upper": 0.3791,
-      "n": 9
+      "mean": 0.4373,
+      "lower": 0.3089,
+      "upper": 0.5713,
+      "n": 15
     },
     "bertscore_f1_ci": {
-      "mean": 0.8693,
-      "lower": 0.8571,
-      "upper": 0.8846,
-      "n": 9
+      "mean": 0.8923,
+      "lower": 0.8706,
+      "upper": 0.9138,
+      "n": 15
     },
     "num_exact_ci": {
-      "mean": 0.5556,
-      "lower": 0.2222,
-      "upper": 0.8889,
-      "n": 9
+      "mean": 0.4667,
+      "lower": 0.2,
+      "upper": 0.7333,
+      "n": 15
     },
     "num_f1_ci": {
-      "mean": 0.6,
-      "lower": 0.3889,
-      "upper": 0.7963,
-      "n": 9
+      "mean": 0.5602,
+      "lower": 0.3495,
+      "upper": 0.7796,
+      "n": 15
     },
     "entailment_ratio_ci": {
-      "mean": 0.2037,
-      "lower": 0.0556,
-      "upper": 0.3704,
-      "n": 9
+      "mean": 0.2722,
+      "lower": 0.15,
+      "upper": 0.3945,
+      "n": 15
     },
     "regime": "zero_shot"
   },
-  "nemotron-nano-8b__hard__closed_book": {
-    "total": 9,
+  "llama3.3-70b__easy__zero_shot": {
+    "total": 15,
+    "num_errors": 0,
+    "exact_match": 0.7333,
+    "relaxed_em": 0.7333,
+    "token_f1": 0.8843,
+    "rouge_l": 0.8857,
+    "meteor": 0.723,
+    "bertscore_p": 0.9675,
+    "bertscore_r": 0.9613,
+    "bertscore_f1": 0.9641,
+    "abstain_rate": 0.0,
+    "num_exact": 1.0,
+    "num_f1": 1.0,
+    "tol1_acc": 0.8,
+    "tol5_acc": 0.8,
+    "tol10_acc": 0.8,
+    "mape": 0.0,
+    "entailment_ratio": 0.6667,
+    "evidence_traceability": 1.0,
+    "avg_latency_ms": 6028.1,
+    "directional_accuracy": 1.0,
+    "directional_applicable": 1,
+    "by_question_type": {
+      "Text Only": {
+        "total": 13,
+        "exact_match": 0.6923,
+        "relaxed_em": 0.6923,
+        "token_f1": 0.8665,
+        "rouge_l": 0.8681,
+        "meteor": 0.6867,
+        "bertscore_p": 0.9634,
+        "bertscore_r": 0.9565,
+        "bertscore_f1": 0.9596,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      },
+      "Table Only": {
+        "total": 1,
+        "exact_match": 1.0,
+        "relaxed_em": 1.0,
+        "token_f1": 1.0,
+        "rouge_l": 1.0,
+        "meteor": 0.9498,
+        "bertscore_p": 0.9966,
+        "bertscore_r": 0.996,
+        "bertscore_f1": 0.9963,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      },
+      "Table with Text": {
+        "total": 1,
+        "exact_match": 1.0,
+        "relaxed_em": 1.0,
+        "token_f1": 1.0,
+        "rouge_l": 1.0,
+        "meteor": 0.968,
+        "bertscore_p": 0.9915,
+        "bertscore_r": 0.9894,
+        "bertscore_f1": 0.9905,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 15,
+        "exact_match": 0.7333,
+        "relaxed_em": 0.7333,
+        "token_f1": 0.8843,
+        "rouge_l": 0.8857,
+        "meteor": 0.723,
+        "bertscore_p": 0.9675,
+        "bertscore_r": 0.9613,
+        "bertscore_f1": 0.9641,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      }
+    },
+    "by_sector": {
+      "Private_Sector_Bank": {
+        "total": 5,
+        "exact_match": 0.8,
+        "relaxed_em": 0.8,
+        "token_f1": 0.9,
+        "rouge_l": 0.9,
+        "meteor": 0.7901,
+        "bertscore_p": 0.9695,
+        "bertscore_r": 0.9538,
+        "bertscore_f1": 0.9614,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      },
+      "Auto_Components_&_Equipments": {
+        "total": 5,
+        "exact_match": 0.4,
+        "relaxed_em": 0.4,
+        "token_f1": 0.7528,
+        "rouge_l": 0.7571,
+        "meteor": 0.7014,
+        "bertscore_p": 0.9422,
+        "bertscore_r": 0.9454,
+        "bertscore_f1": 0.9432,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      },
+      "Airline": {
+        "total": 5,
+        "exact_match": 1.0,
+        "relaxed_em": 1.0,
+        "token_f1": 1.0,
+        "rouge_l": 1.0,
+        "meteor": 0.6776,
+        "bertscore_p": 0.9909,
+        "bertscore_r": 0.9847,
+        "bertscore_f1": 0.9878,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
+      }
+    },
+    "brsr_subset": {
+      "total": 3,
+      "exact_match": 1.0,
+      "token_f1": 1.0,
+      "rouge_l": 1.0,
+      "num_exact": 1.0,
+      "entailment_ratio": 1.0
+    },
+    "exact_match_ci": {
+      "mean": 0.7333,
+      "lower": 0.5333,
+      "upper": 0.9333,
+      "n": 15
+    },
+    "relaxed_em_ci": {
+      "mean": 0.7333,
+      "lower": 0.5333,
+      "upper": 0.9333,
+      "n": 15
+    },
+    "token_f1_ci": {
+      "mean": 0.8843,
+      "lower": 0.7615,
+      "upper": 0.9942,
+      "n": 15
+    },
+    "rouge_l_ci": {
+      "mean": 0.8857,
+      "lower": 0.7571,
+      "upper": 1.0,
+      "n": 15
+    },
+    "bertscore_f1_ci": {
+      "mean": 0.9641,
+      "lower": 0.9356,
+      "upper": 0.9905,
+      "n": 15
+    },
+    "num_exact_ci": {
+      "mean": 1.0,
+      "lower": 1.0,
+      "upper": 1.0,
+      "n": 15
+    },
+    "num_f1_ci": {
+      "mean": 1.0,
+      "lower": 1.0,
+      "upper": 1.0,
+      "n": 15
+    },
+    "entailment_ratio_ci": {
+      "mean": 0.6667,
+      "lower": 0.4,
+      "upper": 0.8667,
+      "n": 15
+    },
+    "regime": "zero_shot"
+  },
+  "llama3.3-70b__hard__zero_shot": {
+    "total": 15,
     "num_errors": 0,
     "exact_match": 0.0,
     "relaxed_em": 0.0,
-    "token_f1": 0.2798,
-    "rouge_l": 0.1687,
-    "bertscore_f1": 0.8522,
-    "num_exact": 0.3333,
-    "num_f1": 0.463,
-    "tol1_acc": 0.2222,
-    "tol5_acc": 0.2222,
-    "tol10_acc": 0.2222,
-    "mape": 274.9991,
-    "entailment_ratio": 0.0,
+    "token_f1": 0.4041,
+    "rouge_l": 0.2669,
+    "meteor": 0.3676,
+    "bertscore_p": 0.8698,
+    "bertscore_r": 0.8782,
+    "bertscore_f1": 0.8737,
+    "abstain_rate": 0.0,
+    "num_exact": 0.4667,
+    "num_f1": 0.7619,
+    "tol1_acc": 0.4,
+    "tol5_acc": 0.4,
+    "tol10_acc": 0.4,
+    "mape": 199.3193,
+    "entailment_ratio": 0.0921,
     "evidence_traceability": 1.0,
-    "avg_latency_ms": 2931.6,
-    "directional_accuracy": 0.7778,
-    "directional_applicable": 9,
+    "avg_latency_ms": 13663.3,
+    "directional_accuracy": 0.5385,
+    "directional_applicable": 13,
     "by_question_type": {
       "Table with Text": {
         "total": 2,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2606,
-        "rouge_l": 0.1703,
-        "bertscore_f1": 0.85,
-        "num_exact": 0.5,
-        "num_f1": 0.5
+        "token_f1": 0.3654,
+        "rouge_l": 0.2505,
+        "meteor": 0.3375,
+        "bertscore_p": 0.8631,
+        "bertscore_r": 0.8734,
+        "bertscore_f1": 0.868,
+        "num_exact": 1.0,
+        "num_f1": 0.6607,
+        "abstain_rate": 0.0
       },
       "Text Only": {
-        "total": 3,
+        "total": 6,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2784,
-        "rouge_l": 0.1712,
-        "bertscore_f1": 0.8658,
-        "num_exact": 0.3333,
-        "num_f1": 0.6667
+        "token_f1": 0.4095,
+        "rouge_l": 0.2746,
+        "meteor": 0.3734,
+        "bertscore_p": 0.8769,
+        "bertscore_r": 0.8858,
+        "bertscore_f1": 0.881,
+        "num_exact": 0.5,
+        "num_f1": 0.8782,
+        "abstain_rate": 0.0
       },
       "Numerical Calculation": {
-        "total": 1,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4143,
-        "rouge_l": 0.254,
-        "bertscore_f1": 0.8574,
-        "num_exact": 0.0,
-        "num_f1": 0.5
-      },
-      "Table Only": {
         "total": 3,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.249,
-        "rouge_l": 0.1366,
-        "bertscore_f1": 0.8384,
+        "token_f1": 0.4653,
+        "rouge_l": 0.3157,
+        "meteor": 0.3784,
+        "bertscore_p": 0.8545,
+        "bertscore_r": 0.8658,
+        "bertscore_f1": 0.8599,
         "num_exact": 0.3333,
-        "num_f1": 0.2222
+        "num_f1": 0.7037,
+        "abstain_rate": 0.0
+      },
+      "Table Only": {
+        "total": 4,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.3694,
+        "rouge_l": 0.2271,
+        "meteor": 0.3661,
+        "bertscore_p": 0.8741,
+        "bertscore_r": 0.8784,
+        "bertscore_f1": 0.876,
+        "num_exact": 0.25,
+        "num_f1": 0.6818,
+        "abstain_rate": 0.0
       }
     },
     "by_difficulty": {
       "hard": {
-        "total": 9,
+        "total": 15,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2798,
-        "rouge_l": 0.1687,
-        "bertscore_f1": 0.8522,
-        "num_exact": 0.3333,
-        "num_f1": 0.463
+        "token_f1": 0.4041,
+        "rouge_l": 0.2669,
+        "meteor": 0.3676,
+        "bertscore_p": 0.8698,
+        "bertscore_r": 0.8782,
+        "bertscore_f1": 0.8737,
+        "num_exact": 0.4667,
+        "num_f1": 0.7619,
+        "abstain_rate": 0.0
       }
     },
     "by_sector": {
       "Private_Sector_Bank": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3607,
-        "rouge_l": 0.2334,
-        "bertscore_f1": 0.8716,
-        "num_exact": 0.3333,
-        "num_f1": 0.8333
+        "token_f1": 0.4708,
+        "rouge_l": 0.3023,
+        "meteor": 0.3868,
+        "bertscore_p": 0.8722,
+        "bertscore_r": 0.8796,
+        "bertscore_f1": 0.8757,
+        "num_exact": 0.4,
+        "num_f1": 0.6365,
+        "abstain_rate": 0.0
       },
       "Auto_Components_&_Equipments": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2241,
-        "rouge_l": 0.1376,
-        "bertscore_f1": 0.8525,
-        "num_exact": 0.0,
-        "num_f1": 0.0
+        "token_f1": 0.4446,
+        "rouge_l": 0.3085,
+        "meteor": 0.4435,
+        "bertscore_p": 0.8817,
+        "bertscore_r": 0.9001,
+        "bertscore_f1": 0.8907,
+        "num_exact": 0.8,
+        "num_f1": 0.9038,
+        "abstain_rate": 0.0
       },
       "Airline": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2546,
-        "rouge_l": 0.1351,
-        "bertscore_f1": 0.8326,
-        "num_exact": 0.6667,
-        "num_f1": 0.5556
+        "token_f1": 0.2968,
+        "rouge_l": 0.19,
+        "meteor": 0.2727,
+        "bertscore_p": 0.8556,
+        "bertscore_r": 0.8548,
+        "bertscore_f1": 0.8549,
+        "num_exact": 0.2,
+        "num_f1": 0.7455,
+        "abstain_rate": 0.0
       }
     },
     "brsr_subset": {
-      "total": 1,
+      "total": 3,
       "exact_match": 0.0,
-      "token_f1": 0.2156,
-      "rouge_l": 0.1338,
-      "num_exact": 1.0,
-      "entailment_ratio": 0.0
+      "token_f1": 0.3779,
+      "rouge_l": 0.2427,
+      "num_exact": 0.3333,
+      "entailment_ratio": 0.0556
     },
     "red_flag_detection": {
-      "total_red_flag_questions": 1,
+      "total_red_flag_questions": 2,
       "heuristic_detection_rate": 1.0
     },
     "by_hop_count": {
       "2-hop": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3607,
-        "rouge_l": 0.2334,
-        "bertscore_f1": 0.8716,
-        "num_exact": 0.3333,
-        "num_f1": 0.8333
-      },
-      "1-hop": {
         "total": 6,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.2393,
-        "rouge_l": 0.1363,
-        "bertscore_f1": 0.8426,
+        "token_f1": 0.4573,
+        "rouge_l": 0.2763,
+        "meteor": 0.3808,
+        "bertscore_p": 0.8715,
+        "bertscore_r": 0.8866,
+        "bertscore_f1": 0.8789,
         "num_exact": 0.3333,
-        "num_f1": 0.2778
+        "num_f1": 0.7142,
+        "abstain_rate": 0.0
+      },
+      "1-hop": {
+        "total": 8,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.3916,
+        "rouge_l": 0.2831,
+        "meteor": 0.3786,
+        "bertscore_p": 0.8704,
+        "bertscore_r": 0.8774,
+        "bertscore_f1": 0.8735,
+        "num_exact": 0.625,
+        "num_f1": 0.893,
+        "abstain_rate": 0.0
+      },
+      "3-hop": {
+        "total": 1,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.1841,
+        "rouge_l": 0.0819,
+        "meteor": 0.2013,
+        "bertscore_p": 0.855,
+        "bertscore_r": 0.8341,
+        "bertscore_f1": 0.8445,
+        "num_exact": 0.0,
+        "num_f1": 0.0,
+        "abstain_rate": 0.0
       }
     },
     "exact_match_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "relaxed_em_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "token_f1_ci": {
-      "mean": 0.2798,
-      "lower": 0.2378,
-      "upper": 0.3261,
-      "n": 9
+      "mean": 0.4041,
+      "lower": 0.3144,
+      "upper": 0.4799,
+      "n": 15
     },
     "rouge_l_ci": {
-      "mean": 0.1687,
-      "lower": 0.1402,
-      "upper": 0.201,
-      "n": 9
+      "mean": 0.2669,
+      "lower": 0.1977,
+      "upper": 0.3275,
+      "n": 15
     },
     "bertscore_f1_ci": {
-      "mean": 0.8522,
-      "lower": 0.8388,
-      "upper": 0.8654,
-      "n": 9
+      "mean": 0.8737,
+      "lower": 0.8583,
+      "upper": 0.8877,
+      "n": 15
     },
     "num_exact_ci": {
-      "mean": 0.3333,
-      "lower": 0.0,
+      "mean": 0.4667,
+      "lower": 0.2,
       "upper": 0.6667,
-      "n": 9
+      "n": 15
     },
     "num_f1_ci": {
-      "mean": 0.463,
-      "lower": 0.1852,
-      "upper": 0.7408,
-      "n": 9
+      "mean": 0.7619,
+      "lower": 0.6045,
+      "upper": 0.8912,
+      "n": 15
     },
     "entailment_ratio_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
+      "mean": 0.0921,
+      "lower": 0.0111,
+      "upper": 0.2365,
+      "n": 15
     },
-    "regime": "closed_book"
+    "regime": "zero_shot"
   },
-  "nemotron-nano-8b__hard__zero_shot": {
-    "total": 9,
+  "llama3.3-70b__medium__zero_shot": {
+    "total": 15,
     "num_errors": 0,
     "exact_match": 0.0,
     "relaxed_em": 0.0,
-    "token_f1": 0.3351,
-    "rouge_l": 0.1873,
-    "bertscore_f1": 0.8631,
-    "num_exact": 0.4444,
-    "num_f1": 0.6942,
+    "token_f1": 0.5396,
+    "rouge_l": 0.4645,
+    "meteor": 0.4753,
+    "bertscore_p": 0.9149,
+    "bertscore_r": 0.9138,
+    "bertscore_f1": 0.9138,
+    "abstain_rate": 0.0,
+    "num_exact": 0.6,
+    "num_f1": 0.8392,
+    "tol1_acc": 0.4667,
+    "tol5_acc": 0.4667,
+    "tol10_acc": 0.4667,
+    "mape": 50.4625,
+    "entailment_ratio": 0.1194,
+    "evidence_traceability": 1.0,
+    "avg_latency_ms": 4771.1,
+    "directional_accuracy": 0.8333,
+    "directional_applicable": 6,
+    "by_question_type": {
+      "Text Only": {
+        "total": 12,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.5281,
+        "rouge_l": 0.4391,
+        "meteor": 0.4734,
+        "bertscore_p": 0.908,
+        "bertscore_r": 0.9148,
+        "bertscore_f1": 0.9109,
+        "num_exact": 0.5833,
+        "num_f1": 0.8157,
+        "abstain_rate": 0.0
+      },
+      "Table Only": {
+        "total": 3,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.5856,
+        "rouge_l": 0.566,
+        "meteor": 0.4831,
+        "bertscore_p": 0.9425,
+        "bertscore_r": 0.9098,
+        "bertscore_f1": 0.9253,
+        "num_exact": 0.6667,
+        "num_f1": 0.9333,
+        "abstain_rate": 0.0
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 15,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.5396,
+        "rouge_l": 0.4645,
+        "meteor": 0.4753,
+        "bertscore_p": 0.9149,
+        "bertscore_r": 0.9138,
+        "bertscore_f1": 0.9138,
+        "num_exact": 0.6,
+        "num_f1": 0.8392,
+        "abstain_rate": 0.0
+      }
+    },
+    "by_sector": {
+      "Private_Sector_Bank": {
+        "total": 5,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.6064,
+        "rouge_l": 0.5132,
+        "meteor": 0.5458,
+        "bertscore_p": 0.9263,
+        "bertscore_r": 0.9227,
+        "bertscore_f1": 0.9242,
+        "num_exact": 0.8,
+        "num_f1": 0.9333,
+        "abstain_rate": 0.0
+      },
+      "Auto_Components_&_Equipments": {
+        "total": 5,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.4858,
+        "rouge_l": 0.4154,
+        "meteor": 0.4381,
+        "bertscore_p": 0.9063,
+        "bertscore_r": 0.9093,
+        "bertscore_f1": 0.9072,
+        "num_exact": 0.4,
+        "num_f1": 0.6343,
+        "abstain_rate": 0.0
+      },
+      "Airline": {
+        "total": 5,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.5264,
+        "rouge_l": 0.465,
+        "meteor": 0.442,
+        "bertscore_p": 0.912,
+        "bertscore_r": 0.9093,
+        "bertscore_f1": 0.9099,
+        "num_exact": 0.6,
+        "num_f1": 0.95,
+        "abstain_rate": 0.0
+      }
+    },
+    "brsr_subset": {
+      "total": 2,
+      "exact_match": 0.0,
+      "token_f1": 0.4858,
+      "rouge_l": 0.3819,
+      "num_exact": 0.5,
+      "entailment_ratio": 0.1666
+    },
+    "exact_match_ci": {
+      "mean": 0.0,
+      "lower": 0.0,
+      "upper": 0.0,
+      "n": 15
+    },
+    "relaxed_em_ci": {
+      "mean": 0.0,
+      "lower": 0.0,
+      "upper": 0.0,
+      "n": 15
+    },
+    "token_f1_ci": {
+      "mean": 0.5396,
+      "lower": 0.4585,
+      "upper": 0.6239,
+      "n": 15
+    },
+    "rouge_l_ci": {
+      "mean": 0.4645,
+      "lower": 0.3804,
+      "upper": 0.5602,
+      "n": 15
+    },
+    "bertscore_f1_ci": {
+      "mean": 0.9138,
+      "lower": 0.8958,
+      "upper": 0.9316,
+      "n": 15
+    },
+    "num_exact_ci": {
+      "mean": 0.6,
+      "lower": 0.3333,
+      "upper": 0.8,
+      "n": 15
+    },
+    "num_f1_ci": {
+      "mean": 0.8392,
+      "lower": 0.6973,
+      "upper": 0.9548,
+      "n": 15
+    },
+    "entailment_ratio_ci": {
+      "mean": 0.1194,
+      "lower": 0.0306,
+      "upper": 0.2278,
+      "n": 15
+    },
+    "regime": "zero_shot"
+  },
+  "llama3.3-70b__multihop__zero_shot": {
+    "total": 15,
+    "num_errors": 0,
+    "exact_match": 0.0,
+    "relaxed_em": 0.0,
+    "token_f1": 0.6061,
+    "rouge_l": 0.4843,
+    "meteor": 0.6351,
+    "bertscore_p": 0.8966,
+    "bertscore_r": 0.9128,
+    "bertscore_f1": 0.9041,
+    "abstain_rate": 0.0667,
+    "num_exact": 0.6,
+    "num_f1": 0.7502,
     "tol1_acc": 0.3333,
     "tol5_acc": 0.3333,
     "tol10_acc": 0.3333,
-    "mape": 185.6802,
-    "entailment_ratio": 0.0556,
+    "mape": 246.995,
+    "entailment_ratio": 0.4606,
     "evidence_traceability": 1.0,
-    "avg_latency_ms": 3357.7,
-    "directional_accuracy": 0.5556,
-    "directional_applicable": 9,
-    "by_question_type": {
-      "Table with Text": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3248,
-        "rouge_l": 0.1951,
-        "bertscore_f1": 0.857,
-        "num_exact": 0.5,
-        "num_f1": 0.375
-      },
-      "Text Only": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3413,
-        "rouge_l": 0.1939,
-        "bertscore_f1": 0.8779,
-        "num_exact": 0.6667,
-        "num_f1": 1.0
-      },
-      "Numerical Calculation": {
-        "total": 1,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4204,
-        "rouge_l": 0.2179,
-        "bertscore_f1": 0.8508,
-        "num_exact": 0.0,
-        "num_f1": 0.2857
-      },
-      "Table Only": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3073,
-        "rouge_l": 0.1651,
-        "bertscore_f1": 0.8565,
-        "num_exact": 0.3333,
-        "num_f1": 0.7374
-      }
-    },
-    "by_difficulty": {
-      "hard": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3351,
-        "rouge_l": 0.1873,
-        "bertscore_f1": 0.8631,
-        "num_exact": 0.4444,
-        "num_f1": 0.6942
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3643,
-        "rouge_l": 0.2139,
-        "bertscore_f1": 0.8641,
-        "num_exact": 0.0,
-        "num_f1": 0.4286
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3238,
-        "rouge_l": 0.1661,
-        "bertscore_f1": 0.8666,
-        "num_exact": 1.0,
-        "num_f1": 0.9167
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3173,
-        "rouge_l": 0.1818,
-        "bertscore_f1": 0.8587,
-        "num_exact": 0.3333,
-        "num_f1": 0.7374
-      }
-    },
-    "brsr_subset": {
-      "total": 1,
-      "exact_match": 0.0,
-      "token_f1": 0.2262,
-      "rouge_l": 0.1593,
-      "num_exact": 0.0,
-      "entailment_ratio": 0.0
-    },
-    "red_flag_detection": {
-      "total_red_flag_questions": 1,
-      "heuristic_detection_rate": 1.0
-    },
-    "by_hop_count": {
-      "2-hop": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3643,
-        "rouge_l": 0.2139,
-        "bertscore_f1": 0.8641,
-        "num_exact": 0.0,
-        "num_f1": 0.4286
-      },
-      "1-hop": {
-        "total": 6,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3205,
-        "rouge_l": 0.1739,
-        "bertscore_f1": 0.8626,
-        "num_exact": 0.6667,
-        "num_f1": 0.827
-      }
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.3351,
-      "lower": 0.2867,
-      "upper": 0.3809,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.1873,
-      "lower": 0.1583,
-      "upper": 0.2151,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8631,
-      "lower": 0.85,
-      "upper": 0.8776,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.4444,
-      "lower": 0.1111,
-      "upper": 0.7778,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.6942,
-      "lower": 0.4656,
-      "upper": 0.8929,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0556,
-      "lower": 0.0,
-      "upper": 0.1296,
-      "n": 9
-    },
-    "regime": "zero_shot"
-  },
-  "nemotron-nano-8b__medium__closed_book": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.2176,
-    "rouge_l": 0.1296,
-    "bertscore_f1": 0.8487,
-    "num_exact": 0.3333,
-    "num_f1": 0.3598,
-    "tol1_acc": 0.1111,
-    "tol5_acc": 0.1111,
-    "tol10_acc": 0.2222,
-    "mape": 405.5291,
-    "entailment_ratio": 0.0139,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2130.1,
-    "directional_accuracy": 0.5,
-    "directional_applicable": 2,
-    "by_question_type": {
-      "Text Only": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2049,
-        "rouge_l": 0.1235,
-        "bertscore_f1": 0.8485,
-        "num_exact": 0.2857,
-        "num_f1": 0.3673
-      },
-      "Table Only": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2624,
-        "rouge_l": 0.1511,
-        "bertscore_f1": 0.8497,
-        "num_exact": 0.5,
-        "num_f1": 0.3333
-      }
-    },
-    "by_difficulty": {
-      "medium": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2176,
-        "rouge_l": 0.1296,
-        "bertscore_f1": 0.8487,
-        "num_exact": 0.3333,
-        "num_f1": 0.3598
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2568,
-        "rouge_l": 0.1624,
-        "bertscore_f1": 0.8609,
-        "num_exact": 0.0,
-        "num_f1": 0.1905
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.1393,
-        "rouge_l": 0.0735,
-        "bertscore_f1": 0.8297,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2568,
-        "rouge_l": 0.1529,
-        "bertscore_f1": 0.8557,
-        "num_exact": 0.6667,
-        "num_f1": 0.5556
-      }
-    },
-    "brsr_subset": {
-      "total": 2,
-      "exact_match": 0.0,
-      "token_f1": 0.2506,
-      "rouge_l": 0.1499,
-      "num_exact": 1.0,
-      "entailment_ratio": 0.0
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.2176,
-      "lower": 0.1684,
-      "upper": 0.2618,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.1296,
-      "lower": 0.0951,
-      "upper": 0.1667,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8487,
-      "lower": 0.8375,
-      "upper": 0.8599,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.3333,
-      "lower": 0.1111,
-      "upper": 0.6667,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.3598,
-      "lower": 0.1111,
-      "upper": 0.6455,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0139,
-      "lower": 0.0,
-      "upper": 0.0417,
-      "n": 9
-    },
-    "regime": "closed_book"
-  },
-  "nemotron-nano-8b__medium__zero_shot": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.3471,
-    "rouge_l": 0.2243,
-    "bertscore_f1": 0.8714,
-    "num_exact": 0.5556,
-    "num_f1": 0.5185,
-    "tol1_acc": 0.4444,
-    "tol5_acc": 0.4444,
-    "tol10_acc": 0.4444,
-    "mape": 200.0,
-    "entailment_ratio": 0.0634,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2369.7,
-    "directional_accuracy": 0.5,
-    "directional_applicable": 2,
-    "by_question_type": {
-      "Text Only": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3471,
-        "rouge_l": 0.2154,
-        "bertscore_f1": 0.8724,
-        "num_exact": 0.5714,
-        "num_f1": 0.5238
-      },
-      "Table Only": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3475,
-        "rouge_l": 0.2555,
-        "bertscore_f1": 0.8679,
-        "num_exact": 0.5,
-        "num_f1": 0.5
-      }
-    },
-    "by_difficulty": {
-      "medium": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3471,
-        "rouge_l": 0.2243,
-        "bertscore_f1": 0.8714,
-        "num_exact": 0.5556,
-        "num_f1": 0.5185
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4625,
-        "rouge_l": 0.3033,
-        "bertscore_f1": 0.8958,
-        "num_exact": 0.6667,
-        "num_f1": 0.6667
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.238,
-        "rouge_l": 0.1436,
-        "bertscore_f1": 0.8548,
-        "num_exact": 0.6667,
-        "num_f1": 0.5556
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3409,
-        "rouge_l": 0.2261,
-        "bertscore_f1": 0.8636,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      }
-    },
-    "brsr_subset": {
-      "total": 2,
-      "exact_match": 0.0,
-      "token_f1": 0.3593,
-      "rouge_l": 0.2392,
-      "num_exact": 0.5,
-      "entailment_ratio": 0.0769
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.3471,
-      "lower": 0.2813,
-      "upper": 0.4212,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.2243,
-      "lower": 0.1762,
-      "upper": 0.2791,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8714,
-      "lower": 0.8581,
-      "upper": 0.8855,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.5556,
-      "lower": 0.2222,
-      "upper": 0.8889,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.5185,
-      "lower": 0.2222,
-      "upper": 0.8519,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0634,
-      "lower": 0.0171,
-      "upper": 0.1268,
-      "n": 9
-    },
-    "regime": "zero_shot"
-  },
-  "nemotron-nano-8b__multihop__closed_book": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.2626,
-    "rouge_l": 0.1732,
-    "bertscore_f1": 0.8468,
-    "num_exact": 0.3333,
-    "num_f1": 0.3704,
-    "tol1_acc": 0.1111,
-    "tol5_acc": 0.1111,
-    "tol10_acc": 0.1111,
-    "mape": 287.8245,
-    "entailment_ratio": 0.0912,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2134.6,
-    "directional_accuracy": 0.6667,
-    "directional_applicable": 3,
-    "by_question_type": {
-      "Numerical Calculation": {
-        "total": 2,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.3233,
-        "rouge_l": 0.2321,
-        "bertscore_f1": 0.8584,
-        "num_exact": 0.0,
-        "num_f1": 0.0
-      },
-      "Table with Text": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2452,
-        "rouge_l": 0.1564,
-        "bertscore_f1": 0.8435,
-        "num_exact": 0.4286,
-        "num_f1": 0.4762
-      }
-    },
-    "by_difficulty": {
-      "multihop": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2626,
-        "rouge_l": 0.1732,
-        "bertscore_f1": 0.8468,
-        "num_exact": 0.3333,
-        "num_f1": 0.3704
-      }
-    },
-    "by_sector": {
-      "Private_Sector_Bank": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2922,
-        "rouge_l": 0.1957,
-        "bertscore_f1": 0.8376,
-        "num_exact": 0.0,
-        "num_f1": 0.0
-      },
-      "Auto_Components_&_Equipments": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2293,
-        "rouge_l": 0.1388,
-        "bertscore_f1": 0.8554,
-        "num_exact": 0.3333,
-        "num_f1": 0.3333
-      },
-      "Airline": {
-        "total": 3,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2663,
-        "rouge_l": 0.1851,
-        "bertscore_f1": 0.8474,
-        "num_exact": 0.6667,
-        "num_f1": 0.7778
-      }
-    },
-    "brsr_subset": {
-      "total": 4,
-      "exact_match": 0.0,
-      "token_f1": 0.329,
-      "rouge_l": 0.2325,
-      "num_exact": 0.75,
-      "entailment_ratio": 0.0417
-    },
-    "by_hop_count": {
-      "2-hop": {
-        "total": 9,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.2626,
-        "rouge_l": 0.1732,
-        "bertscore_f1": 0.8468,
-        "num_exact": 0.3333,
-        "num_f1": 0.3704
-      }
-    },
-    "exact_match_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "relaxed_em_ci": {
-      "mean": 0.0,
-      "lower": 0.0,
-      "upper": 0.0,
-      "n": 9
-    },
-    "token_f1_ci": {
-      "mean": 0.2626,
-      "lower": 0.2064,
-      "upper": 0.3136,
-      "n": 9
-    },
-    "rouge_l_ci": {
-      "mean": 0.1732,
-      "lower": 0.1271,
-      "upper": 0.2218,
-      "n": 9
-    },
-    "bertscore_f1_ci": {
-      "mean": 0.8468,
-      "lower": 0.8236,
-      "upper": 0.8673,
-      "n": 9
-    },
-    "num_exact_ci": {
-      "mean": 0.3333,
-      "lower": 0.1111,
-      "upper": 0.6667,
-      "n": 9
-    },
-    "num_f1_ci": {
-      "mean": 0.3704,
-      "lower": 0.1111,
-      "upper": 0.6667,
-      "n": 9
-    },
-    "entailment_ratio_ci": {
-      "mean": 0.0912,
-      "lower": 0.0346,
-      "upper": 0.148,
-      "n": 9
-    },
-    "regime": "closed_book"
-  },
-  "nemotron-nano-8b__multihop__zero_shot": {
-    "total": 9,
-    "num_errors": 0,
-    "exact_match": 0.0,
-    "relaxed_em": 0.0,
-    "token_f1": 0.4348,
-    "rouge_l": 0.3081,
-    "bertscore_f1": 0.8701,
-    "num_exact": 0.3333,
-    "num_f1": 0.5389,
-    "tol1_acc": 0.2222,
-    "tol5_acc": 0.2222,
-    "tol10_acc": 0.2222,
-    "mape": 185.6909,
-    "entailment_ratio": 0.2935,
-    "evidence_traceability": 1.0,
-    "avg_latency_ms": 2662.2,
+    "avg_latency_ms": 11417.3,
     "directional_accuracy": 1.0,
-    "directional_applicable": 3,
+    "directional_applicable": 6,
     "by_question_type": {
       "Numerical Calculation": {
+        "total": 4,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.3736,
+        "rouge_l": 0.2305,
+        "meteor": 0.3889,
+        "bertscore_p": 0.8414,
+        "bertscore_r": 0.8657,
+        "bertscore_f1": 0.8524,
+        "num_exact": 0.25,
+        "num_f1": 0.3548,
+        "abstain_rate": 0.25
+      },
+      "Table with Text": {
+        "total": 9,
+        "exact_match": 0.0,
+        "relaxed_em": 0.0,
+        "token_f1": 0.7096,
+        "rouge_l": 0.5874,
+        "meteor": 0.7357,
+        "bertscore_p": 0.9159,
+        "bertscore_r": 0.9263,
+        "bertscore_f1": 0.9206,
+        "num_exact": 0.6667,
+        "num_f1": 0.8704,
+        "abstain_rate": 0.0
+      },
+      "Text Only": {
         "total": 2,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3182,
-        "rouge_l": 0.1957,
-        "bertscore_f1": 0.8552,
-        "num_exact": 0.0,
-        "num_f1": 0.125
-      },
-      "Table with Text": {
-        "total": 7,
-        "exact_match": 0.0,
-        "relaxed_em": 0.0,
-        "token_f1": 0.4681,
-        "rouge_l": 0.3402,
-        "bertscore_f1": 0.8744,
-        "num_exact": 0.4286,
-        "num_f1": 0.6571
+        "token_f1": 0.605,
+        "rouge_l": 0.5275,
+        "meteor": 0.675,
+        "bertscore_p": 0.9201,
+        "bertscore_r": 0.9462,
+        "bertscore_f1": 0.9329,
+        "num_exact": 1.0,
+        "num_f1": 1.0,
+        "abstain_rate": 0.0
       }
     },
     "by_difficulty": {
       "multihop": {
-        "total": 9,
+        "total": 15,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4348,
-        "rouge_l": 0.3081,
-        "bertscore_f1": 0.8701,
-        "num_exact": 0.3333,
-        "num_f1": 0.5389
+        "token_f1": 0.6061,
+        "rouge_l": 0.4843,
+        "meteor": 0.6351,
+        "bertscore_p": 0.8966,
+        "bertscore_r": 0.9128,
+        "bertscore_f1": 0.9041,
+        "num_exact": 0.6,
+        "num_f1": 0.7502,
+        "abstain_rate": 0.0667
       }
     },
     "by_sector": {
       "Private_Sector_Bank": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.5367,
-        "rouge_l": 0.3679,
-        "bertscore_f1": 0.8843,
-        "num_exact": 0.3333,
-        "num_f1": 0.6667
+        "token_f1": 0.694,
+        "rouge_l": 0.6057,
+        "meteor": 0.7468,
+        "bertscore_p": 0.9122,
+        "bertscore_r": 0.934,
+        "bertscore_f1": 0.9223,
+        "num_exact": 0.8,
+        "num_f1": 0.8,
+        "abstain_rate": 0.0
       },
       "Auto_Components_&_Equipments": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.3511,
-        "rouge_l": 0.225,
-        "bertscore_f1": 0.8526,
-        "num_exact": 0.6667,
-        "num_f1": 0.5278
+        "token_f1": 0.4496,
+        "rouge_l": 0.353,
+        "meteor": 0.4685,
+        "bertscore_p": 0.8683,
+        "bertscore_r": 0.8752,
+        "bertscore_f1": 0.8713,
+        "num_exact": 0.2,
+        "num_f1": 0.5171,
+        "abstain_rate": 0.2
       },
       "Airline": {
-        "total": 3,
+        "total": 5,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4166,
-        "rouge_l": 0.3315,
-        "bertscore_f1": 0.8735,
-        "num_exact": 0.0,
-        "num_f1": 0.4222
+        "token_f1": 0.6746,
+        "rouge_l": 0.4941,
+        "meteor": 0.6901,
+        "bertscore_p": 0.9091,
+        "bertscore_r": 0.9291,
+        "bertscore_f1": 0.9187,
+        "num_exact": 0.8,
+        "num_f1": 0.9333,
+        "abstain_rate": 0.0
       }
     },
     "brsr_subset": {
       "total": 4,
       "exact_match": 0.0,
-      "token_f1": 0.4573,
-      "rouge_l": 0.333,
-      "num_exact": 0.25,
-      "entailment_ratio": 0.3646
+      "token_f1": 0.6827,
+      "rouge_l": 0.5932,
+      "num_exact": 1.0,
+      "entailment_ratio": 0.375
     },
     "by_hop_count": {
       "2-hop": {
-        "total": 9,
+        "total": 15,
         "exact_match": 0.0,
         "relaxed_em": 0.0,
-        "token_f1": 0.4348,
-        "rouge_l": 0.3081,
-        "bertscore_f1": 0.8701,
-        "num_exact": 0.3333,
-        "num_f1": 0.5389
+        "token_f1": 0.6061,
+        "rouge_l": 0.4843,
+        "meteor": 0.6351,
+        "bertscore_p": 0.8966,
+        "bertscore_r": 0.9128,
+        "bertscore_f1": 0.9041,
+        "num_exact": 0.6,
+        "num_f1": 0.7502,
+        "abstain_rate": 0.0667
       }
     },
     "exact_match_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "relaxed_em_ci": {
       "mean": 0.0,
       "lower": 0.0,
       "upper": 0.0,
-      "n": 9
+      "n": 15
     },
     "token_f1_ci": {
-      "mean": 0.4348,
-      "lower": 0.3057,
-      "upper": 0.5926,
-      "n": 9
+      "mean": 0.6061,
+      "lower": 0.4707,
+      "upper": 0.7177,
+      "n": 15
     },
     "rouge_l_ci": {
-      "mean": 0.3081,
-      "lower": 0.191,
-      "upper": 0.4563,
-      "n": 9
+      "mean": 0.4843,
+      "lower": 0.3679,
+      "upper": 0.5976,
+      "n": 15
     },
     "bertscore_f1_ci": {
-      "mean": 0.8701,
-      "lower": 0.8509,
-      "upper": 0.8899,
-      "n": 9
+      "mean": 0.9041,
+      "lower": 0.8817,
+      "upper": 0.9242,
+      "n": 15
     },
     "num_exact_ci": {
-      "mean": 0.3333,
-      "lower": 0.0,
-      "upper": 0.6667,
-      "n": 9
+      "mean": 0.6,
+      "lower": 0.3333,
+      "upper": 0.8667,
+      "n": 15
     },
     "num_f1_ci": {
-      "mean": 0.5389,
-      "lower": 0.3074,
-      "upper": 0.7982,
-      "n": 9
+      "mean": 0.7502,
+      "lower": 0.5803,
+      "upper": 0.8978,
+      "n": 15
     },
     "entailment_ratio_ci": {
-      "mean": 0.2935,
-      "lower": 0.162,
-      "upper": 0.437,
-      "n": 9
+      "mean": 0.4606,
+      "lower": 0.2873,
+      "upper": 0.6241,
+      "n": 15
     },
     "regime": "zero_shot"
   }

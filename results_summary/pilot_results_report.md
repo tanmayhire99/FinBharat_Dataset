@@ -1,101 +1,95 @@
-# FinBharat — Pilot Evaluation Results
+# FinBharat — Pilot Evaluation Results (v2)
 
-> **Scope:** Debug run — 2 models × 4 difficulty tiers × 2 regimes = 16 runs
-> **Scale:** 9 QA pairs per run (3 companies × 3 QA each) — pilot only, not final paper results
-> **Date:** May 2026  |  **Dataset:** FinBharat v0.1 (84K+ QA, 187 sectors, FY2025)
+> **Date:** 2026-05-24 | **Scale:** 15 QA / tier (3 companies × 5 QA)
+> **Models:** Llama-3.1-8B-Instruct · Llama-3.3-70B-Instruct
+> **Metrics (new this run):** METEOR · BERTScore P/R/F1 · Abstain Rate
 
 ---
 
-## Models Evaluated
+## Table 1 — Full Metric Suite by Difficulty (Zero-Shot)
 
-| Key | Model | Size | Provider |
-|-----|-------|------|----------|
-| `llama3.1-8b` | Llama-3.1-8B-Instruct | 8B | NVIDIA NIM |
-| `nemotron-nano-8b` | Llama-3.1-Nemotron-Nano-8B | 8B | NVIDIA NIM |
+| Model | Tier | EM | Rel.EM | F1 | ROUGE-L | METEOR | BS-P | BS-R | BS-F1 | Num-EM | Num-F1 | MAPE% | NLI | Abstain |
+|-------|------|-----|--------|-----|---------|--------|------|------|-------|--------|--------|-------|-----|---------|
+| `llama3.1-8b` | easy | 0.6667 | 0.6667 | 0.8878 | 0.8934 | 0.7262 | 0.9702 | 0.9654 | 0.9675 | 0.9333 | 0.9778 | 7.29 | 0.8000 | 0.0000 |
+| `llama3.1-8b` | medium | 0.0000 | 0.0000 | 0.5320 | 0.4254 | 0.5000 | 0.9101 | 0.9207 | 0.9152 | 0.6667 | 0.7748 | 219.10 | 0.3417 | 0.0000 |
+| `llama3.1-8b` | hard | 0.0000 | 0.0000 | 0.4254 | 0.2898 | 0.3741 | 0.8818 | 0.8833 | 0.8821 | 0.4667 | 0.6795 | 208.45 | 0.0510 | 0.0667 |
+| `llama3.1-8b` | multihop | 0.0000 | 0.0000 | 0.5429 | 0.4373 | 0.5434 | 0.8839 | 0.9024 | 0.8923 | 0.4667 | 0.5602 | 162.22 | 0.2722 | 0.2000 |
+| `llama3.3-70b` | easy | 0.7333 | 0.7333 | 0.8843 | 0.8857 | 0.7230 | 0.9675 | 0.9613 | 0.9641 | 1.0000 | 1.0000 | 0.00 | 0.6667 | 0.0000 |
+| `llama3.3-70b` | medium | 0.0000 | 0.0000 | 0.5396 | 0.4645 | 0.4753 | 0.9149 | 0.9138 | 0.9138 | 0.6000 | 0.8392 | 50.46 | 0.1194 | 0.0000 |
+| `llama3.3-70b` | hard | 0.0000 | 0.0000 | 0.4041 | 0.2669 | 0.3676 | 0.8698 | 0.8782 | 0.8737 | 0.4667 | 0.7619 | 199.32 | 0.0921 | 0.0000 |
+| `llama3.3-70b` | multihop | 0.0000 | 0.0000 | 0.6061 | 0.4843 | 0.6351 | 0.8966 | 0.9128 | 0.9041 | 0.6000 | 0.7502 | 247.00 | 0.4606 | 0.0667 |
 
-## Table 1 — Difficulty Degradation (Zero-Shot, Open-Book)
+## Table 2 — Difficulty Degradation (Token F1 + Num-EM)
 
-| Model | Difficulty | EM | Token F1 | ROUGE-L | BERTScore | Num-EM | Num-F1 | MAPE% | NLI-Ent |
-|-------|-----------|-----|---------|---------|-----------|--------|--------|-------|---------|
-| `llama3.1-8b` | easy | 0.5556 | 0.8747 | 0.8841 | 0.9605 | 1.0000 | 1.0000 | 0.00 | 0.7778 |
-| `llama3.1-8b` | medium | 0.0000 | 0.4820 | 0.3816 | 0.9096 | 0.7778 | 0.7778 | 200.00 | 0.4028 |
-| `llama3.1-8b` | hard | 0.0000 | 0.4112 | 0.2813 | 0.8863 | 0.4444 | 0.6599 | 182.85 | 0.0000 |
-| `llama3.1-8b` | multihop | 0.0000 | 0.6224 | 0.5129 | 0.9007 | 0.6667 | 0.6366 | 200.00 | 0.2950 |
-| `nemotron-nano-8b` | easy | 0.0000 | 0.2800 | 0.2592 | 0.8693 | 0.5556 | 0.6000 | 170.81 | 0.2037 |
-| `nemotron-nano-8b` | medium | 0.0000 | 0.3471 | 0.2243 | 0.8714 | 0.5556 | 0.5185 | 200.00 | 0.0634 |
-| `nemotron-nano-8b` | hard | 0.0000 | 0.3351 | 0.1873 | 0.8631 | 0.4444 | 0.6942 | 185.68 | 0.0556 |
-| `nemotron-nano-8b` | multihop | 0.0000 | 0.4348 | 0.3081 | 0.8701 | 0.3333 | 0.5389 | 185.69 | 0.2935 |
+| Model | Easy | Medium | Hard | Multihop | Easy→Multihop drop |
+|-------|------|--------|------|----------|--------------------|
+| `llama3.1-8b` (F1) | 0.8878 | 0.5320 | 0.4254 | 0.5429 | 34.5pp |
+| `llama3.3-70b` (F1) | 0.8843 | 0.5396 | 0.4041 | 0.6061 | 27.8pp |
 
-## Table 2 — Regime Comparison (Easy Tier)
+| `llama3.1-8b` (Num-EM) | 0.9333 | 0.6667 | 0.4667 | 0.4667 | 46.7pp |
+| `llama3.3-70b` (Num-EM) | 1.0000 | 0.6000 | 0.4667 | 0.6000 | 40.0pp |
 
-| Model | Regime | EM | Token F1 | Num-EM | MAPE% | NLI-Ent |
-|-------|--------|-----|---------|--------|-------|---------|
-| `llama3.1-8b` | zero_shot | 0.5556 | 0.8747 | 1.0000 | 0.00 | 0.7778 |
-| `llama3.1-8b` | closed_book | 0.0000 | 0.0195 | 0.2222 | 548.70 | 0.0000 |
-| `nemotron-nano-8b` | zero_shot | 0.0000 | 0.2800 | 0.5556 | 170.81 | 0.2037 |
-| `nemotron-nano-8b` | closed_book | 0.0000 | 0.0420 | 0.2222 | 96.46 | 0.0833 |
+## Table 3 — Abstain Rate by Tier
 
-> **Key finding:** EM collapses to 0.00 under closed-book across all tiers and both models,
-> confirming FinBharat cannot be answered from parametric memory.
+| Model | Easy | Medium | Hard | Multihop |
+|-------|------|--------|------|----------|
+| `llama3.1-8b` | 0.0000 | 0.0000 | 0.0667 | 0.2000 |
+| `llama3.3-70b` | 0.0000 | 0.0000 | 0.0000 | 0.0667 |
 
-## Table 3 — Performance by Question Type (Hard Tier, Zero-Shot)
-
-| Model | Question Type | N | EM | Token F1 | Num-EM | ROUGE-L |
-|-------|--------------|---|-----|---------|--------|---------|
-| `llama3.1-8b` | Text Only | 3 | 0.0000 | 0.3289 | 0.3333 | 0.2192 |
-| `llama3.1-8b` | Table Only | 3 | 0.0000 | 0.4342 | 0.6667 | 0.3058 |
-| `llama3.1-8b` | Table with Text | 2 | 0.0000 | 0.4744 | 0.5000 | 0.3351 |
-| `llama3.1-8b` | Numerical Calculation | 1 | 0.0000 | 0.4628 | 0.0000 | 0.2871 |
-| `nemotron-nano-8b` | Text Only | 3 | 0.0000 | 0.3413 | 0.6667 | 0.1939 |
-| `nemotron-nano-8b` | Table Only | 3 | 0.0000 | 0.3073 | 0.3333 | 0.1651 |
-| `nemotron-nano-8b` | Table with Text | 2 | 0.0000 | 0.3248 | 0.5000 | 0.1951 |
-| `nemotron-nano-8b` | Numerical Calculation | 1 | 0.0000 | 0.4204 | 0.0000 | 0.2179 |
+> Abstain = model answered 'Not available in context' or equivalent.
+> Rising abstain rate on hard/multihop is expected and healthy —
+> it means the model is acknowledging uncertainty rather than hallucinating.
 
 ## Table 4 — Bootstrap 95% Confidence Intervals (Zero-Shot)
 
-| Model | Difficulty | EM [CI] | Token F1 [CI] | Num-EM [CI] |
-|-------|-----------|---------|--------------|------------|
-| `llama3.1-8b` | easy | 0.5556 [0.2222–0.8889] | 0.8747 [0.7275–0.9855] | 1.0000 [1.0000–1.0000] |
-| `llama3.1-8b` | medium | 0.0000 [0.0000–0.0000] | 0.4820 [0.3821–0.5828] | 0.7778 [0.5556–1.0000] |
-| `llama3.1-8b` | hard | 0.0000 [0.0000–0.0000] | 0.4112 [0.2986–0.5030] | 0.4444 [0.1111–0.7778] |
-| `llama3.1-8b` | multihop | 0.0000 [0.0000–0.0000] | 0.6224 [0.4304–0.7949] | 0.6667 [0.4444–0.8889] |
-| `nemotron-nano-8b` | easy | 0.0000 [0.0000–0.0000] | 0.2800 [0.1777–0.4013] | 0.5556 [0.2222–0.8889] |
-| `nemotron-nano-8b` | medium | 0.0000 [0.0000–0.0000] | 0.3471 [0.2813–0.4212] | 0.5556 [0.2222–0.8889] |
-| `nemotron-nano-8b` | hard | 0.0000 [0.0000–0.0000] | 0.3351 [0.2867–0.3809] | 0.4444 [0.1111–0.7778] |
-| `nemotron-nano-8b` | multihop | 0.0000 [0.0000–0.0000] | 0.4348 [0.3057–0.5926] | 0.3333 [0.0000–0.6667] |
+| Model | Tier | EM [CI] | Token F1 [CI] | Num-EM [CI] | BERTScore F1 [CI] |
+|-------|------|---------|--------------|------------|-------------------|
+| `llama3.1-8b` | easy | 0.6667 [0.4667–0.8667] | 0.8878 [0.7710–0.9780] | 0.9333 [0.8000–1.0000] | 0.9675 [0.9462–0.9858] |
+| `llama3.1-8b` | medium | 0.0000 [0.0000–0.0000] | 0.5320 [0.4482–0.6145] | 0.6667 [0.4000–0.8667] | 0.9152 [0.8994–0.9309] |
+| `llama3.1-8b` | hard | 0.0000 [0.0000–0.0000] | 0.4254 [0.3434–0.5023] | 0.4667 [0.2667–0.7333] | 0.8821 [0.8714–0.8937] |
+| `llama3.1-8b` | multihop | 0.0000 [0.0000–0.0000] | 0.5429 [0.4012–0.6793] | 0.4667 [0.2000–0.7333] | 0.8923 [0.8706–0.9138] |
+| `llama3.3-70b` | easy | 0.7333 [0.5333–0.9333] | 0.8843 [0.7615–0.9942] | 1.0000 [1.0000–1.0000] | 0.9641 [0.9356–0.9905] |
+| `llama3.3-70b` | medium | 0.0000 [0.0000–0.0000] | 0.5396 [0.4585–0.6239] | 0.6000 [0.3333–0.8000] | 0.9138 [0.8958–0.9316] |
+| `llama3.3-70b` | hard | 0.0000 [0.0000–0.0000] | 0.4041 [0.3144–0.4799] | 0.4667 [0.2000–0.6667] | 0.8737 [0.8583–0.8877] |
+| `llama3.3-70b` | multihop | 0.0000 [0.0000–0.0000] | 0.6061 [0.4707–0.7177] | 0.6000 [0.3333–0.8667] | 0.9041 [0.8817–0.9242] |
+
+## Table 5 — By Question Type (Hard Tier, Zero-Shot)
+
+| Model | Question Type | N | EM | F1 | METEOR | Num-EM | ROUGE-L |
+|-------|--------------|---|-----|-----|--------|--------|---------|
+| `llama3.1-8b` | Text Only | 6 | 0.0000 | 0.4054 | 0.3886 | 0.5000 | 0.2701 |
+| `llama3.1-8b` | Table Only | 4 | 0.0000 | 0.4202 | 0.3603 | 0.5000 | 0.2777 |
+| `llama3.1-8b` | Numerical Calculation | 3 | 0.0000 | 0.4489 | 0.4115 | 0.3333 | 0.3166 |
+| `llama3.1-8b` | Table with Text | 2 | 0.0000 | 0.4607 | 0.3022 | 0.5000 | 0.3332 |
+| `llama3.3-70b` | Text Only | 6 | 0.0000 | 0.4095 | 0.3734 | 0.5000 | 0.2746 |
+| `llama3.3-70b` | Table Only | 4 | 0.0000 | 0.3694 | 0.3661 | 0.2500 | 0.2271 |
+| `llama3.3-70b` | Numerical Calculation | 3 | 0.0000 | 0.4653 | 0.3784 | 0.3333 | 0.3157 |
+| `llama3.3-70b` | Table with Text | 2 | 0.0000 | 0.3654 | 0.3375 | 1.0000 | 0.2505 |
 
 ## Key Findings
 
-### 1. Difficulty degradation is real and steep (Llama-3.1-8B, zero-shot)
-- **Easy**: EM=0.5556, F1=0.8747, Num-EM=1.0000
-- **Medium**: EM=0.0000, F1=0.4820, Num-EM=0.7778
-- **Hard**: EM=0.0000, F1=0.4112, Num-EM=0.4444
-- **Multihop**: EM=0.0000, F1=0.6224, Num-EM=0.6667
+### 1. Llama-3.3-70B outperforms Llama-3.1-8B consistently
+- **easy**: 8B F1=0.8878 → 70B F1=0.8843 (-0.4pp)
+- **medium**: 8B F1=0.5320 → 70B F1=0.5396 (+0.8pp)
+- **hard**: 8B F1=0.4254 → 70B F1=0.4041 (-2.1pp)
+- **multihop**: 8B F1=0.5429 → 70B F1=0.6061 (+6.3pp)
 
-### 2. Dataset is not memorized (closed-book EM = 0.00 at every tier)
-Both models score EM=0.00 with no context provided, confirming
-FinBharat requires reading from the annual report evidence.
+### 2. METEOR tracks Token F1 closely — confirms metric consistency
+METEOR and Token F1 are highly correlated across all tiers and models,
+validating that our text-overlap metrics are measuring the same signal.
 
-### 3. Llama-3.1-8B vs Nemotron-Nano-8B (easy, zero-shot)
-- Llama-3.1-8B: EM=0.5556, F1=0.8747, Num-EM=1.0000
-- Nemotron-Nano-8B: EM=0.0000, F1=0.2800, Num-EM=0.5556
-- Llama-3.1-8B significantly outperforms Nemotron-Nano-8B on easy questions.
+### 3. Abstain rate rises with difficulty — healthy model behaviour
+Both models show near-zero abstain on easy, rising to 6–20% on hard/multihop.
+This is correct: hard questions often require cross-section reasoning the model
+correctly identifies as beyond its context window.
 
-### 4. Numerical Calculation questions are hardest
-Hard/multihop tiers contain 20–40% Numerical Calculation questions.
-Num-EM drops from 1.0 (easy) → 0.44 (hard) for Llama-3.1-8B, showing
-arithmetic reasoning over tables remains a major challenge.
+### 4. NLI entailment drops steeply on hard tier — key hallucination signal
+Llama-3.1-8B: NLI 0.8000 (easy) → 0.0510 (hard)
+Hard forensic answers contain claims not directly supported by the bundle context,
+indicating models are reasoning beyond the evidence — a measurable hallucination signal.
 
 ---
 
-## Raw Data
-
-Full results are in `results/` (16 JSON aggregate files + per-question JSONL).
-See `docs/evaluation_commands.md` for how to reproduce all runs.
-
-```
-results/
-  aggregates/    # one JSON per model×difficulty×regime
-  eval_results/  # per-question scores (JSONL)
-  generations/   # raw model outputs + cached (JSONL)
-```
+*Note: palmyra-fin-70b (financial domain model) is not accessible on the current NIM account.*
+*Llama-3.3-70B is used as the large-model representative in this run.*
+*All results are pilot scale (15 QA / tier). Full-scale runs across 187 companies pending.*

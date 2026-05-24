@@ -138,6 +138,45 @@ def test_chunk_cache():
     assert c1 is c2  # same list object from cache
 
 
+def test_meteor_perfect():
+    from finbharat.metrics.text import compute_meteor
+    score = compute_meteor("Thirteen Directors on the Board", "Thirteen Directors on the Board")
+    assert score >= 0.99  # NLTK METEOR applies a small fragmentation penalty even on perfect match
+
+
+def test_meteor_partial():
+    from finbharat.metrics.text import compute_meteor
+    score = compute_meteor("Revenue increased by eighteen percent", "Revenue increased")
+    assert 0.0 < score < 1.0
+
+
+def test_meteor_empty():
+    from finbharat.metrics.text import compute_meteor
+    assert compute_meteor("", "anything") == 0.0
+
+
+def test_bertscore_prf():
+    """BERTScore batch should return three lists of equal length."""
+    from finbharat.eval.evaluate import compute_bertscore_batch
+    golds = ["Thirteen Directors", "Revenue increased by 18 percent"]
+    preds = ["Thirteen Directors", "Revenue grew by 18%"]
+    P, R, F = compute_bertscore_batch(golds, preds)
+    assert len(P) == len(R) == len(F) == 2
+    assert all(0.0 <= v <= 1.0 for v in P + R + F)
+    # Perfect match should be near 1.0
+    assert F[0] >= 0.95
+
+
+def test_abstain_detection():
+    from finbharat.eval.evaluate import _is_abstain
+    assert _is_abstain("Not available in context") is True
+    assert _is_abstain("The answer is not provided in the document") is True
+    assert _is_abstain("Cannot be determined from the given context") is True
+    assert _is_abstain("Thirteen (13) Directors") is False
+    assert _is_abstain("₹ 41,173 crores") is False
+    assert _is_abstain("") is False
+
+
 def test_verification_anchors_parsed():
     """Hard/multihop records should have verification_anchors populated."""
     dataset = FinBharatDataset(DATA_ROOT)

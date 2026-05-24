@@ -3,9 +3,14 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Optional
 
+from tqdm import tqdm
+
 from finbharat.data.loader import QARecord, FinBharatDataset, SAMPLE_COMPANIES
 from finbharat.metrics.numeric import compute_numeric_metrics, compute_tolerance_accuracy, compute_mape
-from finbharat.metrics.text import compute_exact_match, compute_token_f1, compute_relaxed_em, compute_directional_accuracy
+from finbharat.metrics.text import (
+    compute_exact_match, compute_token_f1, compute_relaxed_em,
+    compute_directional_accuracy, compute_rouge_l,
+)
 from finbharat.metrics.faithfulness import compute_nli_entailment, compute_evidence_traceability
 from finbharat.models.runner import ModelRunner, GenerationResult, PREDEFINED_MODELS
 
@@ -23,6 +28,7 @@ class EvalResult:
     exact_match: int
     relaxed_em: int
     token_f1: float
+    rouge_l: float
     num_exact: int
     num_f1: float
     tol1_acc: int
@@ -37,6 +43,7 @@ class EvalResult:
 
 def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> dict:
     text_res = compute_token_f1(gold, pred)
+    rouge = compute_rouge_l(gold, pred)
     num_res = compute_numeric_metrics(gold, pred)
     tol1 = compute_tolerance_accuracy(gold, pred, tolerance_pct=1.0)
     tol5 = compute_tolerance_accuracy(gold, pred, tolerance_pct=5.0)
@@ -49,6 +56,7 @@ def evaluate_single(gold: str, pred: str, evidence: str, gold_evidence: str) -> 
         "exact_match": text_res.exact_match,
         "relaxed_em": rlx_em,
         "token_f1": text_res.f1,
+        "rouge_l": rouge,
         "num_exact": num_res.num_exact,
         "num_f1": num_res.num_f1,
         "tol1_acc": tol1,
@@ -76,7 +84,7 @@ def evaluate_qa_records(
                 company=qa.company,
                 gold_answer=qa.answer,
                 predicted_answer="",
-                exact_match=0, relaxed_em=0, token_f1=0.0,
+                exact_match=0, relaxed_em=0, token_f1=0.0, rouge_l=0.0,
                 num_exact=0, num_f1=0.0, tol1_acc=0, tol5_acc=0, tol10_acc=0,
                 directional_acc=None, entailment_ratio=0.0,
                 evidence_traceability=0.0,
@@ -115,6 +123,7 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         "exact_match": round(sum(r.exact_match for r in results) / n, 4),
         "relaxed_em": round(sum(r.relaxed_em for r in results) / n, 4),
         "token_f1": round(sum(r.token_f1 for r in results) / n, 4),
+        "rouge_l": round(sum(r.rouge_l for r in results) / n, 4),
         "num_exact": round(sum(r.num_exact for r in results) / n, 4),
         "num_f1": round(sum(r.num_f1 for r in results) / n, 4),
         "tol1_acc": round(sum(r.tol1_acc for r in results) / n, 4),
@@ -129,46 +138,52 @@ def aggregate_results(results: list[EvalResult]) -> dict:
         agg["directional_accuracy"] = round(sum(r.directional_acc for r in valid_dir) / len(valid_dir), 4)
         agg["directional_applicable"] = len(valid_dir)
 
+    def _init_bucket() -> dict:
+        return {"total": 0, "exact_match": 0, "relaxed_em": 0, "token_f1": 0.0,
+                "rouge_l": 0.0, "num_exact": 0, "num_f1": 0.0}
+
+    def _acc_bucket(b: dict, r: "EvalResult"):
+        b["total"] += 1
+        b["exact_match"] += r.exact_match
+        b["relaxed_em"] += r.relaxed_em
+        b["token_f1"] += r.token_f1
+        b["rouge_l"] += r.rouge_l
+        b["num_exact"] += r.num_exact
+        b["num_f1"] += r.num_f1
+
+    def _avg_bucket(b: dict):
+        t = b["total"]
+        for k in ("exact_match", "relaxed_em", "token_f1", "rouge_l", "num_exact", "num_f1"):
+            b[k] = round(b[k] / t, 4)
+
     by_qtype: dict[str, dict] = {}
     for r in results:
         qt = r.question_type
         if qt not in by_qtype:
-            by_qtype[qt] = {"total": 0, "exact_match": 0, "relaxed_em": 0, "token_f1": 0.0, "num_exact": 0, "num_f1": 0.0}
-        by_qtype[qt]["total"] += 1
-        by_qtype[qt]["exact_match"] += r.exact_match
-        by_qtype[qt]["relaxed_em"] += r.relaxed_em
-        by_qtype[qt]["token_f1"] += r.token_f1
-        by_qtype[qt]["num_exact"] += r.num_exact
-        by_qtype[qt]["num_f1"] += r.num_f1
-
-    for qt, d in by_qtype.items():
-        t = d["total"]
-        d["exact_match"] = round(d["exact_match"] / t, 4)
-        d["relaxed_em"] = round(d["relaxed_em"] / t, 4)
-        d["token_f1"] = round(d["token_f1"] / t, 4)
-        d["num_exact"] = round(d["num_exact"] / t, 4)
-        d["num_f1"] = round(d["num_f1"] / t, 4)
+            by_qtype[qt] = _init_bucket()
+        _acc_bucket(by_qtype[qt], r)
+    for d in by_qtype.values():
+        _avg_bucket(d)
     agg["by_question_type"] = by_qtype
+
+    by_difficulty: dict[str, dict] = {}
+    for r in results:
+        diff = r.difficulty
+        if diff not in by_difficulty:
+            by_difficulty[diff] = _init_bucket()
+        _acc_bucket(by_difficulty[diff], r)
+    for d in by_difficulty.values():
+        _avg_bucket(d)
+    agg["by_difficulty"] = by_difficulty
 
     by_company: dict[str, dict] = {}
     for r in results:
         c = r.company
         if c not in by_company:
-            by_company[c] = {"total": 0, "exact_match": 0, "relaxed_em": 0, "token_f1": 0.0, "num_exact": 0, "num_f1": 0.0}
-        by_company[c]["total"] += 1
-        by_company[c]["exact_match"] += r.exact_match
-        by_company[c]["relaxed_em"] += r.relaxed_em
-        by_company[c]["token_f1"] += r.token_f1
-        by_company[c]["num_exact"] += r.num_exact
-        by_company[c]["num_f1"] += r.num_f1
-
-    for c, d in by_company.items():
-        t = d["total"]
-        d["exact_match"] = round(d["exact_match"] / t, 4)
-        d["relaxed_em"] = round(d["relaxed_em"] / t, 4)
-        d["token_f1"] = round(d["token_f1"] / t, 4)
-        d["num_exact"] = round(d["num_exact"] / t, 4)
-        d["num_f1"] = round(d["num_f1"] / t, 4)
+            by_company[c] = _init_bucket()
+        _acc_bucket(by_company[c], r)
+    for d in by_company.values():
+        _avg_bucket(d)
     agg["by_company"] = by_company
 
     return agg
@@ -193,17 +208,24 @@ def run_evaluation(
     model_keys: list[str] = ("qwen3-8b", "llama3.1-8b"),
     difficulty: str = "easy",
     companies: list[dict] | None = None,
+    all_companies: bool = False,
     max_per_company: int | None = None,
     api_key: str | None = None,
 ):
     dataset = FinBharatDataset(data_root)
+
+    if all_companies:
+        source = "e_m" if difficulty in ("easy", "medium") else "h_m"
+        companies = dataset.list_available_companies(source=source)
+        print(f"Running on all {len(companies)} companies ({source})")
+
     qa_records = dataset.load_sample(companies=companies, difficulty=difficulty, max_per_company=max_per_company)
 
     print(f"Loaded {len(qa_records)} QA records for difficulty={difficulty}")
     _print_qa_stats(qa_records)
 
     contexts = []
-    for qa in qa_records:
+    for qa in tqdm(qa_records, desc="Building contexts", unit="q"):
         ctx = dataset.build_context_for_qa(qa)
         if not ctx:
             ctx = qa.evidence
@@ -247,7 +269,7 @@ def _print_qa_stats(records: list[QARecord]):
 def _print_aggregate(model_name: str, agg: dict):
     print(f"\n  === {model_name} Results ===")
     print(f"  Total: {agg['total']} | Errors: {agg.get('num_errors', 0)}")
-    print(f"  EM: {agg['exact_match']:.4f} | Relaxed EM: {agg['relaxed_em']:.4f} | Token F1: {agg['token_f1']:.4f}")
+    print(f"  EM: {agg['exact_match']:.4f} | Relaxed EM: {agg['relaxed_em']:.4f} | Token F1: {agg['token_f1']:.4f} | ROUGE-L: {agg['rouge_l']:.4f}")
     mape_str = f"{agg['mape']:.2f}%" if agg.get("mape") is not None else "N/A"
     print(f"  Num-Exact: {agg['num_exact']:.4f} | Num-F1: {agg['num_f1']:.4f} | MAPE: {mape_str}")
     print(f"  Tol-1: {agg['tol1_acc']:.4f} | Tol-5: {agg['tol5_acc']:.4f} | Tol-10: {agg['tol10_acc']:.4f}")

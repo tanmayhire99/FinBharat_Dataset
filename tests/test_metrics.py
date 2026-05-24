@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from finbharat.data.loader import FinBharatDataset, SAMPLE_COMPANIES, parse_qa_record
 from finbharat.metrics.numeric import compute_numeric_metrics, compute_tolerance_accuracy, normalize_number, extract_numbers
-from finbharat.metrics.text import compute_exact_match, compute_token_f1, compute_relaxed_em, compute_directional_accuracy
+from finbharat.metrics.text import compute_exact_match, compute_token_f1, compute_relaxed_em, compute_directional_accuracy, compute_rouge_l
 from finbharat.metrics.faithfulness import compute_nli_entailment, compute_evidence_traceability
 
 
@@ -100,3 +100,37 @@ def test_extract_numbers():
     nums = extract_numbers("Rs 41,173 million and ₹ 549,498")
     assert "41,173" in nums
     assert "549,498" in nums
+
+
+def test_rouge_l_perfect():
+    assert compute_rouge_l("Thirteen Directors", "Thirteen Directors") == 1.0
+
+
+def test_rouge_l_partial():
+    score = compute_rouge_l("The revenue increased by 18 percent", "Revenue increased")
+    assert 0.0 < score < 1.0
+
+
+def test_rouge_l_empty():
+    assert compute_rouge_l("", "anything") == 0.0
+
+
+def test_chunk_cache():
+    """Chunks for the same company should be the same object (cached)."""
+    dataset = FinBharatDataset(DATA_ROOT)
+    c1 = dataset.load_chunks("Private_Sector_Bank", "HDFC_Bank")
+    c2 = dataset.load_chunks("Private_Sector_Bank", "HDFC_Bank")
+    assert c1 is c2  # same list object from cache
+
+
+def test_split_creation():
+    from finbharat.data.split import create_splits
+    splits = create_splits(DATA_ROOT, seed=42)
+    total = sum(len(v) for v in splits.values())
+    assert total == 187
+    # No company appears in multiple splits
+    all_keys = [f"{c['sector']}:{c['company']}" for split in splits.values() for c in split]
+    assert len(all_keys) == len(set(all_keys))
+    # All splits are non-empty
+    for name, companies in splits.items():
+        assert len(companies) > 0, f"{name} split is empty"

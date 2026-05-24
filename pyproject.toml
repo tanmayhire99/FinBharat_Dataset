@@ -12,6 +12,7 @@ dependencies = [
     "scipy>=1.13",
     "tqdm>=4.66",
     "rich>=13.7",
+    "python-dotenv>=1.2.2",
 ]
 
 [project.optional-dependencies]

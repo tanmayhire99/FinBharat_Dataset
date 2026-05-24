@@ -1,6 +1,9 @@
 import re
 import string
 from dataclasses import dataclass
+from rouge_score import rouge_scorer as _rouge_scorer
+
+_SCORER = _rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False)
 
 
 @dataclass
@@ -93,6 +96,13 @@ def extract_directional_label(text: str) -> str | None:
     if "no" in lower:
         return "no"
     return None
+
+
+def compute_rouge_l(gold: str, pred: str) -> float:
+    if not gold.strip() or not pred.strip():
+        return 0.0
+    scores = _SCORER.score(gold, pred)
+    return round(scores["rougeL"].fmeasure, 4)
 
 
 def compute_directional_accuracy(gold: str, pred: str) -> int | None:

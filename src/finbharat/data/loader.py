@@ -112,6 +112,7 @@ class FinBharatDataset:
         self.data_root = Path(data_root)
         self.e_m_root = self.data_root / "output_final_e_m"
         self.h_m_root = self.data_root / "output_final_h_m"
+        self._chunk_cache: dict[str, list[ChunkRecord]] = {}
 
     def _company_dir(self, sector: str, company: str, source: str = "e_m") -> Path:
         root = self.e_m_root if source == "e_m" else self.h_m_root
@@ -138,9 +139,12 @@ class FinBharatDataset:
         return [parse_qa_record(r, idx=i) for i, r in enumerate(raw)]
 
     def load_chunks(self, sector: str, company: str, source: str = "e_m") -> list[ChunkRecord]:
-        path = self._company_dir(sector, company, source) / "chunks.jsonl"
-        raw = load_jsonl(path)
-        return [parse_chunk_record(r) for r in raw]
+        cache_key = f"{source}:{sector}:{company}"
+        if cache_key not in self._chunk_cache:
+            path = self._company_dir(sector, company, source) / "chunks.jsonl"
+            raw = load_jsonl(path)
+            self._chunk_cache[cache_key] = [parse_chunk_record(r) for r in raw]
+        return self._chunk_cache[cache_key]
 
     def load_bundles(self, sector: str, company: str, source: str = "e_m") -> list[BundleRecord]:
         path = self._company_dir(sector, company, source) / "semantic_bundles_details.jsonl"

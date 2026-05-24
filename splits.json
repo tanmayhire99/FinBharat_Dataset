@@ -1,0 +1,756 @@
+{
+  "train": [
+    {
+      "sector": "Advertising_&_Media_Agencies",
+      "company": "Bright_Outdoor"
+    },
+    {
+      "sector": "Breweries_&_Distilleries",
+      "company": "United_Spirits"
+    },
+    {
+      "sector": "Pesticides_&_Agrochemicals",
+      "company": "P_I_Industries"
+    },
+    {
+      "sector": "Multi_Utilities",
+      "company": "Rajesh_Power"
+    },
+    {
+      "sector": "Road_AssetsToll,_Annuity,_Hybrid-Annuity",
+      "company": "National_High"
+    },
+    {
+      "sector": "Digital_Entertainment",
+      "company": "Nazara_Technolo"
+    },
+    {
+      "sector": "Trading_-_Gas",
+      "company": "Aegis_Logistics"
+    },
+    {
+      "sector": "Holding_Company",
+      "company": "EdelweissFin"
+    },
+    {
+      "sector": "Water_Supply_&_Management",
+      "company": "ION_Exchange"
+    },
+    {
+      "sector": "Biotechnology",
+      "company": "Advanced_Enzyme"
+    },
+    {
+      "sector": "Software_Products",
+      "company": "Oracle_FinServ"
+    },
+    {
+      "sector": "Business_Process_Outsourcing_(BPO)__Knowledge_Process_Outsourcing_(KPO)",
+      "company": "eClerx_Services"
+    },
+    {
+      "sector": "Trading_-_Chemicals",
+      "company": "Vinyl_Chemicals"
+    },
+    {
+      "sector": "Tyres_&_Rubber_Products",
+      "company": "JK_Tyre_&_Indust"
+    },
+    {
+      "sector": "Commodity_Chemicals",
+      "company": "Deepak_Fertilis"
+    },
+    {
+      "sector": "Diversified_consumer_products",
+      "company": "Virtuoso_Optoel"
+    },
+    {
+      "sector": "Residential,_Commercial_Projects",
+      "company": "Sobha"
+    },
+    {
+      "sector": "Oil_Equipment_&_Services",
+      "company": "Deep_Industries"
+    },
+    {
+      "sector": "Airport_&_Airport_services",
+      "company": "GMR_Airports"
+    },
+    {
+      "sector": "Power_Distribution",
+      "company": "Adani_Energy_Sol"
+    },
+    {
+      "sector": "Ferro_&_Silica_Manganese",
+      "company": "Indian_Metals"
+    },
+    {
+      "sector": "General_Insurance",
+      "company": "ICICI_Lombard"
+    },
+    {
+      "sector": "Cement_&_Cement_Products",
+      "company": "UltraTech_Cem"
+    },
+    {
+      "sector": "Consulting_Services",
+      "company": "IIRM_Holdings"
+    },
+    {
+      "sector": "Other_Food_Products",
+      "company": "EID_Parry"
+    },
+    {
+      "sector": "Forest_Products",
+      "company": "Indian_Wood_Prod"
+    },
+    {
+      "sector": "Non_Banking_Financial_Company_(NBFC)",
+      "company": "Bajaj_Finance"
+    },
+    {
+      "sector": "Distributors",
+      "company": "Khemani_Distrib"
+    },
+    {
+      "sector": "Aerospace_&_Defense",
+      "company": "HindAeronautics"
+    },
+    {
+      "sector": "Granites_&_Marbles",
+      "company": "Pokarna"
+    },
+    {
+      "sector": "Microfinance_Institutions",
+      "company": "Muthoot_Microfin"
+    },
+    {
+      "sector": "Gas_Transmission_Marketing",
+      "company": "GAIL_(India)"
+    },
+    {
+      "sector": "Copper",
+      "company": "Hindustan_Copper"
+    },
+    {
+      "sector": "Printing_&_Publication",
+      "company": "Navneet_Educat"
+    },
+    {
+      "sector": "Other_Industrial_Products",
+      "company": "PTC_Industries"
+    },
+    {
+      "sector": "Port_&_Port_services",
+      "company": "Adani_Ports"
+    },
+    {
+      "sector": "Housing_Finance_Company",
+      "company": "AAVAS_Financiers"
+    },
+    {
+      "sector": "Waste_Management",
+      "company": "EMS"
+    },
+    {
+      "sector": "Houseware",
+      "company": "Cello_World"
+    },
+    {
+      "sector": "Dyes_And_Pigments",
+      "company": "Sudarshan_Chem"
+    },
+    {
+      "sector": "Packaging",
+      "company": "Mold-Tek_Pack"
+    },
+    {
+      "sector": "Public_Sector_Bank",
+      "company": "SBI"
+    },
+    {
+      "sector": "Life_Insurance",
+      "company": "Life_Insurance"
+    },
+    {
+      "sector": "Furniture,_Home_Furnishing",
+      "company": "Sheela_Foam"
+    },
+    {
+      "sector": "Specialty_Chemicals",
+      "company": "Deepak_Nitrite"
+    },
+    {
+      "sector": "2_3_Wheelers",
+      "company": "Eicher_Motors"
+    },
+    {
+      "sector": "Passenger_Cars_&_Utility_Vehicles",
+      "company": "M_&_M"
+    },
+    {
+      "sector": "Cables_-_Electricals",
+      "company": "Finolex_Cables"
+    },
+    {
+      "sector": "Insurance_Distributors",
+      "company": "Medi_Assist_Ser"
+    },
+    {
+      "sector": "Ratings",
+      "company": "ICRA"
+    },
+    {
+      "sector": "Telecom_-_Cellular_&_Fixed_line_services",
+      "company": "Bharti_Airtel"
+    },
+    {
+      "sector": "Explosives",
+      "company": "Solar_Industries"
+    },
+    {
+      "sector": "Real_Estate_related_services",
+      "company": "PE_Analytics"
+    },
+    {
+      "sector": "Jute_&_Jute_Products",
+      "company": "Cheviot_Company"
+    },
+    {
+      "sector": "Diversified",
+      "company": "Godrej_Industrie"
+    },
+    {
+      "sector": "Petrochemicals",
+      "company": "Rain_Industries"
+    },
+    {
+      "sector": "Dredging",
+      "company": "Knowledge_Marine"
+    },
+    {
+      "sector": "IT_Enabled_Services",
+      "company": "Affle_3i"
+    },
+    {
+      "sector": "Asset_Management_Company",
+      "company": "Nippon_Life_Ind"
+    },
+    {
+      "sector": "Industrial_Products",
+      "company": "Praj_Industries"
+    },
+    {
+      "sector": "Other_Beverages",
+      "company": "Varun_Beverages"
+    },
+    {
+      "sector": "Power_-_Transmission",
+      "company": "Power_Grid_Corpn"
+    },
+    {
+      "sector": "Specialty_Chemicals",
+      "company": "Alkyl_Amines"
+    },
+    {
+      "sector": "TV_Broadcasting_&_Software_Production",
+      "company": "Sun_TV_Network"
+    },
+    {
+      "sector": "Plastic_Products_-_Industrial",
+      "company": "Astral"
+    },
+    {
+      "sector": "Media_&_Entertainment",
+      "company": "Tips_Music"
+    },
+    {
+      "sector": "Gems,_Jewellery_And_Watches",
+      "company": "PC_Jeweller"
+    },
+    {
+      "sector": "Household_Appliances",
+      "company": "Whirlpool_India"
+    },
+    {
+      "sector": "Logistics_Solution_Provider",
+      "company": "Container_Corpn"
+    },
+    {
+      "sector": "Packaged_Foods",
+      "company": "Nestle_India"
+    },
+    {
+      "sector": "Refineries_&_Marketing",
+      "company": "Reliance_Industries"
+    },
+    {
+      "sector": "Fertilizers",
+      "company": "Chambal_Fert"
+    },
+    {
+      "sector": "Tea_&_Coffee",
+      "company": "Tata_Consumer"
+    },
+    {
+      "sector": "Oil_Exploration_&_Production",
+      "company": "O_N_G_C"
+    },
+    {
+      "sector": "Stationary",
+      "company": "DOMS_Industries"
+    },
+    {
+      "sector": "Offshore_Support_Solution_Drilling",
+      "company": "Dolphin_Offshore"
+    },
+    {
+      "sector": "Plywood_Boards__Laminates",
+      "company": "Century_Plyboard"
+    },
+    {
+      "sector": "Dairy_Products",
+      "company": "Hatsun_Agro"
+    },
+    {
+      "sector": "Castings_&_Forgings",
+      "company": "AIA_Engineering"
+    },
+    {
+      "sector": "Paper_&_Paper_Products",
+      "company": "JK_Paper"
+    },
+    {
+      "sector": "Zinc",
+      "company": "Hindustan_Zinc"
+    },
+    {
+      "sector": "Garments_&_Apparels",
+      "company": "Page_Industries"
+    },
+    {
+      "sector": "Specialty_Chemicals",
+      "company": "Clean_Science"
+    },
+    {
+      "sector": "Other_Consumer_Services",
+      "company": "SIS"
+    },
+    {
+      "sector": "Heavy_Electrical_Equipment",
+      "company": "Azad_Engineering"
+    },
+    {
+      "sector": "Computers_-_Software_&_Consulting",
+      "company": "Infosys"
+    },
+    {
+      "sector": "Trading_&_Distributors",
+      "company": "Redington"
+    },
+    {
+      "sector": "Medical_Equipment_&_Supplies",
+      "company": "Poly_Medicure"
+    },
+    {
+      "sector": "Exchange_and_Data_Platform",
+      "company": "Indian_Energy_Ex"
+    },
+    {
+      "sector": "Shipping",
+      "company": "GE_Shipping_Co"
+    },
+    {
+      "sector": "Airline",
+      "company": "Interglobe_Aviat"
+    },
+    {
+      "sector": "Construction_Vehicles",
+      "company": "BEML_Ltd"
+    },
+    {
+      "sector": "Tractors",
+      "company": "Escorts_Kubota"
+    },
+    {
+      "sector": "Diversified_Retail",
+      "company": "Avenue_Super"
+    },
+    {
+      "sector": "Other_Construction_Materials",
+      "company": "Ramco_Inds"
+    },
+    {
+      "sector": "Wellness",
+      "company": "Kaya_Ltd"
+    },
+    {
+      "sector": "Sanitary_Ware",
+      "company": "Cera_Sanitary"
+    },
+    {
+      "sector": "Sugar",
+      "company": "Balrampur_Chini"
+    },
+    {
+      "sector": "Sponge_Iron",
+      "company": "KIOCL"
+    },
+    {
+      "sector": "Other_Electrical_Equipment",
+      "company": "Waaree_Energies"
+    },
+    {
+      "sector": "Personal_Care",
+      "company": "Colgate-Palmoliv"
+    },
+    {
+      "sector": "Pharmaceuticals",
+      "company": "Sun_PharmaInds"
+    },
+    {
+      "sector": "Other_Textile_Products",
+      "company": "Trident"
+    },
+    {
+      "sector": "Precious_Metals",
+      "company": "DecGold_Mines"
+    },
+    {
+      "sector": "Leisure_Products",
+      "company": "COSCO_(India)"
+    },
+    {
+      "sector": "Glass_-_Industrial",
+      "company": "Borosil_Renew"
+    },
+    {
+      "sector": "Cigarettes_&_Tobacco_Products",
+      "company": "Godfrey_Phillips"
+    },
+    {
+      "sector": "Paints",
+      "company": "Asian_Paints"
+    },
+    {
+      "sector": "Household_Products",
+      "company": "Eveready_Inds"
+    },
+    {
+      "sector": "Animal_Feed",
+      "company": "Godrej_Agrovet"
+    },
+    {
+      "sector": "Industrial_Minerals",
+      "company": "NMDC"
+    },
+    {
+      "sector": "Seafood",
+      "company": "Apex_Frozen_Food"
+    }
+  ],
+  "dev": [
+    {
+      "sector": "Iron_&_Steel_Products",
+      "company": "Shivalik_Bimetal"
+    },
+    {
+      "sector": "Data_Processing_Services",
+      "company": "Tracxn_Technolo"
+    },
+    {
+      "sector": "Integrated_Power_Utilities",
+      "company": "Adani_Power"
+    },
+    {
+      "sector": "Restaurants",
+      "company": "Jubilant_Food"
+    },
+    {
+      "sector": "E-Learning",
+      "company": "Veranda_Learning"
+    },
+    {
+      "sector": "Edible_Oil",
+      "company": "Kriti_Nutrients"
+    },
+    {
+      "sector": "Pharmacy_Retail",
+      "company": "Medplus_Health"
+    },
+    {
+      "sector": "E-Retail__E-Commerce",
+      "company": "Eternal"
+    },
+    {
+      "sector": "Oil_Storage_&_Transportation",
+      "company": "Aegis_Vopak_Term"
+    },
+    {
+      "sector": "Industrial_Gases",
+      "company": "Linde_India"
+    },
+    {
+      "sector": "Plastic_Products_-_Consumer",
+      "company": "Safari_Inds"
+    },
+    {
+      "sector": "Transport_Related_Services",
+      "company": "Kernex_Microsys"
+    },
+    {
+      "sector": "Education",
+      "company": "NIIT"
+    },
+    {
+      "sector": "Auto_Dealer",
+      "company": "Landmark_Cars"
+    },
+    {
+      "sector": "Other_Capital_Market_related_Services",
+      "company": "Gretex_Corporate"
+    },
+    {
+      "sector": "Telecom_-_Infrastructure",
+      "company": "Indus_Towers"
+    },
+    {
+      "sector": "Power_Generation",
+      "company": "NTPC"
+    },
+    {
+      "sector": "Hospital",
+      "company": "Max_Healthcare"
+    },
+    {
+      "sector": "Financial_Technology_(Fintech)",
+      "company": "One_97"
+    },
+    {
+      "sector": "Printing_Inks",
+      "company": "DIC_India"
+    },
+    {
+      "sector": "Carbon_Black",
+      "company": "PCBL_Chemical"
+    },
+    {
+      "sector": "Electrodes_&_Refractories",
+      "company": "Graphite_India"
+    },
+    {
+      "sector": "Leather_And_Leather_Products",
+      "company": "Mayur_Uniquoters"
+    },
+    {
+      "sector": "Hotels_&_Resorts",
+      "company": "Indian_Hotels_Co"
+    },
+    {
+      "sector": "Ceramics",
+      "company": "Kajaria_Ceramics"
+    },
+    {
+      "sector": "Lubricants",
+      "company": "Castrol_India"
+    },
+    {
+      "sector": "Consumer_Electronics",
+      "company": "Dixon_Technolog"
+    },
+    {
+      "sector": "Power_Trading",
+      "company": "PTC_India"
+    },
+    {
+      "sector": "Other_Telecom_Services",
+      "company": "Railtel_Corpn"
+    },
+    {
+      "sector": "Auto_Components_&_Equipments",
+      "company": "Bosch"
+    },
+    {
+      "sector": "Glass_-_Consumer",
+      "company": "La_Opala_RG"
+    },
+    {
+      "sector": "Iron_&_Steel",
+      "company": "JSW_Steel"
+    },
+    {
+      "sector": "LPG_CNG_PNG_LNG_Supplier",
+      "company": "Indraprastha_Gas"
+    },
+    {
+      "sector": "Commercial_Vehicles",
+      "company": "Ashok_Leyland"
+    },
+    {
+      "sector": "Meat_Products_including_Poultry",
+      "company": "HMA_Agro_Inds"
+    },
+    {
+      "sector": "Tour,_Travel_Related_Services",
+      "company": "I_R_C_T_C"
+    },
+    {
+      "sector": "Trading_-_Textile_Products",
+      "company": "PDS"
+    }
+  ],
+  "test": [
+    {
+      "sector": "Private_Sector_Bank",
+      "company": "HDFC_Bank"
+    },
+    {
+      "sector": "Internet_&_Catalogue_Retail",
+      "company": "Info_Edg(India)"
+    },
+    {
+      "sector": "Telecom_-__Equipment_&_Accessories",
+      "company": "Sterlite_Tech"
+    },
+    {
+      "sector": "Diversified_FMCG",
+      "company": "Hind_Unilever"
+    },
+    {
+      "sector": "Speciality_Retail",
+      "company": "Arvind_Fashions"
+    },
+    {
+      "sector": "Investment_Company",
+      "company": "Jio_Financial"
+    },
+    {
+      "sector": "Trading_-_Minerals",
+      "company": "Adani_Enterp"
+    },
+    {
+      "sector": "Diversified_Metals",
+      "company": "Vedanta"
+    },
+    {
+      "sector": "Abrasives_&_Bearings",
+      "company": "SKF_India"
+    },
+    {
+      "sector": "Healthcare_Service_Provider",
+      "company": "Thyrocare_Tech"
+    },
+    {
+      "sector": "Road_Transport",
+      "company": "Wise_Travel"
+    },
+    {
+      "sector": "Other_Financial_Services",
+      "company": "CRISIL"
+    },
+    {
+      "sector": "Financial_Institution",
+      "company": "I_R_F_C"
+    },
+    {
+      "sector": "Other_Agricultural_Products",
+      "company": "Kaveri_Seed_Co"
+    },
+    {
+      "sector": "Trading_-_Metals",
+      "company": "Lloyds_Enterpris"
+    },
+    {
+      "sector": "Electronic_Media",
+      "company": "Cyber_Media_Ind"
+    },
+    {
+      "sector": "Railway_Wagons",
+      "company": "Jupiter_Wagons"
+    },
+    {
+      "sector": "Web_based_media_and_service",
+      "company": "OnMobile_Global"
+    },
+    {
+      "sector": "Ship_Building_&_Allied_Services",
+      "company": "Mazagon_Dock"
+    },
+    {
+      "sector": "Pig_Iron",
+      "company": "Kirl_Ferrous"
+    },
+    {
+      "sector": "Footwear",
+      "company": "Relaxo_Footwear"
+    },
+    {
+      "sector": "Film_Production,_Distribution_&_Exhibition",
+      "company": "PVR_Inox"
+    },
+    {
+      "sector": "Coal",
+      "company": "Coal_India"
+    },
+    {
+      "sector": "Aluminium,_Copper_&_Zinc_Products",
+      "company": "Prec_Wires_(I)"
+    },
+    {
+      "sector": "Amusement_Parks__Other_Recreation",
+      "company": "Delta_Corp"
+    },
+    {
+      "sector": "Other_Bank",
+      "company": "Ujjivan_Small"
+    },
+    {
+      "sector": "Rubber",
+      "company": "Apcotex_Industri"
+    },
+    {
+      "sector": "Civil_Construction",
+      "company": "Rail_Vikas"
+    },
+    {
+      "sector": "Print_Media",
+      "company": "D_B_Corp"
+    },
+    {
+      "sector": "Trading_-_Auto_components",
+      "company": "Jullundur_Motor"
+    },
+    {
+      "sector": "Compressors,_Pumps_&_Diesel_Engines",
+      "company": "Cummins_India"
+    },
+    {
+      "sector": "Depositories,_Clearing_Houses_and_Other_Intermediaries",
+      "company": "Cams_Services"
+    },
+    {
+      "sector": "Financial_Products_Distributor",
+      "company": "Anand_Rathi_Wea"
+    },
+    {
+      "sector": "Garments_&_Apparels",
+      "company": "Active_Clothing"
+    },
+    {
+      "sector": "Healthcare_Research,_Analytics_&_Technology",
+      "company": "Indegene"
+    },
+    {
+      "sector": "Aluminium",
+      "company": "Hindalco_Inds"
+    },
+    {
+      "sector": "Computers_Hardware_&_Equipments",
+      "company": "NELCO"
+    },
+    {
+      "sector": "Stockbroking_&_Allied",
+      "company": "Angel_One"
+    }
+  ]
+}

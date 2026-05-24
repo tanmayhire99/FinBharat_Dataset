@@ -113,9 +113,11 @@ QA_SYSTEM_PROMPT = (
 
 QA_SYSTEM_PROMPT_CLOSED = (
     "You are a financial analyst with expertise in Indian companies and annual reports. "
-    "Answer the following question about an Indian company's annual report using your knowledge. "
+    "Answer the following question using only your pre-training knowledge about this company. "
+    "You do NOT have access to the actual annual report document. "
     "Be precise and concise. For numeric questions, provide the exact number with its unit. "
-    "For yes/no questions, answer yes or no first."
+    "For yes/no questions, answer yes or no first. "
+    "If you are not confident, say \"Not available in memory\"."
 )
 
 QA_USER_TEMPLATE = """Context from the annual report:
@@ -127,7 +129,15 @@ Question: {question}
 
 Answer:"""
 
-QA_USER_TEMPLATE_CLOSED = """Question about an Indian company's annual report:
+QA_USER_TEMPLATE_CLOSED = """Company information:
+{metadata}
+
+Question (answer from your pre-training knowledge — no document provided):
+{question}
+
+Answer:"""
+
+QA_USER_TEMPLATE_CLOSED_NO_META = """Question about an Indian company's annual report:
 
 {question}
 
@@ -154,6 +164,50 @@ FEW_SHOT_EXAMPLES = [
         "answer": "Increased by 14.3% to ₹ 8,240 crores",
     },
 ]
+
+
+_SECTOR_LABELS = {
+    "Private_Sector_Bank": "Private Sector Banking",
+    "Public_Sector_Bank":  "Public Sector Banking",
+    "Information_Technology": "Information Technology",
+    "Pharmaceutical": "Pharmaceuticals",
+    "Automobile": "Automotive",
+    "Fast_Moving_Consumer_Goods": "FMCG",
+}
+
+
+def _format_company_metadata(company: str, sector: str, year: str) -> str:
+    """Format QARecord metadata into a concise preamble for the closed-book prompt.
+
+    Gives the model enough context to retrieve from pre-training memory
+    without providing any document content.
+
+    Example output:
+        Company:     HDFC Bank Limited
+        Sector:      Private Sector Banking
+        Fiscal Year: FY2025 (April 2024 – March 2025)
+        Country:     India (BSE/NSE listed)
+    """
+    # Make company name human-readable
+    company_display = company.replace("_", " ")
+    sector_display  = _SECTOR_LABELS.get(sector, sector.replace("_", " "))
+    year_display    = year  # e.g. "FY2025"
+
+    # Add April–March clarification for Indian fiscal year
+    if year_display.startswith("FY") and len(year_display) == 6:
+        cal = year_display[2:]   # "2025"
+        try:
+            prev = str(int(cal) - 1)  # "2024"
+            year_display = f"{year_display} (April {prev} – March {cal})"
+        except ValueError:
+            pass
+
+    return (
+        f"Company:     {company_display}\n"
+        f"Sector:      {sector_display}\n"
+        f"Fiscal Year: {year_display}\n"
+        f"Country:     India (BSE/NSE listed, SEBI regulated)"
+    )
 
 
 def _build_few_shot_prefix(examples: list[dict] | None = None) -> str:
@@ -234,14 +288,20 @@ class ModelRunner:
             self._client.close()
         self._client = None
 
-    def _build_messages(self, question: str, context: str) -> list[dict]:
+    def _build_messages(self, question: str, context: str, metadata: str = "") -> list[dict]:
         closed = "closed" in self.regime
         few_shot = "few_shot" in self.regime
 
         system = QA_SYSTEM_PROMPT_CLOSED if closed else QA_SYSTEM_PROMPT
 
         if closed:
-            user = QA_USER_TEMPLATE_CLOSED.format(question=question)
+            if metadata:
+                user = QA_USER_TEMPLATE_CLOSED.format(
+                    metadata=metadata, question=question
+                )
+            else:
+                # Fallback: no metadata provided (old behaviour)
+                user = QA_USER_TEMPLATE_CLOSED_NO_META.format(question=question)
         else:
             user = QA_USER_TEMPLATE.format(context=context, question=question)
 
@@ -254,9 +314,9 @@ class ModelRunner:
             {"role": "user", "content": user},
         ]
 
-    def generate(self, question: str, context: str) -> GenerationResult:
+    def generate(self, question: str, context: str, metadata: str = "") -> GenerationResult:
         start = time.time()
-        messages = self._build_messages(question, context)
+        messages = self._build_messages(question, context, metadata)
         payload = {
             "model": self.config.model_id,
             "messages": messages,
@@ -349,7 +409,11 @@ class ModelRunner:
 
             for qa, ctx in pending:
                 qid = qa.global_id or f"{qa.company}_{qa.difficulty}_{hash(qa.question)}"
-                result = self.generate(qa.question, ctx)
+                # For closed-book regime, build metadata preamble from QA record
+                meta = ""
+                if "closed" in self.regime:
+                    meta = _format_company_metadata(qa.company, qa.sector, qa.year)
+                result = self.generate(qa.question, ctx, metadata=meta)
                 result.question_id = qid
                 result.gold_answer = qa.answer
                 result_map[qid] = result

@@ -1,0 +1,5 @@
+model,regime,difficulty,em,f1,rouge_l,bertscore,num_em,num_f1,mape_pct,nli_ent
+llama3.1-8b,zero_shot,easy,0.5556,0.8747,0.8841,0.9605,1.0000,1.0000,0.00,0.7778
+llama3.1-8b,closed_book,easy,0.0000,0.0195,0.0160,0.8320,0.2222,0.2222,548.70,0.0000
+nemotron-nano-8b,zero_shot,easy,0.0000,0.2800,0.2592,0.8693,0.5556,0.6000,170.81,0.2037
+nemotron-nano-8b,closed_book,easy,0.0000,0.0420,0.0370,0.8203,0.2222,0.2222,96.46,0.0833

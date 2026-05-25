@@ -25,8 +25,9 @@ class ModelConfig:
     max_tokens: int = 512
     temperature: float = 0.0
     top_p: float = 1.0
-    use_completion: bool = False  # True for models like FinMA that use /completions not /chat
-    max_context_chars: int = 0   # Truncate context to N chars before sending. 0 = no limit.
+    use_completion: bool = False         # True for models like FinMA that use /completions not /chat
+    max_context_chars: int = 0          # Truncate context to N chars before sending. 0 = no limit.
+    use_max_completion_tokens: bool = False  # GPT-5+ uses max_completion_tokens not max_tokens
 
 
 ALPACA_COMPLETION_TEMPLATE = """### Instruction:
@@ -186,6 +187,19 @@ PREDEFINED_MODELS: dict[str, ModelConfig] = {
         provider="openai",
         api_base="https://api.openai.com/v1",
         api_key_env="OPENAI_API_KEY",
+    ),
+
+    # ── Lightning AI (requires LIGHTNING_API_KEY) ─────────────────────────
+    # Trailing slash required: httpx merges "base/v1" + "/path" → "base/path" (drops /v1)
+    # With trailing slash: "base/v1/" + "chat/completions" → "base/v1/chat/completions" ✓
+    "gpt-5-nano": ModelConfig(
+        name="GPT-5-Nano",
+        model_id="openai/gpt-5-nano",
+        provider="lightning",
+        api_base="https://lightning.ai/api/v1/",
+        api_key_env="LIGHTNING_API_KEY",
+        max_tokens=512,
+        use_max_completion_tokens=True,  # GPT-5 API uses max_completion_tokens
     ),
 }
 
@@ -455,10 +469,12 @@ class ModelRunner:
             endpoint = "/completions"
         else:
             messages = self._build_messages(question, context, metadata)
+            # GPT-5+ uses max_completion_tokens; older models use max_tokens
+            tok_key = "max_completion_tokens" if self.config.use_max_completion_tokens else "max_tokens"
             payload = {
                 "model": self.config.model_id,
                 "messages": messages,
-                "max_tokens": self.config.max_tokens,
+                tok_key: self.config.max_tokens,
                 "temperature": self.config.temperature,
                 "top_p": self.config.top_p,
             }
@@ -469,7 +485,11 @@ class ModelRunner:
         for attempt in range(self.max_retries):
             try:
                 client = self._get_client()
-                resp = client.post(endpoint, json=payload)
+                # If base_url has trailing slash, use relative path (no leading /)
+                # e.g. "https://lightning.ai/api/v1/" + "chat/completions" → correct
+                # e.g. "https://nim.api/v1" + "/chat/completions" → correct (httpx keeps /v1)
+                ep = endpoint.lstrip("/") if self.config.api_base.endswith("/") else endpoint
+                resp = client.post(ep, json=payload)
 
                 if resp.status_code == 429:
                     wait = backoff * (2 ** attempt) + random.uniform(0, 1)

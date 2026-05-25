@@ -19,12 +19,50 @@ load_dotenv(Path(__file__).parent.parent.parent.parent / ".env")
 class ModelConfig:
     name: str
     model_id: str
-    provider: str = "nim"
+    provider: str = "nim"         # "nim" | "openai" | "vllm"
     api_base: str = "https://integrate.api.nvidia.com/v1"
     api_key_env: str = "NVIDIA_API_KEY"
     max_tokens: int = 512
     temperature: float = 0.0
     top_p: float = 1.0
+
+
+def make_vllm_config(
+    model_id: str,
+    name: str | None = None,
+    host: str = "localhost",
+    port: int = 8000,
+    max_tokens: int = 512,
+) -> ModelConfig:
+    """
+    Create a ModelConfig for a locally hosted vLLM server.
+
+    The vLLM OpenAI-compatible API (--enable-lora, LoRA models, base models)
+    is identical in format to NIM — just different base URL and no auth key.
+
+    Args:
+        model_id:   The model name as served by vLLM.
+                    - For base model:  "meta-llama/Meta-Llama-3-8B"
+                    - For LoRA:        "fingpt"  (the --lora-modules name)
+        name:       Human-readable label for logs. Defaults to model_id.
+        host:       Host where vLLM is running (default: localhost).
+                    Use "localhost" if you have an SSH tunnel:
+                      ssh -L 8000:localhost:8000 user@remote
+        port:       Port vLLM is listening on (default: 8000).
+        max_tokens: Max tokens to generate per call.
+
+    Example:
+        cfg = make_vllm_config("fingpt")
+        cfg = make_vllm_config("meta-llama/Meta-Llama-3-8B", host="10.0.0.5")
+    """
+    return ModelConfig(
+        name=name or model_id.split("/")[-1],
+        model_id=model_id,
+        provider="vllm",
+        api_base=f"http://{host}:{port}/v1",
+        api_key_env="VLLM_API_KEY",   # vLLM accepts any key; set to "EMPTY" in .env
+        max_tokens=max_tokens,
+    )
 
 
 PREDEFINED_MODELS: dict[str, ModelConfig] = {
@@ -317,8 +355,7 @@ class ModelRunner:
         self._key_idx += 1
 
     def _get_client(self) -> httpx.Client:
-        key = self._current_key()
-        # Re-create client if key changed or closed
+        key = self._current_key() or "EMPTY"   # vLLM accepts any non-empty key
         if self._client is None or self._client.is_closed:
             self._client = httpx.Client(
                 base_url=self.config.api_base,
@@ -326,7 +363,8 @@ class ModelRunner:
                     "Authorization": f"Bearer {key}",
                     "Content-Type": "application/json",
                 },
-                timeout=120.0,
+                # vLLM on local GPU can be slow for large models — longer timeout
+                timeout=300.0 if self.config.provider == "vllm" else 120.0,
             )
         return self._client
 

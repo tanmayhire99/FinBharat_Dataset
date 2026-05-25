@@ -285,7 +285,7 @@ def run_one(
 def main():
     parser = argparse.ArgumentParser(description="Run closed-book evaluation for all models")
     parser.add_argument("--models",           nargs="+", default=ALL_MODELS,
-                        help="Model keys to run (default: all 18)")
+                        help="Model keys to run (default: all 17 NIM models)")
     parser.add_argument("--difficulty",       nargs="+", default=ALL_DIFFICULTIES,
                         dest="difficulties",
                         help="Difficulty tiers (default: all 4)")
@@ -293,11 +293,32 @@ def main():
                         help="Max QA pairs per company (default: 10)")
     parser.add_argument("--all-companies",    action="store_true",
                         help="Run on all 187 companies instead of 3 sample")
+    # vLLM local model support
+    parser.add_argument("--vllm-model",       type=str,  default=None,
+                        help="Run against a local vLLM server instead of NIM. "
+                             "Pass the model ID as served by vLLM "
+                             "(e.g. 'fingpt' or 'meta-llama/Meta-Llama-3-8B').")
+    parser.add_argument("--vllm-host",        type=str,  default="localhost",
+                        help="Host where vLLM is running (default: localhost).")
+    parser.add_argument("--vllm-port",        type=int,  default=8000,
+                        help="Port where vLLM listens (default: 8000).")
     args = parser.parse_args()
 
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     setup_master_log()
+
+    # vLLM: register model dynamically and replace the model list
+    if args.vllm_model:
+        from finbharat.models.runner import make_vllm_config, PREDEFINED_MODELS
+        cfg = make_vllm_config(
+            args.vllm_model,
+            host=args.vllm_host,
+            port=args.vllm_port,
+        )
+        PREDEFINED_MODELS["__vllm__"] = cfg
+        args.models = ["__vllm__"]
+        print(f"Using local vLLM: {args.vllm_model} at {cfg.api_base}")
 
     dataset = FinBharatDataset(DATA_ROOT)
     if args.all_companies:

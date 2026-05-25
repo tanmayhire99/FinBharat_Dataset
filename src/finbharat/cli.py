@@ -21,13 +21,32 @@ def cli():
 @click.option("--api-key", type=str, default=None, envvar="NVIDIA_API_KEY", help="Override NIM API key")
 @click.option("--llm-judge", "llm_judge_model", type=str, default=None,
               help="Model key to use as LLM numerical judge (e.g. llama3.1-8b). Omit to skip.")
+@click.option("--vllm-model", type=str, default=None,
+              help="Model ID served by a local vLLM server (e.g. 'fingpt' or 'meta-llama/Meta-Llama-3-8B'). "
+                   "Overrides --models when set.")
+@click.option("--vllm-host", type=str, default="localhost",
+              help="Host where vLLM is running (default: localhost). Use SSH tunnel or direct IP.")
+@click.option("--vllm-port", type=int, default=8000,
+              help="Port where vLLM server listens (default: 8000).")
 def evaluate(data_root, output_dir, models, difficulty, regime, table_format,
-             all_companies, max_per_company, api_key, llm_judge_model):
+             all_companies, max_per_company, api_key, llm_judge_model,
+             vllm_model, vllm_host, vllm_port):
     from finbharat.eval.evaluate import run_evaluation
+    from finbharat.models.runner import make_vllm_config, PREDEFINED_MODELS
+
+    if vllm_model:
+        # Register the local vLLM model dynamically and use it
+        cfg = make_vllm_config(vllm_model, host=vllm_host, port=vllm_port)
+        PREDEFINED_MODELS["__vllm__"] = cfg
+        model_keys = ["__vllm__"]
+        click.echo(f"Using local vLLM model: {vllm_model} at {cfg.api_base}")
+    else:
+        model_keys = list(models)
+
     run_evaluation(
         data_root=data_root,
         output_dir=output_dir,
-        model_keys=list(models),
+        model_keys=model_keys,
         difficulty=difficulty,
         regime=regime,
         table_format=table_format,

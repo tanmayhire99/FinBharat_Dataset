@@ -52,22 +52,27 @@ REGIME = "closed_book"
 
 # All 18 confirmed working models (as of May 2026)
 ALL_MODELS = [
+    # Small
     "llama3.1-8b",
     "llama3.2-3b",
     "nemotron-nano-8b",
-    "phi4-mini",
+    # phi4-mini removed — consistently times out on this NIM account
     "gpt-oss-20b",
+    # Medium
     "llama4-maverick",
     "nemotron-super-49b",
     "gemma4-31b",
     "mistral-nemotron",
+    # Large
     "llama3.3-70b",
     "nemotron-120b",
     "gpt-oss-120b",
     "mistral-small-119b",
+    # Very Large / MoE
     "qwen3.5-122b",
     "qwen3.5-397b",
     "mistral-large-675b",
+    # DeepSeek
     "deepseek-v4-flash",
     "deepseek-v4-pro",
 ]

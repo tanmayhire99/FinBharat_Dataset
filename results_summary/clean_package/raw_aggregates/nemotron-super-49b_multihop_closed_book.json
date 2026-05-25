@@ -1,0 +1,281 @@
+{
+  "total": 15,
+  "num_errors": 0,
+  "exact_match": 0.0,
+  "relaxed_em": 0.1333,
+  "token_f1": 0.2215,
+  "rouge_l": 0.1328,
+  "meteor": 0.2675,
+  "bertscore_p": 0.7924,
+  "bertscore_r": 0.8511,
+  "bertscore_f1": 0.8202,
+  "abstain_rate": 0.2,
+  "llm_num_equiv": null,
+  "num_exact": 0.2667,
+  "num_f1": 0.2783,
+  "tol1_acc": 0.2,
+  "tol5_acc": 0.2,
+  "tol10_acc": 0.2,
+  "tol_n": 15,
+  "mape": 312.0311,
+  "entailment_ratio": 0.0667,
+  "evidence_traceability": 0.2921,
+  "avg_latency_ms": 48923.4,
+  "directional_accuracy": 0.625,
+  "directional_applicable": 8,
+  "by_question_type": {
+    "Numerical Calculation": {
+      "total": 4,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.2633,
+      "rouge_l": 0.1495,
+      "meteor": 0.2944,
+      "bertscore_p": 0.7813,
+      "bertscore_r": 0.8361,
+      "bertscore_f1": 0.8069,
+      "num_exact": 0.25,
+      "num_f1": 0.0625,
+      "abstain_rate": 0.25
+    },
+    "Table with Text": {
+      "total": 9,
+      "exact_match": 0.0,
+      "relaxed_em": 0.1111,
+      "token_f1": 0.2021,
+      "rouge_l": 0.1256,
+      "meteor": 0.27,
+      "bertscore_p": 0.7944,
+      "bertscore_r": 0.8511,
+      "bertscore_f1": 0.8213,
+      "num_exact": 0.3333,
+      "num_f1": 0.436,
+      "abstain_rate": 0.2222
+    },
+    "Text Only": {
+      "total": 2,
+      "exact_match": 0.0,
+      "relaxed_em": 0.5,
+      "token_f1": 0.2248,
+      "rouge_l": 0.1319,
+      "meteor": 0.2022,
+      "bertscore_p": 0.8055,
+      "bertscore_r": 0.8815,
+      "bertscore_f1": 0.8417,
+      "num_exact": 0.0,
+      "num_f1": 0.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_difficulty": {
+    "multihop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.1333,
+      "token_f1": 0.2215,
+      "rouge_l": 0.1328,
+      "meteor": 0.2675,
+      "bertscore_p": 0.7924,
+      "bertscore_r": 0.8511,
+      "bertscore_f1": 0.8202,
+      "num_exact": 0.2667,
+      "num_f1": 0.2783,
+      "abstain_rate": 0.2
+    }
+  },
+  "by_company": {
+    "HDFC_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.2669,
+      "rouge_l": 0.1598,
+      "meteor": 0.2941,
+      "bertscore_p": 0.7927,
+      "bertscore_r": 0.8483,
+      "bertscore_f1": 0.8188,
+      "num_exact": 0.4,
+      "num_f1": 0.2643,
+      "abstain_rate": 0.0
+    },
+    "Bosch": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1588,
+      "rouge_l": 0.0952,
+      "meteor": 0.2235,
+      "bertscore_p": 0.7821,
+      "bertscore_r": 0.837,
+      "bertscore_f1": 0.8081,
+      "num_exact": 0.2,
+      "num_f1": 0.2571,
+      "abstain_rate": 0.2
+    },
+    "Interglobe_Aviat": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.2387,
+      "rouge_l": 0.1434,
+      "meteor": 0.2848,
+      "bertscore_p": 0.8023,
+      "bertscore_r": 0.868,
+      "bertscore_f1": 0.8337,
+      "num_exact": 0.2,
+      "num_f1": 0.3133,
+      "abstain_rate": 0.4
+    }
+  },
+  "by_sector": {
+    "Private_Sector_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.2669,
+      "rouge_l": 0.1598,
+      "meteor": 0.2941,
+      "bertscore_p": 0.7927,
+      "bertscore_r": 0.8483,
+      "bertscore_f1": 0.8188,
+      "num_exact": 0.4,
+      "num_f1": 0.2643,
+      "abstain_rate": 0.0
+    },
+    "Auto_Components_&_Equipments": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1588,
+      "rouge_l": 0.0952,
+      "meteor": 0.2235,
+      "bertscore_p": 0.7821,
+      "bertscore_r": 0.837,
+      "bertscore_f1": 0.8081,
+      "num_exact": 0.2,
+      "num_f1": 0.2571,
+      "abstain_rate": 0.2
+    },
+    "Airline": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.2387,
+      "rouge_l": 0.1434,
+      "meteor": 0.2848,
+      "bertscore_p": 0.8023,
+      "bertscore_r": 0.868,
+      "bertscore_f1": 0.8337,
+      "num_exact": 0.2,
+      "num_f1": 0.3133,
+      "abstain_rate": 0.4
+    }
+  },
+  "brsr_subset": {
+    "total": 4,
+    "exact_match": 0.0,
+    "token_f1": 0.2893,
+    "rouge_l": 0.174,
+    "num_exact": 0.75,
+    "entailment_ratio": 0.0833
+  },
+  "by_hop_count": {
+    "2-hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.1333,
+      "token_f1": 0.2215,
+      "rouge_l": 0.1328,
+      "meteor": 0.2675,
+      "bertscore_p": 0.7924,
+      "bertscore_r": 0.8511,
+      "bertscore_f1": 0.8202,
+      "num_exact": 0.2667,
+      "num_f1": 0.2783,
+      "abstain_rate": 0.2
+    }
+  },
+  "hallucination_taxonomy": {
+    "total_hallucinated": 9,
+    "hallucination_rate": 0.6,
+    "by_type": {
+      "numeric_fabrication": {
+        "count": 7,
+        "pct": 0.7778
+      },
+      "direction_error": {
+        "count": 1,
+        "pct": 0.1111
+      },
+      "over_interpretation": {
+        "count": 1,
+        "pct": 0.1111
+      }
+    }
+  },
+  "by_operation_complexity": {
+    "two_hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.1333,
+      "token_f1": 0.2215,
+      "rouge_l": 0.1328,
+      "meteor": 0.2675,
+      "bertscore_p": 0.7924,
+      "bertscore_r": 0.8511,
+      "bertscore_f1": 0.8202,
+      "num_exact": 0.2667,
+      "num_f1": 0.2783,
+      "abstain_rate": 0.2
+    }
+  },
+  "exact_match_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "relaxed_em_ci": {
+    "mean": 0.1333,
+    "lower": 0.0,
+    "upper": 0.3333,
+    "n": 15
+  },
+  "token_f1_ci": {
+    "mean": 0.2215,
+    "lower": 0.1777,
+    "upper": 0.2735,
+    "n": 15
+  },
+  "rouge_l_ci": {
+    "mean": 0.1328,
+    "lower": 0.1045,
+    "upper": 0.1635,
+    "n": 15
+  },
+  "bertscore_f1_ci": {
+    "mean": 0.8202,
+    "lower": 0.806,
+    "upper": 0.8333,
+    "n": 15
+  },
+  "num_exact_ci": {
+    "mean": 0.2667,
+    "lower": 0.0667,
+    "upper": 0.5333,
+    "n": 15
+  },
+  "num_f1_ci": {
+    "mean": 0.2783,
+    "lower": 0.139,
+    "upper": 0.4279,
+    "n": 15
+  },
+  "entailment_ratio_ci": {
+    "mean": 0.0667,
+    "lower": 0.0,
+    "upper": 0.1333,
+    "n": 15
+  },
+  "regime": "closed_book"
+}

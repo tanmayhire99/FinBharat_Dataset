@@ -1,0 +1,273 @@
+{
+  "total": 15,
+  "num_errors": 0,
+  "exact_match": 0.0,
+  "relaxed_em": 0.2,
+  "token_f1": 0.1565,
+  "rouge_l": 0.1273,
+  "meteor": 0.1443,
+  "bertscore_p": 0.8618,
+  "bertscore_r": 0.826,
+  "bertscore_f1": 0.8428,
+  "abstain_rate": 0.0,
+  "llm_num_equiv": null,
+  "num_exact": 0.2667,
+  "num_f1": 0.2667,
+  "tol1_acc": 0.0,
+  "tol5_acc": 0.0,
+  "tol10_acc": 0.0,
+  "tol_n": 15,
+  "mape": null,
+  "entailment_ratio": 0.0333,
+  "evidence_traceability": 0.202,
+  "avg_latency_ms": 643.1,
+  "directional_accuracy": 0.375,
+  "directional_applicable": 8,
+  "by_question_type": {
+    "Numerical Calculation": {
+      "total": 4,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0152,
+      "rouge_l": 0.0125,
+      "meteor": 0.0246,
+      "bertscore_p": 0.8492,
+      "bertscore_r": 0.7929,
+      "bertscore_f1": 0.8197,
+      "num_exact": 0.0,
+      "num_f1": 0.0,
+      "abstain_rate": 0.0
+    },
+    "Table with Text": {
+      "total": 9,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2222,
+      "token_f1": 0.1368,
+      "rouge_l": 0.1124,
+      "meteor": 0.127,
+      "bertscore_p": 0.8583,
+      "bertscore_r": 0.8191,
+      "bertscore_f1": 0.8375,
+      "num_exact": 0.2222,
+      "num_f1": 0.2222,
+      "abstain_rate": 0.0
+    },
+    "Text Only": {
+      "total": 2,
+      "exact_match": 0.0,
+      "relaxed_em": 0.5,
+      "token_f1": 0.5275,
+      "rouge_l": 0.424,
+      "meteor": 0.4614,
+      "bertscore_p": 0.9029,
+      "bertscore_r": 0.9231,
+      "bertscore_f1": 0.9128,
+      "num_exact": 1.0,
+      "num_f1": 1.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_difficulty": {
+    "multihop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1565,
+      "rouge_l": 0.1273,
+      "meteor": 0.1443,
+      "bertscore_p": 0.8618,
+      "bertscore_r": 0.826,
+      "bertscore_f1": 0.8428,
+      "num_exact": 0.2667,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_company": {
+    "HDFC_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1284,
+      "rouge_l": 0.0976,
+      "meteor": 0.095,
+      "bertscore_p": 0.8558,
+      "bertscore_r": 0.8112,
+      "bertscore_f1": 0.8322,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Bosch": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1331,
+      "rouge_l": 0.1029,
+      "meteor": 0.1237,
+      "bertscore_p": 0.8648,
+      "bertscore_r": 0.8201,
+      "bertscore_f1": 0.8414,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Interglobe_Aviat": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.208,
+      "rouge_l": 0.1814,
+      "meteor": 0.2141,
+      "bertscore_p": 0.8649,
+      "bertscore_r": 0.8466,
+      "bertscore_f1": 0.8548,
+      "num_exact": 0.4,
+      "num_f1": 0.4,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_sector": {
+    "Private_Sector_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1284,
+      "rouge_l": 0.0976,
+      "meteor": 0.095,
+      "bertscore_p": 0.8558,
+      "bertscore_r": 0.8112,
+      "bertscore_f1": 0.8322,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Auto_Components_&_Equipments": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1331,
+      "rouge_l": 0.1029,
+      "meteor": 0.1237,
+      "bertscore_p": 0.8648,
+      "bertscore_r": 0.8201,
+      "bertscore_f1": 0.8414,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Airline": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.208,
+      "rouge_l": 0.1814,
+      "meteor": 0.2141,
+      "bertscore_p": 0.8649,
+      "bertscore_r": 0.8466,
+      "bertscore_f1": 0.8548,
+      "num_exact": 0.4,
+      "num_f1": 0.4,
+      "abstain_rate": 0.0
+    }
+  },
+  "brsr_subset": {
+    "total": 4,
+    "exact_match": 0.0,
+    "token_f1": 0.2611,
+    "rouge_l": 0.2119,
+    "num_exact": 0.5,
+    "entailment_ratio": 0.0
+  },
+  "by_hop_count": {
+    "2-hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1565,
+      "rouge_l": 0.1273,
+      "meteor": 0.1443,
+      "bertscore_p": 0.8618,
+      "bertscore_r": 0.826,
+      "bertscore_f1": 0.8428,
+      "num_exact": 0.2667,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    }
+  },
+  "hallucination_taxonomy": {
+    "total_hallucinated": 14,
+    "hallucination_rate": 0.9333,
+    "by_type": {
+      "other": {
+        "count": 14,
+        "pct": 1.0
+      }
+    }
+  },
+  "by_operation_complexity": {
+    "two_hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1565,
+      "rouge_l": 0.1273,
+      "meteor": 0.1443,
+      "bertscore_p": 0.8618,
+      "bertscore_r": 0.826,
+      "bertscore_f1": 0.8428,
+      "num_exact": 0.2667,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    }
+  },
+  "exact_match_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "relaxed_em_ci": {
+    "mean": 0.2,
+    "lower": 0.0,
+    "upper": 0.4,
+    "n": 15
+  },
+  "token_f1_ci": {
+    "mean": 0.1565,
+    "lower": 0.0624,
+    "upper": 0.268,
+    "n": 15
+  },
+  "rouge_l_ci": {
+    "mean": 0.1273,
+    "lower": 0.0507,
+    "upper": 0.215,
+    "n": 15
+  },
+  "bertscore_f1_ci": {
+    "mean": 0.8428,
+    "lower": 0.8203,
+    "upper": 0.8665,
+    "n": 15
+  },
+  "num_exact_ci": {
+    "mean": 0.2667,
+    "lower": 0.0667,
+    "upper": 0.4667,
+    "n": 15
+  },
+  "num_f1_ci": {
+    "mean": 0.2667,
+    "lower": 0.0667,
+    "upper": 0.4667,
+    "n": 15
+  },
+  "entailment_ratio_ci": {
+    "mean": 0.0333,
+    "lower": 0.0,
+    "upper": 0.1,
+    "n": 15
+  },
+  "regime": "closed_book"
+}

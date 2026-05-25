@@ -1,0 +1,273 @@
+{
+  "total": 15,
+  "num_errors": 0,
+  "exact_match": 0.0,
+  "relaxed_em": 0.2,
+  "token_f1": 0.0865,
+  "rouge_l": 0.0732,
+  "meteor": 0.0985,
+  "bertscore_p": 0.8506,
+  "bertscore_r": 0.8113,
+  "bertscore_f1": 0.8295,
+  "abstain_rate": 0.0,
+  "llm_num_equiv": null,
+  "num_exact": 0.3333,
+  "num_f1": 0.2889,
+  "tol1_acc": 0.0667,
+  "tol5_acc": 0.0667,
+  "tol10_acc": 0.0667,
+  "tol_n": 15,
+  "mape": 0.0,
+  "entailment_ratio": 0.0333,
+  "evidence_traceability": 0.191,
+  "avg_latency_ms": 1754.6,
+  "directional_accuracy": 0.375,
+  "directional_applicable": 8,
+  "by_question_type": {
+    "Numerical Calculation": {
+      "total": 4,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1318,
+      "rouge_l": 0.0894,
+      "meteor": 0.1832,
+      "bertscore_p": 0.8403,
+      "bertscore_r": 0.8199,
+      "bertscore_f1": 0.8278,
+      "num_exact": 0.25,
+      "num_f1": 0.0833,
+      "abstain_rate": 0.0
+    },
+    "Table with Text": {
+      "total": 9,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2222,
+      "token_f1": 0.0301,
+      "rouge_l": 0.0267,
+      "meteor": 0.0215,
+      "bertscore_p": 0.8495,
+      "bertscore_r": 0.7934,
+      "bertscore_f1": 0.8202,
+      "num_exact": 0.2222,
+      "num_f1": 0.2222,
+      "abstain_rate": 0.0
+    },
+    "Text Only": {
+      "total": 2,
+      "exact_match": 0.0,
+      "relaxed_em": 0.5,
+      "token_f1": 0.25,
+      "rouge_l": 0.25,
+      "meteor": 0.276,
+      "bertscore_p": 0.876,
+      "bertscore_r": 0.8742,
+      "bertscore_f1": 0.8747,
+      "num_exact": 1.0,
+      "num_f1": 1.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_difficulty": {
+    "multihop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0865,
+      "rouge_l": 0.0732,
+      "meteor": 0.0985,
+      "bertscore_p": 0.8506,
+      "bertscore_r": 0.8113,
+      "bertscore_f1": 0.8295,
+      "num_exact": 0.3333,
+      "num_f1": 0.2889,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_company": {
+    "HDFC_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1165,
+      "rouge_l": 0.0813,
+      "meteor": 0.1484,
+      "bertscore_p": 0.8435,
+      "bertscore_r": 0.8147,
+      "bertscore_f1": 0.827,
+      "num_exact": 0.4,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    },
+    "Bosch": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0121,
+      "rouge_l": 0.01,
+      "meteor": 0.0176,
+      "bertscore_p": 0.8482,
+      "bertscore_r": 0.7965,
+      "bertscore_f1": 0.8212,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Interglobe_Aviat": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.1309,
+      "rouge_l": 0.1283,
+      "meteor": 0.1296,
+      "bertscore_p": 0.8601,
+      "bertscore_r": 0.8226,
+      "bertscore_f1": 0.8404,
+      "num_exact": 0.4,
+      "num_f1": 0.4,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_sector": {
+    "Private_Sector_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1165,
+      "rouge_l": 0.0813,
+      "meteor": 0.1484,
+      "bertscore_p": 0.8435,
+      "bertscore_r": 0.8147,
+      "bertscore_f1": 0.827,
+      "num_exact": 0.4,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    },
+    "Auto_Components_&_Equipments": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0121,
+      "rouge_l": 0.01,
+      "meteor": 0.0176,
+      "bertscore_p": 0.8482,
+      "bertscore_r": 0.7965,
+      "bertscore_f1": 0.8212,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Airline": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.1309,
+      "rouge_l": 0.1283,
+      "meteor": 0.1296,
+      "bertscore_p": 0.8601,
+      "bertscore_r": 0.8226,
+      "bertscore_f1": 0.8404,
+      "num_exact": 0.4,
+      "num_f1": 0.4,
+      "abstain_rate": 0.0
+    }
+  },
+  "brsr_subset": {
+    "total": 4,
+    "exact_match": 0.0,
+    "token_f1": 0.1375,
+    "rouge_l": 0.0961,
+    "num_exact": 0.75,
+    "entailment_ratio": 0.125
+  },
+  "by_hop_count": {
+    "2-hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0865,
+      "rouge_l": 0.0732,
+      "meteor": 0.0985,
+      "bertscore_p": 0.8506,
+      "bertscore_r": 0.8113,
+      "bertscore_f1": 0.8295,
+      "num_exact": 0.3333,
+      "num_f1": 0.2889,
+      "abstain_rate": 0.0
+    }
+  },
+  "hallucination_taxonomy": {
+    "total_hallucinated": 14,
+    "hallucination_rate": 0.9333,
+    "by_type": {
+      "other": {
+        "count": 14,
+        "pct": 1.0
+      }
+    }
+  },
+  "by_operation_complexity": {
+    "two_hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0865,
+      "rouge_l": 0.0732,
+      "meteor": 0.0985,
+      "bertscore_p": 0.8506,
+      "bertscore_r": 0.8113,
+      "bertscore_f1": 0.8295,
+      "num_exact": 0.3333,
+      "num_f1": 0.2889,
+      "abstain_rate": 0.0
+    }
+  },
+  "exact_match_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "relaxed_em_ci": {
+    "mean": 0.2,
+    "lower": 0.0,
+    "upper": 0.4,
+    "n": 15
+  },
+  "token_f1_ci": {
+    "mean": 0.0865,
+    "lower": 0.0166,
+    "upper": 0.1761,
+    "n": 15
+  },
+  "rouge_l_ci": {
+    "mean": 0.0732,
+    "lower": 0.0141,
+    "upper": 0.1519,
+    "n": 15
+  },
+  "bertscore_f1_ci": {
+    "mean": 0.8295,
+    "lower": 0.8131,
+    "upper": 0.8469,
+    "n": 15
+  },
+  "num_exact_ci": {
+    "mean": 0.3333,
+    "lower": 0.1333,
+    "upper": 0.5333,
+    "n": 15
+  },
+  "num_f1_ci": {
+    "mean": 0.2889,
+    "lower": 0.0889,
+    "upper": 0.4889,
+    "n": 15
+  },
+  "entailment_ratio_ci": {
+    "mean": 0.0333,
+    "lower": 0.0,
+    "upper": 0.1,
+    "n": 15
+  },
+  "regime": "closed_book"
+}

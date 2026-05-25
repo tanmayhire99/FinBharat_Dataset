@@ -1,0 +1,255 @@
+{
+  "total": 15,
+  "num_errors": 0,
+  "exact_match": 0.0,
+  "relaxed_em": 0.0,
+  "token_f1": 0.1477,
+  "rouge_l": 0.0993,
+  "meteor": 0.1945,
+  "bertscore_p": 0.8427,
+  "bertscore_r": 0.8435,
+  "bertscore_f1": 0.8425,
+  "abstain_rate": 0.0,
+  "llm_num_equiv": null,
+  "num_exact": 0.3333,
+  "num_f1": 0.4071,
+  "tol1_acc": 0.0714,
+  "tol5_acc": 0.0714,
+  "tol10_acc": 0.0714,
+  "tol_n": 14,
+  "mape": 217.0434,
+  "entailment_ratio": 0.0611,
+  "evidence_traceability": 0.2816,
+  "avg_latency_ms": 2056.8,
+  "directional_accuracy": 0.6667,
+  "directional_applicable": 6,
+  "by_question_type": {
+    "Text Only": {
+      "total": 12,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1648,
+      "rouge_l": 0.1101,
+      "meteor": 0.2129,
+      "bertscore_p": 0.8427,
+      "bertscore_r": 0.8496,
+      "bertscore_f1": 0.8456,
+      "num_exact": 0.4167,
+      "num_f1": 0.4673,
+      "abstain_rate": 0.0
+    },
+    "Table Only": {
+      "total": 3,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0797,
+      "rouge_l": 0.0558,
+      "meteor": 0.1207,
+      "bertscore_p": 0.8429,
+      "bertscore_r": 0.8195,
+      "bertscore_f1": 0.8303,
+      "num_exact": 0.0,
+      "num_f1": 0.1667,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_difficulty": {
+    "medium": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1477,
+      "rouge_l": 0.0993,
+      "meteor": 0.1945,
+      "bertscore_p": 0.8427,
+      "bertscore_r": 0.8435,
+      "bertscore_f1": 0.8425,
+      "num_exact": 0.3333,
+      "num_f1": 0.4071,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_company": {
+    "HDFC_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1218,
+      "rouge_l": 0.0839,
+      "meteor": 0.2133,
+      "bertscore_p": 0.8374,
+      "bertscore_r": 0.8517,
+      "bertscore_f1": 0.844,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Bosch": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0762,
+      "rouge_l": 0.0422,
+      "meteor": 0.0732,
+      "bertscore_p": 0.8492,
+      "bertscore_r": 0.8072,
+      "bertscore_f1": 0.8276,
+      "num_exact": 0.4,
+      "num_f1": 0.5143,
+      "abstain_rate": 0.0
+    },
+    "Interglobe_Aviat": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.2452,
+      "rouge_l": 0.1716,
+      "meteor": 0.297,
+      "bertscore_p": 0.8417,
+      "bertscore_r": 0.8718,
+      "bertscore_f1": 0.8559,
+      "num_exact": 0.4,
+      "num_f1": 0.5071,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_sector": {
+    "Private_Sector_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1218,
+      "rouge_l": 0.0839,
+      "meteor": 0.2133,
+      "bertscore_p": 0.8374,
+      "bertscore_r": 0.8517,
+      "bertscore_f1": 0.844,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Auto_Components_&_Equipments": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0762,
+      "rouge_l": 0.0422,
+      "meteor": 0.0732,
+      "bertscore_p": 0.8492,
+      "bertscore_r": 0.8072,
+      "bertscore_f1": 0.8276,
+      "num_exact": 0.4,
+      "num_f1": 0.5143,
+      "abstain_rate": 0.0
+    },
+    "Airline": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.2452,
+      "rouge_l": 0.1716,
+      "meteor": 0.297,
+      "bertscore_p": 0.8417,
+      "bertscore_r": 0.8718,
+      "bertscore_f1": 0.8559,
+      "num_exact": 0.4,
+      "num_f1": 0.5071,
+      "abstain_rate": 0.0
+    }
+  },
+  "brsr_subset": {
+    "total": 2,
+    "exact_match": 0.0,
+    "token_f1": 0.2224,
+    "rouge_l": 0.165,
+    "num_exact": 0.5,
+    "entailment_ratio": 0.125
+  },
+  "hallucination_taxonomy": {
+    "total_hallucinated": 14,
+    "hallucination_rate": 0.9333,
+    "by_type": {
+      "other": {
+        "count": 7,
+        "pct": 0.5
+      },
+      "numeric_fabrication": {
+        "count": 4,
+        "pct": 0.2857
+      },
+      "numeric_miscalculation": {
+        "count": 2,
+        "pct": 0.1429
+      },
+      "over_interpretation": {
+        "count": 1,
+        "pct": 0.0714
+      }
+    }
+  },
+  "by_operation_complexity": {
+    "direct_lookup": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1477,
+      "rouge_l": 0.0993,
+      "meteor": 0.1945,
+      "bertscore_p": 0.8427,
+      "bertscore_r": 0.8435,
+      "bertscore_f1": 0.8425,
+      "num_exact": 0.3333,
+      "num_f1": 0.4071,
+      "abstain_rate": 0.0
+    }
+  },
+  "exact_match_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "relaxed_em_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "token_f1_ci": {
+    "mean": 0.1477,
+    "lower": 0.0667,
+    "upper": 0.2341,
+    "n": 15
+  },
+  "rouge_l_ci": {
+    "mean": 0.0993,
+    "lower": 0.0452,
+    "upper": 0.1536,
+    "n": 15
+  },
+  "bertscore_f1_ci": {
+    "mean": 0.8425,
+    "lower": 0.8328,
+    "upper": 0.8523,
+    "n": 15
+  },
+  "num_exact_ci": {
+    "mean": 0.3333,
+    "lower": 0.1333,
+    "upper": 0.6,
+    "n": 15
+  },
+  "num_f1_ci": {
+    "mean": 0.4071,
+    "lower": 0.2,
+    "upper": 0.6452,
+    "n": 15
+  },
+  "entailment_ratio_ci": {
+    "mean": 0.0611,
+    "lower": 0.0,
+    "upper": 0.15,
+    "n": 15
+  },
+  "regime": "closed_book"
+}

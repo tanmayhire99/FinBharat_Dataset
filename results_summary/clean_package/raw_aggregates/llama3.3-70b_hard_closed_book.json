@@ -1,0 +1,359 @@
+{
+  "total": 15,
+  "num_errors": 0,
+  "exact_match": 0.0,
+  "relaxed_em": 0.4667,
+  "token_f1": 0.1783,
+  "rouge_l": 0.1132,
+  "meteor": 0.1397,
+  "bertscore_p": 0.8619,
+  "bertscore_r": 0.8237,
+  "bertscore_f1": 0.842,
+  "abstain_rate": 0.0,
+  "llm_num_equiv": null,
+  "num_exact": 0.2,
+  "num_f1": 0.3606,
+  "tol1_acc": 0.1333,
+  "tol5_acc": 0.1333,
+  "tol10_acc": 0.1333,
+  "tol_n": 15,
+  "mape": 397.1337,
+  "entailment_ratio": 0.0,
+  "evidence_traceability": 0.2538,
+  "avg_latency_ms": 7318.9,
+  "directional_accuracy": 0.6429,
+  "directional_applicable": 14,
+  "by_question_type": {
+    "Table with Text": {
+      "total": 2,
+      "exact_match": 0.0,
+      "relaxed_em": 0.5,
+      "token_f1": 0.1591,
+      "rouge_l": 0.0925,
+      "meteor": 0.1764,
+      "bertscore_p": 0.8508,
+      "bertscore_r": 0.8306,
+      "bertscore_f1": 0.8399,
+      "num_exact": 0.5,
+      "num_f1": 0.5,
+      "abstain_rate": 0.0
+    },
+    "Text Only": {
+      "total": 6,
+      "exact_match": 0.0,
+      "relaxed_em": 0.8333,
+      "token_f1": 0.2346,
+      "rouge_l": 0.151,
+      "meteor": 0.1769,
+      "bertscore_p": 0.8767,
+      "bertscore_r": 0.8483,
+      "bertscore_f1": 0.8621,
+      "num_exact": 0.3333,
+      "num_f1": 0.6515,
+      "abstain_rate": 0.0
+    },
+    "Numerical Calculation": {
+      "total": 3,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1798,
+      "rouge_l": 0.1191,
+      "meteor": 0.1211,
+      "bertscore_p": 0.8599,
+      "bertscore_r": 0.7987,
+      "bertscore_f1": 0.8278,
+      "num_exact": 0.0,
+      "num_f1": 0.1667,
+      "abstain_rate": 0.0
+    },
+    "Table Only": {
+      "total": 4,
+      "exact_match": 0.0,
+      "relaxed_em": 0.25,
+      "token_f1": 0.1024,
+      "rouge_l": 0.0622,
+      "meteor": 0.0794,
+      "bertscore_p": 0.8466,
+      "bertscore_r": 0.8019,
+      "bertscore_f1": 0.8234,
+      "num_exact": 0.0,
+      "num_f1": 0.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_difficulty": {
+    "hard": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4667,
+      "token_f1": 0.1783,
+      "rouge_l": 0.1132,
+      "meteor": 0.1397,
+      "bertscore_p": 0.8619,
+      "bertscore_r": 0.8237,
+      "bertscore_f1": 0.842,
+      "num_exact": 0.2,
+      "num_f1": 0.3606,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_company": {
+    "HDFC_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.2642,
+      "rouge_l": 0.1618,
+      "meteor": 0.1888,
+      "bertscore_p": 0.8657,
+      "bertscore_r": 0.8334,
+      "bertscore_f1": 0.8487,
+      "num_exact": 0.2,
+      "num_f1": 0.5,
+      "abstain_rate": 0.0
+    },
+    "Bosch": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.8,
+      "token_f1": 0.1964,
+      "rouge_l": 0.1364,
+      "meteor": 0.1677,
+      "bertscore_p": 0.8738,
+      "bertscore_r": 0.8451,
+      "bertscore_f1": 0.859,
+      "num_exact": 0.2,
+      "num_f1": 0.3818,
+      "abstain_rate": 0.0
+    },
+    "Interglobe_Aviat": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0744,
+      "rouge_l": 0.0413,
+      "meteor": 0.0625,
+      "bertscore_p": 0.846,
+      "bertscore_r": 0.7924,
+      "bertscore_f1": 0.8182,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_sector": {
+    "Private_Sector_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.2642,
+      "rouge_l": 0.1618,
+      "meteor": 0.1888,
+      "bertscore_p": 0.8657,
+      "bertscore_r": 0.8334,
+      "bertscore_f1": 0.8487,
+      "num_exact": 0.2,
+      "num_f1": 0.5,
+      "abstain_rate": 0.0
+    },
+    "Auto_Components_&_Equipments": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.8,
+      "token_f1": 0.1964,
+      "rouge_l": 0.1364,
+      "meteor": 0.1677,
+      "bertscore_p": 0.8738,
+      "bertscore_r": 0.8451,
+      "bertscore_f1": 0.859,
+      "num_exact": 0.2,
+      "num_f1": 0.3818,
+      "abstain_rate": 0.0
+    },
+    "Airline": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0744,
+      "rouge_l": 0.0413,
+      "meteor": 0.0625,
+      "bertscore_p": 0.846,
+      "bertscore_r": 0.7924,
+      "bertscore_f1": 0.8182,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    }
+  },
+  "brsr_subset": {
+    "total": 3,
+    "exact_match": 0.0,
+    "token_f1": 0.3214,
+    "rouge_l": 0.2184,
+    "num_exact": 0.3333,
+    "entailment_ratio": 0.0
+  },
+  "red_flag_detection": {
+    "total_red_flag_questions": 2,
+    "heuristic_detection_rate": 1.0
+  },
+  "by_hop_count": {
+    "2-hop": {
+      "total": 6,
+      "exact_match": 0.0,
+      "relaxed_em": 0.6667,
+      "token_f1": 0.3637,
+      "rouge_l": 0.2302,
+      "meteor": 0.2794,
+      "bertscore_p": 0.8798,
+      "bertscore_r": 0.8647,
+      "bertscore_f1": 0.872,
+      "num_exact": 0.3333,
+      "num_f1": 0.7349,
+      "abstain_rate": 0.0
+    },
+    "1-hop": {
+      "total": 8,
+      "exact_match": 0.0,
+      "relaxed_em": 0.375,
+      "token_f1": 0.0301,
+      "rouge_l": 0.0256,
+      "meteor": 0.0229,
+      "bertscore_p": 0.8508,
+      "bertscore_r": 0.7914,
+      "bertscore_f1": 0.8198,
+      "num_exact": 0.125,
+      "num_f1": 0.125,
+      "abstain_rate": 0.0
+    },
+    "3-hop": {
+      "total": 1,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.2515,
+      "rouge_l": 0.1115,
+      "meteor": 0.2359,
+      "bertscore_p": 0.8426,
+      "bertscore_r": 0.8352,
+      "bertscore_f1": 0.8389,
+      "num_exact": 0.0,
+      "num_f1": 0.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "hallucination_taxonomy": {
+    "total_hallucinated": 15,
+    "hallucination_rate": 1.0,
+    "by_type": {
+      "other": {
+        "count": 11,
+        "pct": 0.7333
+      },
+      "numeric_fabrication": {
+        "count": 2,
+        "pct": 0.1333
+      },
+      "over_interpretation": {
+        "count": 1,
+        "pct": 0.0667
+      },
+      "numeric_miscalculation": {
+        "count": 1,
+        "pct": 0.0667
+      }
+    }
+  },
+  "by_operation_complexity": {
+    "two_hop": {
+      "total": 6,
+      "exact_match": 0.0,
+      "relaxed_em": 0.6667,
+      "token_f1": 0.3637,
+      "rouge_l": 0.2302,
+      "meteor": 0.2794,
+      "bertscore_p": 0.8798,
+      "bertscore_r": 0.8647,
+      "bertscore_f1": 0.872,
+      "num_exact": 0.3333,
+      "num_f1": 0.7349,
+      "abstain_rate": 0.0
+    },
+    "single_hop": {
+      "total": 8,
+      "exact_match": 0.0,
+      "relaxed_em": 0.375,
+      "token_f1": 0.0301,
+      "rouge_l": 0.0256,
+      "meteor": 0.0229,
+      "bertscore_p": 0.8508,
+      "bertscore_r": 0.7914,
+      "bertscore_f1": 0.8198,
+      "num_exact": 0.125,
+      "num_f1": 0.125,
+      "abstain_rate": 0.0
+    },
+    "multi_hop_3plus": {
+      "total": 1,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.2515,
+      "rouge_l": 0.1115,
+      "meteor": 0.2359,
+      "bertscore_p": 0.8426,
+      "bertscore_r": 0.8352,
+      "bertscore_f1": 0.8389,
+      "num_exact": 0.0,
+      "num_f1": 0.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "exact_match_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "relaxed_em_ci": {
+    "mean": 0.4667,
+    "lower": 0.2,
+    "upper": 0.6667,
+    "n": 15
+  },
+  "token_f1_ci": {
+    "mean": 0.1783,
+    "lower": 0.0874,
+    "upper": 0.2774,
+    "n": 15
+  },
+  "rouge_l_ci": {
+    "mean": 0.1132,
+    "lower": 0.0562,
+    "upper": 0.1743,
+    "n": 15
+  },
+  "bertscore_f1_ci": {
+    "mean": 0.842,
+    "lower": 0.8254,
+    "upper": 0.8582,
+    "n": 15
+  },
+  "num_exact_ci": {
+    "mean": 0.2,
+    "lower": 0.0,
+    "upper": 0.4,
+    "n": 15
+  },
+  "num_f1_ci": {
+    "mean": 0.3606,
+    "lower": 0.1333,
+    "upper": 0.6,
+    "n": 15
+  },
+  "entailment_ratio_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "regime": "closed_book"
+}

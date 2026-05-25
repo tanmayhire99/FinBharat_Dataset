@@ -1,0 +1,273 @@
+{
+  "total": 15,
+  "num_errors": 0,
+  "exact_match": 0.0,
+  "relaxed_em": 0.2,
+  "token_f1": 0.0994,
+  "rouge_l": 0.0937,
+  "meteor": 0.1073,
+  "bertscore_p": 0.8522,
+  "bertscore_r": 0.8142,
+  "bertscore_f1": 0.8317,
+  "abstain_rate": 0.0,
+  "llm_num_equiv": null,
+  "num_exact": 0.3333,
+  "num_f1": 0.2889,
+  "tol1_acc": 0.0667,
+  "tol5_acc": 0.0667,
+  "tol10_acc": 0.0667,
+  "tol_n": 15,
+  "mape": 0.0,
+  "entailment_ratio": 0.0667,
+  "evidence_traceability": 0.1857,
+  "avg_latency_ms": 791.5,
+  "directional_accuracy": 0.375,
+  "directional_applicable": 8,
+  "by_question_type": {
+    "Numerical Calculation": {
+      "total": 4,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.1901,
+      "rouge_l": 0.189,
+      "meteor": 0.2309,
+      "bertscore_p": 0.8468,
+      "bertscore_r": 0.828,
+      "bertscore_f1": 0.835,
+      "num_exact": 0.25,
+      "num_f1": 0.0833,
+      "abstain_rate": 0.0
+    },
+    "Table with Text": {
+      "total": 9,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2222,
+      "token_f1": 0.0301,
+      "rouge_l": 0.0267,
+      "meteor": 0.0215,
+      "bertscore_p": 0.8485,
+      "bertscore_r": 0.7958,
+      "bertscore_f1": 0.8209,
+      "num_exact": 0.2222,
+      "num_f1": 0.2222,
+      "abstain_rate": 0.0
+    },
+    "Text Only": {
+      "total": 2,
+      "exact_match": 0.0,
+      "relaxed_em": 0.5,
+      "token_f1": 0.2299,
+      "rouge_l": 0.2047,
+      "meteor": 0.2465,
+      "bertscore_p": 0.8796,
+      "bertscore_r": 0.869,
+      "bertscore_f1": 0.874,
+      "num_exact": 1.0,
+      "num_f1": 1.0,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_difficulty": {
+    "multihop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0994,
+      "rouge_l": 0.0937,
+      "meteor": 0.1073,
+      "bertscore_p": 0.8522,
+      "bertscore_r": 0.8142,
+      "bertscore_f1": 0.8317,
+      "num_exact": 0.3333,
+      "num_f1": 0.2889,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_company": {
+    "HDFC_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1632,
+      "rouge_l": 0.161,
+      "meteor": 0.1866,
+      "bertscore_p": 0.8486,
+      "bertscore_r": 0.8212,
+      "bertscore_f1": 0.8327,
+      "num_exact": 0.4,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    },
+    "Bosch": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0121,
+      "rouge_l": 0.01,
+      "meteor": 0.0176,
+      "bertscore_p": 0.8463,
+      "bertscore_r": 0.8007,
+      "bertscore_f1": 0.8224,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Interglobe_Aviat": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.1229,
+      "rouge_l": 0.1102,
+      "meteor": 0.1178,
+      "bertscore_p": 0.8615,
+      "bertscore_r": 0.8205,
+      "bertscore_f1": 0.8401,
+      "num_exact": 0.4,
+      "num_f1": 0.4,
+      "abstain_rate": 0.0
+    }
+  },
+  "by_sector": {
+    "Private_Sector_Bank": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.1632,
+      "rouge_l": 0.161,
+      "meteor": 0.1866,
+      "bertscore_p": 0.8486,
+      "bertscore_r": 0.8212,
+      "bertscore_f1": 0.8327,
+      "num_exact": 0.4,
+      "num_f1": 0.2667,
+      "abstain_rate": 0.0
+    },
+    "Auto_Components_&_Equipments": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.0,
+      "token_f1": 0.0121,
+      "rouge_l": 0.01,
+      "meteor": 0.0176,
+      "bertscore_p": 0.8463,
+      "bertscore_r": 0.8007,
+      "bertscore_f1": 0.8224,
+      "num_exact": 0.2,
+      "num_f1": 0.2,
+      "abstain_rate": 0.0
+    },
+    "Airline": {
+      "total": 5,
+      "exact_match": 0.0,
+      "relaxed_em": 0.4,
+      "token_f1": 0.1229,
+      "rouge_l": 0.1102,
+      "meteor": 0.1178,
+      "bertscore_p": 0.8615,
+      "bertscore_r": 0.8205,
+      "bertscore_f1": 0.8401,
+      "num_exact": 0.4,
+      "num_f1": 0.4,
+      "abstain_rate": 0.0
+    }
+  },
+  "brsr_subset": {
+    "total": 4,
+    "exact_match": 0.0,
+    "token_f1": 0.1958,
+    "rouge_l": 0.1957,
+    "num_exact": 0.75,
+    "entailment_ratio": 0.125
+  },
+  "by_hop_count": {
+    "2-hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0994,
+      "rouge_l": 0.0937,
+      "meteor": 0.1073,
+      "bertscore_p": 0.8522,
+      "bertscore_r": 0.8142,
+      "bertscore_f1": 0.8317,
+      "num_exact": 0.3333,
+      "num_f1": 0.2889,
+      "abstain_rate": 0.0
+    }
+  },
+  "hallucination_taxonomy": {
+    "total_hallucinated": 13,
+    "hallucination_rate": 0.8667,
+    "by_type": {
+      "other": {
+        "count": 13,
+        "pct": 1.0
+      }
+    }
+  },
+  "by_operation_complexity": {
+    "two_hop": {
+      "total": 15,
+      "exact_match": 0.0,
+      "relaxed_em": 0.2,
+      "token_f1": 0.0994,
+      "rouge_l": 0.0937,
+      "meteor": 0.1073,
+      "bertscore_p": 0.8522,
+      "bertscore_r": 0.8142,
+      "bertscore_f1": 0.8317,
+      "num_exact": 0.3333,
+      "num_f1": 0.2889,
+      "abstain_rate": 0.0
+    }
+  },
+  "exact_match_ci": {
+    "mean": 0.0,
+    "lower": 0.0,
+    "upper": 0.0,
+    "n": 15
+  },
+  "relaxed_em_ci": {
+    "mean": 0.2,
+    "lower": 0.0,
+    "upper": 0.4,
+    "n": 15
+  },
+  "token_f1_ci": {
+    "mean": 0.0994,
+    "lower": 0.0166,
+    "upper": 0.2051,
+    "n": 15
+  },
+  "rouge_l_ci": {
+    "mean": 0.0937,
+    "lower": 0.0141,
+    "upper": 0.1954,
+    "n": 15
+  },
+  "bertscore_f1_ci": {
+    "mean": 0.8317,
+    "lower": 0.8135,
+    "upper": 0.8499,
+    "n": 15
+  },
+  "num_exact_ci": {
+    "mean": 0.3333,
+    "lower": 0.1333,
+    "upper": 0.5333,
+    "n": 15
+  },
+  "num_f1_ci": {
+    "mean": 0.2889,
+    "lower": 0.0889,
+    "upper": 0.4889,
+    "n": 15
+  },
+  "entailment_ratio_ci": {
+    "mean": 0.0667,
+    "lower": 0.0,
+    "upper": 0.1667,
+    "n": 15
+  },
+  "regime": "closed_book"
+}

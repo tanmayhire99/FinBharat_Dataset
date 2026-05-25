@@ -24,3 +24,4 @@ results/
 
 # pytest cache
 .pytest_cache/
+logs/

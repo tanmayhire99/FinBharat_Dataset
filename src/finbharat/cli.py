@@ -28,15 +28,18 @@ def cli():
               help="Host where vLLM is running (default: localhost). Use SSH tunnel or direct IP.")
 @click.option("--vllm-port", type=int, default=8000,
               help="Port where vLLM server listens (default: 8000).")
+@click.option("--vllm-completion", is_flag=True, default=False,
+              help="Use /completions endpoint with Alpaca format (for FinMA and similar instruction-tuned models).")
 def evaluate(data_root, output_dir, models, difficulty, regime, table_format,
              all_companies, max_per_company, api_key, llm_judge_model,
-             vllm_model, vllm_host, vllm_port):
+             vllm_model, vllm_host, vllm_port, vllm_completion):
     from finbharat.eval.evaluate import run_evaluation
     from finbharat.models.runner import make_vllm_config, PREDEFINED_MODELS
 
     if vllm_model:
         # Register the local vLLM model dynamically and use it
-        cfg = make_vllm_config(vllm_model, host=vllm_host, port=vllm_port)
+        cfg = make_vllm_config(vllm_model, host=vllm_host, port=vllm_port,
+                               use_completion=vllm_completion)
         PREDEFINED_MODELS["__vllm__"] = cfg
         model_keys = ["__vllm__"]
         click.echo(f"Using local vLLM model: {vllm_model} at {cfg.api_base}")

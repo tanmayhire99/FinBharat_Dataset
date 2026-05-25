@@ -25,3 +25,4 @@ results/
 # pytest cache
 .pytest_cache/
 logs/
+dataset.tar.gz

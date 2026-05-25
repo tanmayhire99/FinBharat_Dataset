@@ -25,6 +25,19 @@ class ModelConfig:
     max_tokens: int = 512
     temperature: float = 0.0
     top_p: float = 1.0
+    use_completion: bool = False  # True for models like FinMA that use /completions not /chat
+
+
+ALPACA_COMPLETION_TEMPLATE = """### Instruction:
+{system}
+{user}
+
+### Response:"""
+
+ALPACA_COMPLETION_TEMPLATE_NOSYS = """### Instruction:
+{user}
+
+### Response:"""
 
 
 def make_vllm_config(
@@ -33,6 +46,7 @@ def make_vllm_config(
     host: str = "localhost",
     port: int = 8000,
     max_tokens: int = 512,
+    use_completion: bool = False,
 ) -> ModelConfig:
     """
     Create a ModelConfig for a locally hosted vLLM server.
@@ -62,6 +76,7 @@ def make_vllm_config(
         api_base=f"http://{host}:{port}/v1",
         api_key_env="VLLM_API_KEY",   # vLLM accepts any key; set to "EMPTY" in .env
         max_tokens=max_tokens,
+        use_completion=use_completion,
     )
 
 
@@ -400,23 +415,50 @@ class ModelRunner:
             {"role": "user", "content": user},
         ]
 
+    def _build_completion_prompt(self, question: str, context: str, metadata: str = "") -> str:
+        """Build Alpaca-style completion prompt for models like FinMA."""
+        closed = "closed" in self.regime
+        if closed and metadata:
+            user_content = f"{metadata}\n\n{QA_USER_TEMPLATE_CLOSED.format(metadata=metadata, question=question)}"
+        elif closed:
+            user_content = QA_USER_TEMPLATE_CLOSED_NO_META.format(question=question)
+        else:
+            user_content = QA_USER_TEMPLATE.format(context=context, question=question)
+        system = QA_SYSTEM_PROMPT_CLOSED if closed else QA_SYSTEM_PROMPT
+        return ALPACA_COMPLETION_TEMPLATE.format(system=system, user=user_content)
+
     def generate(self, question: str, context: str, metadata: str = "") -> GenerationResult:
         start = time.time()
-        messages = self._build_messages(question, context, metadata)
-        payload = {
-            "model": self.config.model_id,
-            "messages": messages,
-            "max_tokens": self.config.max_tokens,
-            "temperature": self.config.temperature,
-            "top_p": self.config.top_p,
-        }
+
+        if self.config.use_completion:
+            # Models like FinMA: use /completions endpoint with Alpaca format
+            prompt = self._build_completion_prompt(question, context, metadata)
+            payload = {
+                "model": self.config.model_id,
+                "prompt": prompt,
+                "max_tokens": self.config.max_tokens,
+                "temperature": self.config.temperature,
+                "top_p": self.config.top_p,
+                "stop": ["###", "\n\n\n"],
+            }
+            endpoint = "/completions"
+        else:
+            messages = self._build_messages(question, context, metadata)
+            payload = {
+                "model": self.config.model_id,
+                "messages": messages,
+                "max_tokens": self.config.max_tokens,
+                "temperature": self.config.temperature,
+                "top_p": self.config.top_p,
+            }
+            endpoint = "/chat/completions"
 
         backoff = 2.0
         last_error = ""
         for attempt in range(self.max_retries):
             try:
                 client = self._get_client()
-                resp = client.post("/chat/completions", json=payload)
+                resp = client.post(endpoint, json=payload)
 
                 if resp.status_code == 429:
                     wait = backoff * (2 ** attempt) + random.uniform(0, 1)
@@ -427,7 +469,12 @@ class ModelRunner:
 
                 resp.raise_for_status()
                 data = resp.json()
-                predicted = data["choices"][0]["message"]["content"].strip()
+                choice = data["choices"][0]
+                # /completions returns "text", /chat/completions returns "message.content"
+                if self.config.use_completion:
+                    predicted = (choice.get("text") or "").strip()
+                else:
+                    predicted = (choice.get("message", {}).get("content") or "").strip()
                 usage = data.get("usage", {})
                 latency = (time.time() - start) * 1000
                 return GenerationResult(

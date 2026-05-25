@@ -306,6 +306,10 @@ def main():
                         help="Use /completions endpoint with Alpaca format (e.g. for FinMA).")
     parser.add_argument("--vllm-max-context", type=int,  default=0,
                         help="Truncate context to N chars (e.g. 2000 for FinMA's 2048-token limit).")
+    parser.add_argument("--workers",          type=int,  default=1,
+                        help="Parallel workers. Each worker uses a different NVIDIA_API_KEY "
+                             "(e.g. --workers 3 uses KEY, KEY_1, KEY_2 simultaneously). "
+                             "Safe max = number of API keys you have. Default: 1 (sequential).")
     args = parser.parse_args()
 
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
@@ -334,37 +338,90 @@ def main():
         companies = SAMPLE_COMPANIES
         print(f"Running on {len(companies)} sample companies: {[c['company'] for c in companies]}")
 
-    total   = len(args.models) * len(args.difficulties)
-    done    = 0
-    failed  = 0
-    skipped = 0
+    # Build flat list of (model, difficulty) pairs — skip already-done
+    all_pairs = [
+        (model_key, difficulty)
+        for model_key in args.models
+        for difficulty in args.difficulties
+        if not already_done(model_key, difficulty)
+    ]
+    skipped   = len(args.models) * len(args.difficulties) - len(all_pairs)
+    total     = len(all_pairs)
+    workers   = min(args.workers, total) if total > 0 else 1
 
     print(f"\n{'='*70}")
     print(f"  FinBharat Closed-Book Evaluation")
-    print(f"  {len(args.models)} models × {len(args.difficulties)} tiers = {total} runs")
+    print(f"  {len(args.models)} models × {len(args.difficulties)} tiers")
+    print(f"  Pending: {total} runs  |  Skipped (done): {skipped}")
+    print(f"  Workers: {workers}  (each uses a separate API key)")
     print(f"  max_per_company={args.max_per_company}")
     print(f"  Logs   → {LOGS_DIR}/")
     print(f"  Results → {RESULTS_DIR}/")
     print(f"{'='*70}\n")
 
-    t_start = time.time()
+    if total == 0:
+        print("Nothing to run — all done!")
+        return
 
-    for model_key in args.models:
-        for difficulty in args.difficulties:
-            tag = f"{model_key}_{difficulty}_{REGIME}"
-            print(f"\n[{done+skipped+failed+1}/{total}] {tag}")
+    t_start  = time.time()
+    done     = 0
+    failed   = 0
+    counter  = {"n": 0}
+    lock     = __import__("threading").Lock()
 
-            if already_done(model_key, difficulty):
-                print(f"  ⏭  already done — skipping")
-                skipped += 1
-                continue
+    def _worker(pair):
+        model_key, difficulty = pair
+        with lock:
+            counter["n"] += 1
+            idx = counter["n"]
+        print(f"\n[{idx}/{total}] {model_key}_{difficulty}_{REGIME}")
+        ok = run_one(model_key, difficulty, companies, args.max_per_company)
+        return ok
 
-            ok = run_one(model_key, difficulty, companies, args.max_per_company)
-            if ok:
-                done += 1
-            else:
-                failed += 1
-                print(f"  ❌  FAILED — continuing with next run")
+    if workers == 1:
+        # Sequential — simpler output
+        for pair in all_pairs:
+            ok = _worker(pair)
+            if ok: done += 1
+            else:  failed += 1
+    else:
+        # Parallel — assign each worker a distinct API key index via env
+        import concurrent.futures, os
+        from dotenv import load_dotenv
+        load_dotenv(Path(__file__).parent.parent / ".env")
+
+        # Collect available keys
+        base_keys = []
+        base = os.environ.get("NVIDIA_API_KEY","").strip()
+        if base: base_keys.append(base)
+        for i in range(1, 10):
+            k = os.environ.get(f"NVIDIA_API_KEY_{i}","").strip()
+            if k: base_keys.append(k)
+
+        if not base_keys:
+            print("  ⚠  No API keys found — falling back to sequential")
+            for pair in all_pairs:
+                ok = _worker(pair)
+                if ok: done += 1
+                else:  failed += 1
+        else:
+            print(f"  API keys available: {len(base_keys)} → using {min(workers,len(base_keys))} in parallel")
+            workers = min(workers, len(base_keys))
+
+            def _worker_with_key(args_tuple):
+                pair, worker_idx = args_tuple
+                # Set env key for this thread so the runner picks it up
+                key = base_keys[worker_idx % len(base_keys)]
+                os.environ["NVIDIA_API_KEY"] = key
+                return _worker(pair)
+
+            indexed_pairs = [(pair, i % workers) for i, pair in enumerate(all_pairs)]
+            with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as ex:
+                futures = {ex.submit(_worker_with_key, p): p for p in indexed_pairs}
+                for fut in concurrent.futures.as_completed(futures):
+                    ok = fut.result()
+                    if ok: done += 1
+                    else:  failed += 1
 
     elapsed = time.time() - t_start
     print(f"\n{'='*70}")

@@ -302,6 +302,10 @@ def main():
                         help="Host where vLLM is running (default: localhost).")
     parser.add_argument("--vllm-port",        type=int,  default=8000,
                         help="Port where vLLM listens (default: 8000).")
+    parser.add_argument("--vllm-completion",  action="store_true", default=False,
+                        help="Use /completions endpoint with Alpaca format (e.g. for FinMA).")
+    parser.add_argument("--vllm-max-context", type=int,  default=0,
+                        help="Truncate context to N chars (e.g. 2000 for FinMA's 2048-token limit).")
     args = parser.parse_args()
 
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
@@ -315,6 +319,8 @@ def main():
             args.vllm_model,
             host=args.vllm_host,
             port=args.vllm_port,
+            use_completion=args.vllm_completion,
+            max_context_chars=args.vllm_max_context,
         )
         PREDEFINED_MODELS["__vllm__"] = cfg
         args.models = ["__vllm__"]

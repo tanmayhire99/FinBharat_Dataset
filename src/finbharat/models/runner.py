@@ -26,6 +26,7 @@ class ModelConfig:
     temperature: float = 0.0
     top_p: float = 1.0
     use_completion: bool = False  # True for models like FinMA that use /completions not /chat
+    max_context_chars: int = 0   # Truncate context to N chars before sending. 0 = no limit.
 
 
 ALPACA_COMPLETION_TEMPLATE = """### Instruction:
@@ -47,6 +48,7 @@ def make_vllm_config(
     port: int = 8000,
     max_tokens: int = 512,
     use_completion: bool = False,
+    max_context_chars: int = 0,
 ) -> ModelConfig:
     """
     Create a ModelConfig for a locally hosted vLLM server.
@@ -74,9 +76,10 @@ def make_vllm_config(
         model_id=model_id,
         provider="vllm",
         api_base=f"http://{host}:{port}/v1",
-        api_key_env="VLLM_API_KEY",   # vLLM accepts any key; set to "EMPTY" in .env
+        api_key_env="VLLM_API_KEY",
         max_tokens=max_tokens,
         use_completion=use_completion,
+        max_context_chars=max_context_chars,
     )
 
 
@@ -416,14 +419,22 @@ class ModelRunner:
         ]
 
     def _build_completion_prompt(self, question: str, context: str, metadata: str = "") -> str:
-        """Build Alpaca-style completion prompt for models like FinMA."""
+        """Build Alpaca-style completion prompt for models like FinMA.
+        Truncates context to max_context_chars if set (needed for 2k-context models).
+        """
         closed = "closed" in self.regime
+
+        # Truncate context for small context window models (e.g. FinMA 2048 tokens)
+        ctx = context
+        if self.config.max_context_chars > 0 and len(ctx) > self.config.max_context_chars:
+            ctx = ctx[:self.config.max_context_chars] + "\n[context truncated]"
+
         if closed and metadata:
-            user_content = f"{metadata}\n\n{QA_USER_TEMPLATE_CLOSED.format(metadata=metadata, question=question)}"
+            user_content = QA_USER_TEMPLATE_CLOSED.format(metadata=metadata, question=question)
         elif closed:
             user_content = QA_USER_TEMPLATE_CLOSED_NO_META.format(question=question)
         else:
-            user_content = QA_USER_TEMPLATE.format(context=context, question=question)
+            user_content = QA_USER_TEMPLATE.format(context=ctx, question=question)
         system = QA_SYSTEM_PROMPT_CLOSED if closed else QA_SYSTEM_PROMPT
         return ALPACA_COMPLETION_TEMPLATE.format(system=system, user=user_content)
 

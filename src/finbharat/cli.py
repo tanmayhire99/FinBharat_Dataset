@@ -30,16 +30,19 @@ def cli():
               help="Port where vLLM server listens (default: 8000).")
 @click.option("--vllm-completion", is_flag=True, default=False,
               help="Use /completions endpoint with Alpaca format (for FinMA and similar instruction-tuned models).")
+@click.option("--vllm-max-context", type=int, default=0,
+              help="Truncate context to N chars before sending (e.g. 3000 for FinMA with 2048-token limit). 0=no limit.")
 def evaluate(data_root, output_dir, models, difficulty, regime, table_format,
              all_companies, max_per_company, api_key, llm_judge_model,
-             vllm_model, vllm_host, vllm_port, vllm_completion):
+             vllm_model, vllm_host, vllm_port, vllm_completion, vllm_max_context):
     from finbharat.eval.evaluate import run_evaluation
     from finbharat.models.runner import make_vllm_config, PREDEFINED_MODELS
 
     if vllm_model:
         # Register the local vLLM model dynamically and use it
         cfg = make_vllm_config(vllm_model, host=vllm_host, port=vllm_port,
-                               use_completion=vllm_completion)
+                               use_completion=vllm_completion,
+                               max_context_chars=vllm_max_context)
         PREDEFINED_MODELS["__vllm__"] = cfg
         model_keys = ["__vllm__"]
         click.echo(f"Using local vLLM model: {vllm_model} at {cfg.api_base}")
